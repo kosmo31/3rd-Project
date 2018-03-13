@@ -25,7 +25,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/commonTop_1.css?ver=<fmt:formatDate value="${today}" pattern="yyyyMMddHHmmss" />">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/commonTop_2.css?ver=<fmt:formatDate value="${today}" pattern="yyyyMMddHHmmss" />">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/commonBottom.css?ver=<fmt:formatDate value="${today}" pattern="yyyyMMddHHmmss" />">
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/view.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/view.css?ver=<fmt:formatDate value="${today}" pattern="yyyyMMddHHmmss" />">
 <link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/images/icons/favicon.ico">
 
 
@@ -600,14 +600,13 @@ function viewPage(board_srl){
 		<!-- Search List Area -->
 
 		<!-- CONTAINER -->
-		<section class="section-3 section-dark mt0">
+		<section class="section-3 section-dark mt0 section-list">
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-10 col-sm-offset-1">
-						<h2 class="section-title st2 mb25">현재 카테고리 인기 검색어 목록</h2>
 						<div class="text-center">
 							<div class="mb0">
-								<h3 class="text-danger">현재 카테고리 인기 검색어 목록</h3>
+								<h2 class="title-h2">현재 카테고리 인기 검색어 목록</h2>
 								<div id="tags" class="tags">
 									<a href="#" title="10 Topics"><i class="fa fa-tag"></i> 검색어</a>
 								</div>
@@ -624,12 +623,13 @@ function viewPage(board_srl){
 					<div class="col-sm-7 col-md-9 col-md-push-3 col-sm-push-5 space-left push-off">
 						<!-- 상단 버튼부분 -->
 						<div class="row" id="table-btn">
-							<div class="col-xs-5">
-								<button type="button" class="btn btn-default" id="engineer-btn">기술자 게시판</button>
-								<button type="button" class="btn btn-default" id="customer-btn">의뢰인 게시판</button>
+							<div class="col-xs-6">
+								<button type="button" class="btn btn-default list-btn" id="">전체 게시판</button>
+								<button type="button" class="btn btn-default list-btn" id="engineer-btn">기술자 게시판</button>
+								<button type="button" class="btn btn-default list-btn" id="customer-btn">의뢰인 게시판</button>
 							</div>
 							<form class="form-inline" action="#">
-								<div class="from-group col-xs-3" id="from-group">
+								<div class="from-group col-xs-2" id="from-group">
 									<select name="searchType" class="form-control" id="select-form-control">
 										<option value="t">제목</option>
 										<option value="c">내용</option>
@@ -645,17 +645,17 @@ function viewPage(board_srl){
 								
 									<input type="text" class="form-control" placeholder="검색어" id="keyword" name="keyword" value="${keyword}"/>
 									<div class="input-group-btn">
-										<button class="btn btn-default" id="searchBoardBtn" type="submit">
+										<button class="btn btn-default margin-right-15"  id="searchBoardBtn" type="submit">
 											<i class="glyphicon glyphicon-search" ></i>
 										</button>
-										<button type="button" class="btn btn-success" id="writeBoardBtn">글쓰기</button>
+										<button type="button" class="btn btn-success write-btn-list" id="writeBoardBtn">글쓰기</button>
 									</div>
 								</div>
 							</form>
 						</div>
 
 						<!-- 리스트부분 반복 -->
-						<div class="table-responsive" id="boardBody">
+						<div id="boardBody">
 							<div class="row" id="row-body-view">
 
 								<!-- 뷰 머리 -->

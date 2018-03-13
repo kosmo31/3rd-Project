@@ -2,75 +2,32 @@
 
 /* 리스트 부분 */
 
-#row-body {
-	margin-top: 100px;
-	background-color: #FAFAFA
+.list-btn{
+	width: 120px;
 }
 
-.table-responsive {
-	margin-top: 25px;
+.write-btn-list{
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
-#table-hover {
-	border: 1px solid #E1E1E1;
-	background-color: white;
+.margin-right-15{
+	margin-right: 15px;
 }
 
-#table-hover>tbody>tr:hover {
-	background-color: #D2F0D8;
+#table-btn{
+	margin-bottom: 30px;
+	margin-right: 5px;
 }
 
-#table-btn {
-	margin-top: 90px;
+.section-list{
+	top: 100px;
+	bottom: 50px;
+	
 }
 
-#from-group {
-	text-align: right;
-}
-
-#btn-default {
-	margin-right: 20px;
-	height: 35px;
-	border: 1px solid #E1E1E1;
-}
-
-#btn-success-write {
-	border-radius: 0px;
-	height: 35px;
-	margin-right: 16px;
-}
-
-#form-control {
-	margin-right: 20px;
-	height: 35px;
-	border: 1px solid #E1E1E1;
-}
-
-#select-form-control {
-	margin-right: 20px;
-	height: 35px;
-	border: 1px solid #E1E1E1;
-	border-radius: 0px;
-}
-
-#engineer-btn {
-	height: 35px;
-	border: 1px solid #E1E1E1;
-	border-radius: 0px;
-}
-
-#customer-btn {
-	height: 35px;
-	border: 1px solid #E1E1E1;
-	border-radius: 0px;
-}
-
-.pagination {
-	margin-top: 10px;
-	margin-bottom: 90px;
-}
-
-#pagination-ul>li>a {
-	align-self: center;
-	color: #636363;
+.title-h2{
+	color: #22ABA6;
+	font-size: 1.8em;
+	margin-bottom: 0px;
 }
