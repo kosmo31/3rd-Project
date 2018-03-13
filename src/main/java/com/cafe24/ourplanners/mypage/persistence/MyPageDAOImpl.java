@@ -50,12 +50,22 @@ public class MyPageDAOImpl implements MyPageDAO{
 	}
 	
 	@Override
+	public int getClientListUnCheck_TotalRecordConut(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getClientListUnCheck_TotalRecordConut", user_id); 
+	}
+	
+	@Override
 	public int getClientList_TotalRecordConut(String user_id) throws Exception {
 		return sqlSession.selectOne(namespace + ".getClientList_TotalRecordConut", user_id); 
 	}
 	
 	@Override
 	public int getEngineerListCheck_TotalRecordConut(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerListCheck_TotalRecordConut", user_id); 
+	}
+	
+	@Override
+	public int getEngineerListUnCheck_TotalRecordConut(String user_id) throws Exception {
 		return sqlSession.selectOne(namespace + ".getEngineerListCheck_TotalRecordConut", user_id); 
 	}
 	

@@ -34,12 +34,20 @@
 		SELECT COUNT(*) FROM op_board WHERE board_type='C' AND service_expired='Y' AND user_id=#{user_id,jdbcType=VARCHAR}
 	</select>
 	
+	<select id="getClientListUnCheck_TotalRecordConut" resultType="int">
+		SELECT COUNT(*) FROM op_board WHERE board_type='C' AND service_expired='N' AND user_id=#{user_id,jdbcType=VARCHAR}
+	</select>
+	
 	<select id="getClientList_TotalRecordConut" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='C' AND user_id=#{user_id}
 	</select>
 	
 	<select id="getEngineerListCheck_TotalRecordConut" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='Y' AND user_id=#{user_id}
+	</select>
+	
+	<select id="getEngineerListUnCheck_TotalRecordConut" resultType="int">
+		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='N' AND user_id=#{user_id}
 	</select>
 	
 	<select id="getEngineerList_TotalRecordConut" resultType="int">

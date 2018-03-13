@@ -46,16 +46,24 @@ public class MyPageController {
 		int engineerMatchingPrecent = 0;
 		
 		int clientListCheck_TotalRecordConut = 0;
+		
+		int clientListUnCheck_TotalRecordConut = 0;
+		
 		int clientList_TotalRecordConut = 0;
 		int engineerListCheck_TotalRecordConut = 0;
+		int engineerListUnCheck_TotalRecordConut = 0;
+		
 		int engineerList_TotalRecordConut = 0;
 		
 		String user_id = ((MemberVO)session.getAttribute("loginUserInfo")).getUser_id();
 		
 		try {
 			clientListCheck_TotalRecordConut = myPageService.getClientListCheck_TotalRecordConut(user_id);
+			
+			clientListUnCheck_TotalRecordConut = myPageService.getClientListUnCheck_TotalRecordConut(user_id);
 			clientList_TotalRecordConut = myPageService.getClientList_TotalRecordConut(user_id);
 			engineerListCheck_TotalRecordConut = myPageService.getEngineerListCheck_TotalRecordConut(user_id);
+			engineerListUnCheck_TotalRecordConut = myPageService.getEngineerListUnCheck_TotalRecordConut(user_id);
 			engineerList_TotalRecordConut = myPageService.getEngineerList_TotalRecordConut(user_id);
 		} 
 		catch (Exception e) {
@@ -66,8 +74,11 @@ public class MyPageController {
 		engineerMatchingPrecent = (int)(((double)engineerListCheck_TotalRecordConut/engineerList_TotalRecordConut)*100);
 		
 		model.addAttribute("clientListCheck_TotalRecordConut", clientListCheck_TotalRecordConut);
+		model.addAttribute("clientListUnCheck_TotalRecordConut", clientListCheck_TotalRecordConut);
+		
 		model.addAttribute("clientList_TotalRecordConut", clientList_TotalRecordConut);
 		model.addAttribute("engineerListCheck_TotalRecordConut", engineerListCheck_TotalRecordConut);
+		model.addAttribute("engineerListUnCheck_TotalRecordConut", engineerListCheck_TotalRecordConut);
 		model.addAttribute("engineerList_TotalRecordConut", engineerList_TotalRecordConut);
 		model.addAttribute("clientMatchingPrecent", clientMatchingPrecent);
 		model.addAttribute("engineerMatchingPrecent", engineerMatchingPrecent);

@@ -41,7 +41,14 @@
 					inHTML += "<div class=\"col-md-4\">";
 					inHTML += "<div class=\"card card-blog\">";
 					inHTML += "<div class=\"card-image\">";
-					inHTML += "<a href=\"#pablo\"> <img class=\"img img-raised\" src=\""+serviceMainImgPath+hotEngineerBoardList.main_image+"\">";
+					if(hotEngineerBoardList.main_image==null){
+						inHTML += "<a href=\"#pablo\"> <img style=\"height:270px;\" class=\"img img-raised\" src=\"${pageContext.request.contextPath}/resources/images/op_main_img.png\">";
+					}else{
+						inHTML += "<a href=\"#pablo\"> <img style=\"height:270px;\" class=\"img img-raised\" src=\""+serviceMainImgPath+hotEngineerBoardList.main_image+"\">";
+					}
+					
+					
+					
 					inHTML += "</a>";
 					inHTML += "<div class=\"colored-shadow\" style=\"background-image: url('" + serviceMainImgPath + hotEngineerBoardList.board_srl + "/images/" + hotEngineerBoardList.main_image + "'); opacity: 1;\"></div>";
 					inHTML += "<div class=\"ripple-container\"></div>";

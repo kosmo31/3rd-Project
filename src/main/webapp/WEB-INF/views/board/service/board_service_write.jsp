@@ -116,10 +116,7 @@ $(document).ready(function(){
 			success : function(d) {
 				if (d.result == "fail") {
 					if (d.errorMsg == "isNotLogin") {
-						popLayerMsg("자주 묻는 질문을 작성하시려면 관리자 아이디로 로그인 해주세요.");
-						location.href = "${pageContext.request.contextPath}/member/login";
-					} else if (d.errorMsg == "isNotAdmin") {
-						popLayerMsg("자주 묻는 질문을 작성하시려면 관리자 아이디로 로그인 해주세요.");
+						popLayerMsg("글을 작성하시려면 관리자 아이디로 로그인 해주세요.");
 						location.href = "${pageContext.request.contextPath}/member/login";
 					}
 

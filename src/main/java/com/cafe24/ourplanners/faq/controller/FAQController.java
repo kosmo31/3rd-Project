@@ -147,13 +147,15 @@ public class FAQController {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			map.put("result", "fail");
+			map.put("errorMsg", e.getMessage());
 			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
 		}
 
 		if (((String) map.get("result")).equals("fail")) {
 			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.BAD_REQUEST);
 		} else if (((String) map.get("result")).equals("success")) {
-			System.out.println("글수정 성공");
+			System.out.println("글작성 성공");
 			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		}
 		return entity;
@@ -209,6 +211,7 @@ public class FAQController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			map.put("errorMsg", e.getMessage());
 			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
 		}
 
@@ -254,6 +257,7 @@ public class FAQController {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			map.put("errorMsg", e.getMessage());
 			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
 		}
 

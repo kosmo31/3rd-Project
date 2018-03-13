@@ -2,8 +2,29 @@ package com.cafe24.ourplanners.comment.service;
 
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.ui.Model;
+
+import com.cafe24.ourplanners.comment.domain.CommentVO;
 import com.cafe24.ourplanners.util.CommentCriteria;
 
 public interface CommentService {
 	void getCommentListJson(CommentCriteria scri, HashMap<String, Object> map);
+	
+	 public int addComment(CommentVO vo) throws Exception;
+
+	public int modifyComment(CommentVO vo);
+
+	int deleteComment(Integer comment_srl);
+
+	  public int count(Integer bno) throws Exception;
+
+	CommentVO readComment(Integer comment_srl, Model model);
+
+
+
+
+
+	  
 }
