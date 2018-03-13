@@ -115,7 +115,80 @@
 	function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
+	
+	function selectCategory(category_srl){
+		getServiceSearchList(1, category_srl);
+	}
+	
+	function selectSubCategory(category_srl,subcategory_srl){
+		getServiceSearchList(1, category_srl, subcategory_srl);
+	}
 
+	function initSideNav(category_srl){
+		
+		category_srl = typeof category_srl !== 'undefined' ? category_srl : "";
+		
+		if (isEmpty(category_srl)) {
+			
+			category_srl = "";
+		}
+		
+		
+		$('#CategoryTitle').empty();
+		$('#subCategoryList').empty();
+			
+		var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
+		var params = "category_srl=" + category_srl ;
+		
+		$.ajax({
+			cache : false, // 캐시 사용 없애기
+			type : 'get',
+			url : url,
+			data : params,
+			//data : JSON.stringify({ board_type: 'E', pageSize: '3', blockPage: '1'}),
+			//contentType: 'application/json; charset=utf-8',
+			dataType : 'json',
+			//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
+			//dataType: "text",	
+			success : function(data) {
+				//alert(JSON.stringify(data));
+				var items = [];
+				var inHTML = "";
+				
+				var inHTMLCategoryName = "";
+
+				$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
+					
+					inHTML+="<li><a href=\"javascript:selectSubCategory("+categoryVO.category_srl+","+categoryVO.subcategory_srl+")\"><span>"+index+"</span>"+categoryVO.subcategory_name+"</a></li>";
+					
+					inHTMLCategoryName = categoryVO.category_name;
+					
+
+				});//each끝
+
+				if(isEmpty(category_srl)){
+					$('#CategoryTitle').html("전체");
+				}
+				else{
+					$('#CategoryTitle').html(inHTMLCategoryName);	
+				}
+				
+
+				if (jQuery.isEmptyObject(data.subCategoryList)) {
+					$('#subCategoryList').html("<li><a href=\"#\">서브 카테고리 없음</a></li>");
+				} else {
+					$('#subCategoryList').html(inHTML);
+				}
+
+			},
+
+			error : function(e) {
+				popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
+			}
+
+		});
+	}
+	
 	function servicePaging(nowPage, category_srl, subcategory_srl, board_type, searchType, keyword) {
 		//var params = "nowPage=" + nowPage + "&board_type=" + board_type + "&pageSize=6&blockPage=5&keyword=" + keyword + "&searchType=" + searchType;
 		//alert(params);
@@ -168,6 +241,8 @@
 
 		$('#board_type').val(board_type);
 
+		initSideNav(category_srl);
+		
 		var url = "${pageContext.request.contextPath}/board/json/service_list.json";
 		var serviceMainImgPath = "${pageContext.request.contextPath}/resources/upload/service/";
 		//내용 지우기
@@ -243,7 +318,7 @@
 				inHTML += "</ul></div>";
 
 				if (jQuery.isEmptyObject(data.searchList)) {
-					$('#boardBody').html("<div class=\"row\">해당 하는 검색 결과가 없습니다.</div>");
+					$('#boardBody').html("<div class=\"row text-center\">해당 하는 검색 결과가 없습니다.</div>");
 				} else {
 					$('#boardBody').html(inHTML);
 				}

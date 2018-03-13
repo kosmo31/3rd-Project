@@ -147,6 +147,8 @@ public class SearchRestController {
 	public HashMap<String, Object> getSubCategoryListSearch(HttpServletRequest req, Model model,
 			@RequestParam(required = false) Integer category_srl,
 			@RequestParam(required = false) Integer subcategory_srl,
+			@RequestParam(required = false, defaultValue = "") String category_name , 
+			@RequestParam(required = false, defaultValue = "") String subcategory_name , 
 			@RequestParam(required = false, defaultValue = "") String keyword) {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -157,10 +159,15 @@ public class SearchRestController {
 			vo.setCategory_srl(category_srl);
 		if (subcategory_srl != null)
 			vo.setSubcategory_srl(subcategory_srl);
+		
+		vo.setCategory_name(subcategory_name);
+		vo.setSubcategory_name(subcategory_name);
+		
 		if (keyword != null && keyword.length() != 0) {
 			vo.setSubcategory_name(keyword);
 			vo.setCategory_name(keyword);
 		}
+		
 		service.getSubCategoryListSearch(vo, map);
 
 		return map;

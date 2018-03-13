@@ -201,7 +201,7 @@ SERVICE_SCORE,LAST_UPDATE  FROM op_board where board_srl > 0
 
 <select id="getSubCategoryListSearch" resultType="com.cafe24.ourplanners.board.domain.SubCategoryVO">
 <![CDATA[  
- select sc.category_srl, category_name, sc.subcategory_srl, sc.subcategory_name 
+ select sc.category_srl, category_name,subcategory_srl, subcategory_name 
  from 
  subcategory sc inner join category c 
  on sc.category_srl = c.category_srl 
@@ -218,7 +218,7 @@ SERVICE_SCORE,LAST_UPDATE  FROM op_board where board_srl > 0
 				 	category_name like CONCAT(CONCAT('%', #{category_name}), '%') 
 					
 					
-					<if test="category_name != null and category_name != ''">
+					<if test="subcategory_name != null and subcategory_name != ''">
 					OR subcategory_name like CONCAT(CONCAT('%', #{subcategory_name}), '%')
 					</if>
 			
@@ -231,7 +231,7 @@ SERVICE_SCORE,LAST_UPDATE  FROM op_board where board_srl > 0
 
 			</when>
 			<otherwise>
-				AND category_srl = #{category_srl}
+				AND sc.category_srl = #{category_srl}
 			</otherwise>
 		</choose>
 
@@ -402,7 +402,7 @@ SERVICE_SCORE,LAST_UPDATE  FROM op_board where board_srl > 0
  			category_srl, subcategory_srl, service_cost, board_type) 
 		values (
 			board_srl_seq.nextval, #{user_id}, #{location}, #{service_time_start}, #{service_time_end},
-            #{title}, #{contents}, #{contact_time_start}, #{contact_time_end}, #{main_image}, 
+            #{title}, #{contents}, #{contact_time_start}, #{contact_time_end}, #{main_image,jdbcType=VARCHAR}, 
             #{category_srl}, #{subcategory_srl}, #{service_cost}, #{board_type}) 
  	
 
@@ -413,7 +413,7 @@ SERVICE_SCORE,LAST_UPDATE  FROM op_board where board_srl > 0
 	update op_board set 
 			location=#{location}, service_time_start=#{service_time_start}, service_time_end = #{service_time_end},
 			title=#{title}, contents=#{contents}, contact_time_start=#{contact_time_start}, contact_time_end=#{contact_time_end},
-			main_image=#{main_image}, service_cost=#{service_cost}
+			main_image=#{main_image,jdbcType=VARCHAR}, service_cost=#{service_cost}
 		where board_srl=#{board_srl}
 		
 	</update>

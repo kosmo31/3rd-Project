@@ -71,7 +71,7 @@ public class SearchDAOImpl implements SearchDAO {
 	
 	@Override
 	public int deleteBoard(Integer board_srl) {
-		return sqlSession.delete(searchMapper + ".delete", board_srl); 
+		return sqlSession.delete(searchMapper + ".deleteBoard", board_srl); 
 	}
 	
 	@Override

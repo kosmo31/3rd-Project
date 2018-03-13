@@ -186,16 +186,19 @@ public class SearchController {
 		@ResponseBody
 		@RequestMapping(value = "/board/service/{board_srl}", method = { RequestMethod.PUT, RequestMethod.PATCH })
 		public ResponseEntity<Map<String, Object>> modifyActionBoard(@PathVariable Integer board_srl, HttpServletRequest req,
-				HttpSession session, @RequestBody BoardVO vo) {
+				HttpSession session, @RequestBody BoardVO vo,Model model) {
 
-			vo.setBoard_srl(board_srl);
-			/*
-			 * System.out.println("service_srl:"+vo.getService_srl());
-			 * System.out.println("board_srl:"+board_srl);
-			 * System.out.println("category_srl:"+vo.getCategory_srl());
-			 * System.out.println("title:"+vo.getTitle());
-			 * System.out.println("contents:"+vo.getContents());
-			 */
+			  vo.setBoard_srl(board_srl);
+			 
+			  BoardVO originVO =service.readBoard(board_srl, model);
+			  String origin_id = originVO.getUser_id();
+			  String user_id = ((MemberVO) session.getAttribute("loginUserInfo")).getUser_id();
+			  
+			  System.out.println("board_srl:"+board_srl);
+			  System.out.println("category_srl:"+vo.getCategory_srl());
+			  System.out.println("title:"+vo.getTitle());
+			  System.out.println("contents:"+vo.getContents());
+			
 			Map<String, Object> map = new HashMap<String, Object>();
 			ResponseEntity<Map<String, Object>> entity = null;
 
@@ -206,10 +209,10 @@ public class SearchController {
 
 				} else {
 
-					if (!((MemberVO) session.getAttribute("loginUserInfo")).getIs_admin().equalsIgnoreCase("Y")) {
+					if (!user_id.equalsIgnoreCase(origin_id)) {
 						map.put("result", "fail");
-						map.put("errorMsg", "isNotAdmin");
-
+						map.put("errorMsg", "hasNotAuth");
+						
 					} else {
 
 						int result = service.modifyBoard(vo);
@@ -224,6 +227,8 @@ public class SearchController {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				map.put("result", "fail");
+				map.put("layer_msg", e.getMessage());
 				entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
 			}
 

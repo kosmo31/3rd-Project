@@ -126,8 +126,10 @@ $(document).ready(function(){
 				} else if (d.result == "success") {
 
 					popLayerMsg("글쓰기를 성공하였습니다.");
+					$('#boardListBtn').trigger('click');
+					
 					//location.href = "${pageContext.request.contextPath}/customercenter/faq";
-					//todo 여기 리스트 localstorage
+					//todo 여기 리스트 localstorage나 sessionstorage sessionstorage 이용하는게 좋을것같고 아니면 히든폼으로 넘기자
 					
 					//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}" , "${board_type}" ,"${searchType}","${keyword}");
 					//글쓰기 성공후 히든 영역폼에 저장된 목록으로 이동

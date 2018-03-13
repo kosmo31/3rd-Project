@@ -239,6 +239,15 @@ SELECT * FROM (SELECT Tb.*, rownum rNum FROM ( Select M.* from op_member M where
 				AND user_id = #{user_id,jdbcType=VARCHAR}
 			</otherwise>
 		</choose>
+		
+		<choose>
+			<when test="member_srl == null or member_srl == ''">
+
+			</when>
+			<otherwise>
+				AND member_srl = #{member_srl,jdbcType=INTEGER}
+			</otherwise>
+		</choose>
 
 		<choose>
 			<when test="user_name == null or user_name == ''">
@@ -265,8 +274,6 @@ SELECT * FROM (SELECT Tb.*, rownum rNum FROM ( Select M.* from op_member M where
 	]]>
 
 	</select>
-
-
 
 
 	<!-- 페이징 처리용 total count -->

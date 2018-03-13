@@ -85,74 +85,70 @@ public class SearchServiceImpl implements SearchService {
 		// todo 공백을 기준으로 형태소 분석해서 명사만 등록하기
 
 		map.put("searchList", list);
-		
+
 		int totalRecordCount = dao.getTotalServiceCount(scri);
 		String pagingDiv = PagingUtil.pagingAjaxService(totalRecordCount, scri, "servicePaging");
-		
+
 		map.put("pagingDiv", pagingDiv);
-		
+
 	}
 
 	@Override
-	public int writeBoard(HttpServletRequest req, Map<String, Object> map) throws Exception{
-		
+	public int writeBoard(HttpServletRequest req, Map<String, Object> map) throws Exception {
+
 		int board_srl = 0;
+
+		String user_id = req.getParameter("user_id");
+		String title = req.getParameter("title");
+		String contents = req.getParameter("contents");
+
+		Pattern srcPattern = Pattern.compile("<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>");
+		// Pattern titlePattern =
+		// Pattern.compile("<img[^>]*title=[\"']?([^>\"']+)[\"']?[^>]*>");
+		Matcher srcMatcher = srcPattern.matcher(contents);
+		// Matcher titleMatcher = titlePattern.matcher(contents);
+
+		String imageSrc = "";
+
+		while (srcMatcher.find()) {
+			imageSrc += srcMatcher.group(1);
+		}
+
+		int index1 = imageSrc.indexOf("e/");
+		int index2 = imageSrc.indexOf("&#");
+		String main_image = null;
+		if(index1!=-1&&index2!=-1)
+		{
+		 main_image = imageSrc.substring(index1 + 2, index2);
+		}
 		
-	    String user_id = req.getParameter("user_id");
-	    String title = req.getParameter("title");
-	    String contents = req.getParameter("contents");
-	    
-	    Pattern srcPattern = Pattern.compile("<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>");
-	    //Pattern titlePattern = Pattern.compile("<img[^>]*title=[\"']?([^>\"']+)[\"']?[^>]*>");
-	    Matcher srcMatcher = srcPattern.matcher(contents);
-	    //Matcher titleMatcher = titlePattern.matcher(contents);
-	    
-	    String imageSrc = "";
-	    
-	    while(srcMatcher.find()) {
-	    	imageSrc += srcMatcher.group(1);
-	    }
-	    
-	    int index1 = imageSrc.indexOf("e/");
-	    int index2 = imageSrc.indexOf("&#");
-    
-	    
-	    String main_image = imageSrc.substring(index1+2, index2);
-	    System.out.println("main_image : " + main_image);
-	    // imageName : baca2009-be88-4092-a316-4c489a8b850e.jpg
-	    
-	    
-	    
-	    /*
-	    while(titleMatcher.find()) {
-	    	System.out.println(titleMatcher.group(1)+",");
-	    }
-	    */
-	  
-	    
-	    String location = req.getParameter("location");
-	    
-	    
-		
-		
+		System.out.println("main_image : " + main_image);
+		// imageName : baca2009-be88-4092-a316-4c489a8b850e.jpg
+
+		/*
+		 * while(titleMatcher.find()) { System.out.println(titleMatcher.group(1)+","); }
+		 */
+
+		String location = req.getParameter("location");
+
 		SimpleDateFormat fm = new SimpleDateFormat("yyyy-MM-dd");
 		java.util.Date utilDate = null;
-		
+
 		String strService_time_start = req.getParameter("service_time_start");
 		utilDate = fm.parse(strService_time_start);
 		java.sql.Date sqlService_time_start = new java.sql.Date(utilDate.getTime());
-		
+
 		String strService_time_end = req.getParameter("service_time_end");
 		utilDate = fm.parse(strService_time_end);
 		java.sql.Date sqlService_time_end = new java.sql.Date(utilDate.getTime());
-		
+
 		int contact_time_start = Integer.parseInt(req.getParameter("contact_time_start"));
 		int contact_time_end = Integer.parseInt(req.getParameter("contact_time_end"));
 		int category_srl = Integer.parseInt(req.getParameter("category_srl"));
 		int subcategory_srl = Integer.parseInt(req.getParameter("subcategory_srl"));
 		int service_cost = Integer.parseInt(req.getParameter("service_cost"));
 		String board_type = req.getParameter("board_type");
-		
+
 		BoardVO vo = new BoardVO();
 		vo.setBoard_srl(board_srl);
 		vo.setBoard_type(board_type);
@@ -170,29 +166,29 @@ public class SearchServiceImpl implements SearchService {
 		vo.setService_cost(service_cost);
 
 		return dao.writeBoard(vo);
-		
+
 	}
 
-	
-	
 	@Override
 	public BoardVO readBoardJson(Integer boardSrl) {
 		return dao.readBoard(boardSrl);
 	}
-	
+
 	@Override
-	public void readBoard(Integer board_srl, Model model) {
+	public BoardVO readBoard(Integer board_srl, Model model) {
 		BoardVO vo = new BoardVO();
 		vo = dao.readBoard(board_srl);
-		//싱글 쿼테이션 더블 쿼테이션 변경
-		vo.setContents(vo.getContents().replaceAll("'", "\"").replaceAll("’", "\"").replaceAll("‘", "\"").replaceAll("\"", "\""));
-		//줄바꿈 처리
-		//vo.setContents(vo.getContents().replaceAll("\r\n", "<br/>"));
-		//vo.setContents(vo.getContents().replaceAll(System.getProperty("line.separator"), "<br/>"));
+		// 싱글 쿼테이션 더블 쿼테이션 변경
+		vo.setContents(vo.getContents().replaceAll("'", "\"").replaceAll("’", "\"").replaceAll("‘", "\"")
+				.replaceAll("\"", "\""));
+		// 줄바꿈 처리
+		// vo.setContents(vo.getContents().replaceAll("\r\n", "<br/>"));
+		// vo.setContents(vo.getContents().replaceAll(System.getProperty("line.separator"),
+		// "<br/>"));
 		model.addAttribute("boardVO", vo);
-		
+		return vo;
 	}
-	
+
 	@Override
 	public void visitCount(Integer boardSrl) throws Exception {
 		dao.visitCount(boardSrl);
@@ -200,7 +196,53 @@ public class SearchServiceImpl implements SearchService {
 
 	@Override
 	public int modifyBoard(BoardVO vo) {
-		return dao.modifyBoard(vo);
+
+		BoardVO OriginVO = dao.readBoard(vo.getBoard_srl());
+		
+		OriginVO.setTitle(vo.getTitle());
+		OriginVO.setContents(vo.getContents());
+		OriginVO.setLocation(vo.getLocation());
+		OriginVO.setService_time_start(vo.getService_time_start());
+		
+		OriginVO.setService_time_end(vo.getService_time_end());
+		
+		OriginVO.setService_cost(vo.getService_cost());
+		
+		OriginVO.setContact_time_start(vo.getContact_time_start());
+		OriginVO.setContact_time_end(vo.getContact_time_end());
+		
+		String contents = vo.getContents();
+
+		// 스마트 에디터의 img테그 src값 얻어오기
+		Pattern srcPattern = Pattern.compile("<img[^>]*src=[\"']?([^>\"']+)[\"']?[^>]*>");
+		// Pattern titlePattern =
+		// Pattern.compile("<img[^>]*title=[\"']?([^>\"']+)[\"']?[^>]*>");
+		Matcher srcMatcher = srcPattern.matcher(contents);
+		// Matcher titleMatcher = titlePattern.matcher(contents);
+
+		String imageSrc = "";
+
+		// src 속성값 얻어와서 imageSrc에 더하기
+		while (srcMatcher.find()) {
+			imageSrc += srcMatcher.group(1);
+		}
+		
+		
+		int index1 = imageSrc.indexOf("e/");
+		int index2 = imageSrc.indexOf("&#");
+		
+		String main_image = null;
+		if(index1!=-1&&index2!=-1)
+		{
+		 main_image = imageSrc.substring(index1 + 2, index2);
+		}
+		
+		System.out.println("main_image : " + main_image);
+
+		
+		OriginVO.setMain_image(main_image);
+
+		return dao.modifyBoard(OriginVO);
 	}
 
 	@Override

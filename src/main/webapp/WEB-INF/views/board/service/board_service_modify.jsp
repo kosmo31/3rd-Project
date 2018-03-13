@@ -106,16 +106,35 @@ $(document).ready(function(){
 		//폼값 전송
 		var params = $('#modifyFrm').serialize();
 		
+		//var board_srl = $("input[type='text'][name='board_srl']").val();
+		
+		
+		
+		//var contents = $("#contents").val();
+		
 		var board_srl = '<c:out value="${boardVO.board_srl}"/>';
-		//$("input[type='text'][name='contents']").val();
-		var contents = oEditors.getById["contents"].getIR();
-
+		
 		var title = $("input[type='text'][name='title']").val();
-		var category_srl = $("input[type='text'][name='category_srl']").val();
-		var service_srl = $("input[type='text'][name='service_srl']").val();
-
+		
+		var contents = editor_object.getById["contents"].getIR();
+		
+		var location = $("input[type='text'][name='location']").val();
+		
+		var service_time_start = $("input[type='text'][name='service_time_start']").val();
+		
+		var service_time_end = $("input[type='text'][name='service_time_end']").val();
+		
+		var service_cost = $("input[type='text'][name='service_cost']").val();
+		
+		var contact_time_start = $("input[type='text'][name='contact_time_start']").val();
+		
+		var contact_time_end = $("input[type='text'][name='contact_time_end']").val();
+		
 		var url = "${pageContext.request.contextPath}/board/service/" + board_srl;
-		//alert(url);
+		
+		
+		//popLayerMsg(jsonStr);
+		
 		$.ajax({
 			cache : false, // 캐시 사용 없애기
 			url : url,
@@ -127,28 +146,32 @@ $(document).ready(function(){
 
 			dataType : "json",
 			//contentType : "text/html; charset=utf-8",
-			data : JSON.stringify({
-				service_srl : service_srl,
-				category_srl : category_srl,
-				title : title,
-				contents : contents
-			}),
+			 data : JSON.stringify({
+				 	title : title,
+					contents : contents,
+					location : location,
+					service_time_start : service_time_start,
+					service_time_end : service_time_end,
+					service_cost : service_cost,
+					contact_time_start : contact_time_start,
+					contact_time_end : contact_time_end
+			}), 
 			//data : params,
 			success : function(d) {
 				if (d.result == "fail") {
 					if (d.errorMsg == "isNotLogin") {
-						popLayerMsg("자주 묻는 질문을 수정하시려면 관리자 아이디로 로그인 해주세요.");
+						popLayerMsg("글을 수정하시려면 로그인 해주세요.");
 						location.href = "${pageContext.request.contextPath}/member/login";
-					} else if (d.errorMsg == "isNotAdmin") {
-						popLayerMsg("자주 묻는 질문을 수정하시려면 관리자 아이디로 로그인 해주세요.");
-						location.href = "${pageContext.request.contextPath}/member/login";
+					} else if (d.errorMsg == "hasNotAuth") {
+						popLayerMsg("작성하신 글이 본인 글이 아니어서 수정할 수 없습니다.");
+						
 					}
 
 				} else if (d.result == "success") {
 
 					/* console.log("result: " + d.result); */
 					popLayerMsg("글수정을 성공하였습니다.");
-					getListFAQ(1, 1, "");
+					$('#boardListBtn').trigger('click');
 					//location.href = "${pageContext.request.contextPath}/customercenter/board";
 				}
 
@@ -170,16 +193,15 @@ $(document).ready(function(){
 		<!-- <form id="writeFrm"> -->
 		<form id="modifyFrm">
 			
-			<input type="hidden" name="user_id" value="${sessionScope.loginUserInfo.user_id }" />
+			
 			<input type="hidden" name="board_srl" value="${boardVO.board_srl }" />
-			<input type="hidden" name="board_type" value="E" />
+			<input type="hidden" name="board_type" value="${boardVO.board_type }" />
 		 	<input type="hidden" name="category_srl" value="${boardVO.category_srl }" />
 			<input type="hidden" name="subcategory_srl" value="${boardVO.subcategory_srl }" />
 			
 			<div class="row" id="row-body-write">
 			
-				<div class="col-lg-3 col-md-3 col-sm-2 col-xs-1"></div>
-				<div class="col-lg-6 col-md-6 col-sm-8 col-xs-10">
+			
 					<div class="write-body">
 						<div class="title">
 							<p class="p-title">제목</p>
@@ -243,8 +265,7 @@ $(document).ready(function(){
 						<button type="button" class="btn btn-success" id="boardListBtn">목록보기</button>
 						<button type="button" class="btn btn-success" id="modifyActionBtn">수정하기</button>
 					</div>
-				</div>
-				<div class="col-lg-3 col-md-3 col-sm-2 col-xs-1"></div>
+				
 			</div>
 		</form>
   

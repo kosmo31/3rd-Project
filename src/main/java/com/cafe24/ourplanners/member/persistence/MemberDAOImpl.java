@@ -233,7 +233,7 @@ public class MemberDAOImpl implements MemberDAO{
 
 
 	@Override
-	public int getMemberSrlById(int user_id) {
+	public int getMemberSrlById(String user_id) {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+".getMemberSrlById", user_id);
 	}

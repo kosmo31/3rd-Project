@@ -60,7 +60,7 @@ public interface MemberDAO {
 
 	public int updateMyInfo(MemberVO userInfo);
 	
-	public int getMemberSrlById(int user_id);
+	public int getMemberSrlById(String user_id);
 
 	public List<MemberDTO> getSearchMemberList(SearchMemberCriteria scri, HashMap<String, Object> map);
 

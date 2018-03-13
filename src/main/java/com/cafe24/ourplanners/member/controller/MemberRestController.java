@@ -107,7 +107,7 @@ public class MemberRestController {
 		SearchMemberCriteria scri = new SearchMemberCriteria();
 
 		if (member_srl != null && member_srl != 0)
-			scri.setMember_srl(member_srl);
+		scri.setMember_srl(member_srl);
 		
 		scri.setUser_id(user_id);
 		scri.setUser_name(user_name);
@@ -121,6 +121,7 @@ public class MemberRestController {
 		scri.setSearchType(searchType);
 		if(keyword != null && keyword.length() != 0)
 		scri.setKeyword(keyword);
+		
 		memberService.getSearchMemberList(scri, map);
 
 	     HttpHeaders headers = new HttpHeaders();

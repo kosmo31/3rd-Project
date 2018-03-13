@@ -25,7 +25,7 @@ public interface SearchService {
 
 	public int writeBoard(HttpServletRequest req, Map<String, Object> map) throws Exception;
 
-	public void readBoard(Integer board_srl, Model model);
+	public BoardVO readBoard(Integer board_srl, Model model);
 
 	public int modifyBoard(BoardVO vo);
 

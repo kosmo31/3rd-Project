@@ -43,6 +43,7 @@
 
 <script type="text/javascript" charset="utf-8">
 	sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
+	var isEmpty = function(value){ if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){ return true }else{ return false } };
 </script>
 
 <script>
@@ -51,6 +52,11 @@ function servicePaging(nowPage, category_srl, subcategory_srl , board_type,searc
 	//alert(params);
 	getServiceSearchList(nowPage, category_srl, subcategory_srl , board_type,searchType,keyword);
 }
+
+function initSideNav(category_srl,subcategory_srl){
+	
+}
+
 
 function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_type ,searchType,keyword) {
 
@@ -68,12 +74,21 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 	
 	keyword = typeof keyword !== 'undefined' ? keyword : "";
 	
-	if(category_srl==0)
-	{
-		category_srl="";
+	if (isEmpty(board_type)) {
+		board_type = "";
 	}
-	if(subcategory_srl==0){
-		subcategory_srl="";
+	
+	if (isEmpty(category_srl)) {
+		category_srl = "";
+	}
+	if (isEmpty(subcategory_srl)) {
+		subcategory_srl = "";
+	}
+	if (isEmpty(searchType)) {
+		searchType = "";
+	}
+	if (isEmpty(keyword)) {
+		keyword = "";
 	}
 	
 	var url = "${pageContext.request.contextPath}/board/json/service_list.json";

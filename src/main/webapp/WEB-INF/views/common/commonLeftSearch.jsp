@@ -5,7 +5,8 @@
 
 <div class="col-sm-5 col-md-3 col-md-pull-9 col-sm-pull-7 pull-off">
 						<aside class="sidebar">
-							<!-- 검색용 위젯 -->
+						
+						<!-- 검색용 위젯 -->
 							<div class="sidebar-widget">
 								<form action="#" role="form">
 									<div class="input-group">
@@ -20,8 +21,8 @@
 							
 							<!-- 카테고리별 서브카테고리 부분 -->
 							<div class="sidebar-widget">
-								<h3 class="sidebar-title mb30">서브 카테고리</h3>
-								<ul class="categories">
+								<h3 class="sidebar-title mb30"><span id="CategoryTitle"></span> 서브 카테고리</h3>
+								<ul class="categories" id="subCategoryList">
 								
 									<li><a href="#"><span>1</span>목조</a></li>
 									<li><a href="#"><span>2</span>단열</a></li>

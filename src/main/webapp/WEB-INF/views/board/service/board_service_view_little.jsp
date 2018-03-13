@@ -68,7 +68,8 @@ function deleteBoard(board_srl) {
 			}
 			else if(d.result == "success"){
 				popLayerMsg("게시물 삭제에 성공하였습니다.");
-				$("#noticeDiv_"+board_srl).hide(1000);
+				$('#boardListBtn').trigger('click');
+				//$("#noticeDiv_"+board_srl).hide(1000);
 				//$(this).parent().hide();
 			}						
 		},
@@ -215,7 +216,7 @@ function getListComment(nowPage, parent_board_srl) {
 			<c:if test="${sessionScope.loginUserInfo.user_id eq view.user_id}">
 				
 				<button type="button" class="btn btn-success" id="btn-modify" 
-					name="modifyBtn" onclick="javascript:modify(${view.board_srl});">수정하기</button>
+					name="modifyBtn" onclick="javascript:modifyBoard(${view.board_srl});">수정하기</button>
 				
 				<button type="button" class="btn btn-success" id="btn-delete"
 					
