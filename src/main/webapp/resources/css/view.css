@@ -2,13 +2,6 @@
 
 /* 뷰 부분 */
 
-#row-body-view {
-	margin-top: 100px;
-	background-color: #FAFAFA;
-	padding-top: 90px;
-	padding-bottom: 90px;
-}
-
 .view-head {
 	border: 1px solid #E1E1E1;
 	background-color: white;
@@ -129,4 +122,36 @@
 #pagination-ul>li>a {
 	align-self: center;
 	color: #636363;
+}
+
+.list-btn{
+	width: 120px;
+}
+
+.write-btn-list{
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.margin-right-15{
+	margin-right: 15px;
+}
+
+#table-btn{
+	margin-bottom: 30px;
+	margin-right: 5px;
+}
+
+.section-list{
+	top: 100px;
+	bottom: 50px;
+	margin-top: 100px;
+	bottom: 50px;
+	
+}
+
+.title-h2{
+	color: #22ABA6;
+	font-size: 1.8em;
+	margin-bottom: 0px;
 }
