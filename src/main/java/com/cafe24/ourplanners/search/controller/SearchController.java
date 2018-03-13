@@ -248,6 +248,10 @@ public class SearchController {
 		public ResponseEntity<Map<String, Object>> deleteBoard(HttpServletRequest req, HttpSession session, Model model,
 				@PathVariable Integer board_srl) {
 
+			BoardVO originVO =service.readBoard(board_srl, model);
+			  String origin_id = originVO.getUser_id();
+			  String user_id = ((MemberVO) session.getAttribute("loginUserInfo")).getUser_id();
+			  
 			Map<String, Object> map = new HashMap<String, Object>();
 			ResponseEntity<Map<String, Object>> entity = null;
 
@@ -257,9 +261,9 @@ public class SearchController {
 					map.put("errorMsg", "isNotLogin");
 				} else {
 
-					if (!((MemberVO) session.getAttribute("loginUserInfo")).getIs_admin().equalsIgnoreCase("Y")) {
+					if (!user_id.equalsIgnoreCase(origin_id)) {
 						map.put("result", "fail");
-						map.put("errorMsg", "isNotAdmin");
+						map.put("errorMsg", "hasNotAuth");
 					} else {
 
 						int result = service.deleteBoard(board_srl);

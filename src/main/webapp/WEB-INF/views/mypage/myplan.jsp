@@ -418,7 +418,7 @@ function viewPage(board_srl){
 									<div class="col-xs-3 text-center border-right">
 										<button type="button" class="btn btn-default btn-sotitle" id="btn_client_ing">요청자 진행 건</button>
 											<h4 class="header-margin-none margin-top-5">
-												<b>(<span>${clientList_TotalRecordConut}</span>) </b>
+												<b>(<span>${clientListUnCheck_TotalRecordConut}</span>) </b>
 											</h4>
 									</div>
 									<div class="col-xs-3 text-center border-right">
@@ -430,7 +430,7 @@ function viewPage(board_srl){
 									<div class="col-xs-3 text-center border-right">
 										<button type="button" class="btn btn-default btn-sotitle" id="btn_engineer_ing">기술자 진행 건</button>
 											<h4 class="header-margin-none margin-top-5">
-												<b>(<span>${engineerList_TotalRecordConut}</span>) </b>
+												<b>(<span>${engineerListUnCheck_TotalRecordConut}</span>) </b>
 											</h4>
 									</div>
 									<div class="col-xs-3 text-center">

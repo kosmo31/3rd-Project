@@ -42,6 +42,57 @@ $(document).ready(function(){
 		}
 	});
 	 */
+	 
+	 
+	//채택요청 등록하기
+	$('#requestSubmit').click(function(){
+		
+		//alert('요청등록');
+		
+		if($("textarea[name='requestComments']").val()==""){
+			alert("등록할 요청내용을 입력하세요");
+			return false;
+		}
+		
+		//$.ajax메소드 사용
+		var params = $('#requestCommentsForm').serialize();
+		var submit_url = "${pageContext.request.contextPath}/comment";
+
+		$.ajax({
+			url : submit_url,
+			dataType : "json",
+			type : "post",
+			contentType : "text/html; charset:UTF-8",
+			data : params,
+			success : function(d){
+				if (d.result == "fail") {
+					if (d.errorMsg == "isNotLogin") {
+						popLayerMsg("댓글을 작성하시려면 로그인 해주세요.");
+						location.href = "${pageContext.request.contextPath}/member/login";
+					} 
+
+				} else if (d.result == "success") {
+
+					/* console.log("result: " + d.result); */
+					popLayerMsg("글수정을 성공하였습니다.");
+					$('#boardListBtn').trigger('click');
+					//location.href = "${pageContext.request.contextPath}/customercenter/board";
+				}
+
+			},
+			error : function(e) {
+				popLayerMsg("요청실패:" + e.status + " " + e.statusText);
+			}
+		});
+	});
+	 
+	 
+	$('#replySubmit').click(function(){
+			alert('댓글등록');	
+	});
+	 
+	 
+	 
 });
 
 
@@ -109,7 +160,7 @@ function getListComment(nowPage, parent_board_srl) {
 
 	//service_srl = typeof service_srl !== 'undefined' ? service_srl : 1;
 
-	var url = "${pageContext.request.contextPath}/board/engineer/comment/json/comment_list.json";
+	var url = "${pageContext.request.contextPath}/comment/json/comment_list.json";
 	var inHTML = "";
 
 	var inHTMLPaging = "";
@@ -147,12 +198,12 @@ function getListComment(nowPage, parent_board_srl) {
 
 			});//each끝
 			inHTML += "<div class=\"row text-center\">";
-			inHTML += "<ul class=\"pagination\" id=\"CommentPagingDiv\">";
+			inHTML += "<ul class=\"pagination\" id=\"commentPagingDiv\">";
 			inHTML += "</ul> </div>";
 			inHTML += "		</div>";
 			inHTML += "		</div>";
-			$("#CommentList").html(inHTML);
-			$("#CommentPagingDiv").html(data.pagingDiv);
+			$("#commentList").html(inHTML);
+			$("#commentPagingDiv").html(data.pagingDiv);
 		},
 		error : function(e) {
 			popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
@@ -284,10 +335,14 @@ function getListComment(nowPage, parent_board_srl) {
 									</div>
 								</div> -->
 								<div class="view-comment-write">
+									<form id="requestCommentsForm">
+									<input type="hid den" name="parent_board_srl" value="${view.board_srl}" />
+									<input type="hid den" name="user_id" value="${loginUserInfo.user_id}" />
 									<div class="form-inline">
-										<textarea class="form-control" placeholder="채택요청을 입력하세요"></textarea>
-										<button type="button" class="btn">등록</button>
+										<textarea class="form-control" placeholder="채택요청을 입력하세요" name="requestComments"></textarea>
+										<button type="button" class="btn" id="requestSubmit">요청등록</button>
 									</div>
+									</form>
 								</div>
 							</div>
 						</div>
@@ -338,7 +393,7 @@ function getListComment(nowPage, parent_board_srl) {
 								<div class="view-comment-write">
 									<div class="form-inline">
 										<textarea class="form-control" placeholder="채택요청을 입력하세요"></textarea>
-										<button type="button" class="btn">등록</button>
+										<button type="button" class="btn" id="replySubmit">후기등록</button>
 									</div>
 								</div>
 							</div>

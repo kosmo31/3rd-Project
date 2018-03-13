@@ -102,12 +102,12 @@ function getListComment(nowPage, parent_board_srl) {
 
 			});//each끝
 			inHTML += "<div class=\"row text-center\">";
-			inHTML += "<ul class=\"pagination\" id=\"CommentPagingDiv\">";
+			inHTML += "<ul class=\"pagination\" id=\"commentPagingDiv\">";
 			inHTML += "</ul> </div>";
 			inHTML += "		</div>";
 			inHTML += "		</div>";
 			$("#commentList").html(inHTML);
-			$("#CommentPagingDiv").html(data.pagingDiv);
+			$("#commentPagingDiv").html(data.pagingDiv);
 		},
 		error : function(e) {
 			popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);

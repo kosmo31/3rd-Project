@@ -105,6 +105,11 @@ public class MyPageServiceImpl implements MyPageService{
 	}
 	
 	@Override
+	public int getClientListUnCheck_TotalRecordConut(String user_id) throws Exception {
+		return dao.getClientListUnCheck_TotalRecordConut(user_id);
+	}
+	
+	@Override
 	public int getClientList_TotalRecordConut(String user_id) throws Exception {
 		return dao.getClientList_TotalRecordConut(user_id);
 	}
@@ -113,6 +118,12 @@ public class MyPageServiceImpl implements MyPageService{
 	public int getEngineerListCheck_TotalRecordConut(String user_id) throws Exception {
 		return dao.getEngineerListCheck_TotalRecordConut(user_id);
 	}
+	
+	@Override
+	public int getEngineerListUnCheck_TotalRecordConut(String user_id) throws Exception {
+		return dao.getEngineerListUnCheck_TotalRecordConut(user_id);
+	}
+	
 	
 	@Override
 	public int getEngineerList_TotalRecordConut(String user_id) throws Exception {

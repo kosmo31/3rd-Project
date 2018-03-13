@@ -22,9 +22,13 @@ public interface MyPageService {
 	
 	public int getClientListCheck_TotalRecordConut(String user_id) throws Exception;
 	
+	public int getClientListUnCheck_TotalRecordConut(String user_id) throws Exception;
+	
 	public int getClientList_TotalRecordConut(String user_id) throws Exception;
 	
 	public int getEngineerListCheck_TotalRecordConut(String user_id) throws Exception;
+	
+	public int getEngineerListUnCheck_TotalRecordConut(String user_id) throws Exception;
 	
 	public int getEngineerList_TotalRecordConut(String user_id) throws Exception;
 	
