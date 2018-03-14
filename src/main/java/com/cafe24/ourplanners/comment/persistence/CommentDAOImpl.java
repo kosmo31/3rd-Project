@@ -37,6 +37,7 @@ public class CommentDAOImpl implements CommentDAO{
 	@Override
 	public int addComment(CommentVO vo) {
 		// TODO Auto-generated method stub
+		System.out.println("코맨"+vo.getComments()+"유저"+vo.getUser_id()+"parent"+vo.getParent_board_srl());
 		return sqlSession.insert(namespace+".insertComment",vo);
 	}
 

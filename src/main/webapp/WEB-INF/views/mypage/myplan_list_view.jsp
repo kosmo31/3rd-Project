@@ -183,8 +183,8 @@ function deleteBoard(board_srl){
 										<tr>
 											<!-- 아이디 메뉴작업 -->
 											<td>
-												<div class="popup" onclick="myFunction()">EL아이디
-													<span class="popuptext" id="myPopup">
+												<div class="popup" onclick="popUserMenu()">EL아이디
+													<span class="popuptext" id="userPopup">
 														<a href="${pageContext.request.contextPath}/profile/${loginUserInfo.user_id}">회원정보보기</a><br/>
 														<a href="${pageContext.request.contextPath}/message">쪽지보내기</a><br/>
 														<c:if test="${not empty loginUserInfo && loginUserInfo.is_admin=='Y'}">

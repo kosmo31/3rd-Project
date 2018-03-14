@@ -42,11 +42,16 @@
 
 <script type="text/javascript" charset="utf-8">
 	sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
-	
+
 	//넘어온 값이 빈값인지 체크합니다. // !value 하면 생기는 논리적 오류를 제거하기 위해 // 명시적으로 value == 사용 //
 	//[], {} 도 빈값으로 처리
-	var isEmpty = function(value){ if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){ return true }else{ return false } };
-	
+	var isEmpty = function(value) {
+		if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
+			return true
+		} else {
+			return false
+		}
+	};
 </script>
 
 <script>
@@ -60,12 +65,18 @@
 			getWriteFormBoard();
 		});
 
+		$("#allplanners-btn").on("click", function() {
+			getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "", $('#searchType').val(), $('#keyword').val());
+		});
+
 		$("#engineer-btn").on("click", function() {
-			getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "E", "${searchType}", "${keyword}");
+			//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "E", "${searchType}", "${keyword}");
+			getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "E", $('#searchType').val(), $('#keyword').val());
 		});
 
 		$("#customer-btn").on("click", function() {
-			getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "C", "${searchType}", "${keyword}");
+			//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "C", "${searchType}", "${keyword}");
+			getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "C", $('#searchType').val(), $('#keyword').val());
 		});
 
 		$('#searchBoardBtn').click(function() {
@@ -80,7 +91,7 @@
 
 			var board_type = $('#board_type').val();
 
-			if (keyword == null || keyword.length() == 0) {
+			if (isEmpty(keyword)) {
 				popLayerMsg("검색어를 입력하세요.");
 				return;
 			} else {
@@ -89,6 +100,15 @@
 			}
 
 		});
+		
+		//검색폼에서 엔터로 검색 
+		$('#keyword').keydown(function(event) {
+		    // enter has keyCode = 13, change it if you want to use another button
+		    if (event.keyCode == 13) {
+		    	$('#searchBoardBtn').trigger('click');
+		      return false;
+		    }
+		  });
 
 		//글쓰기 폼 가져오기
 		function getWriteFormBoard() {
@@ -116,31 +136,30 @@
 	function numberWithCommas(x) {
 		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 	}
-	
-	function selectCategory(category_srl){
+
+	function selectCategory(category_srl) {
 		getServiceSearchList(1, category_srl);
 	}
-	
-	function selectSubCategory(category_srl,subcategory_srl){
+
+	function selectSubCategory(category_srl, subcategory_srl) {
 		getServiceSearchList(1, category_srl, subcategory_srl);
 	}
 
-	function initSideNav(category_srl){
-		
+	function initSideNav(category_srl) {
+
 		category_srl = typeof category_srl !== 'undefined' ? category_srl : "";
-		
+
 		if (isEmpty(category_srl)) {
-			
+
 			category_srl = "";
 		}
-		
-		
+
 		$('#CategoryTitle').empty();
 		$('#subCategoryList').empty();
-			
+
 		var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
-		var params = "category_srl=" + category_srl ;
-		
+		var params = "category_srl=" + category_srl;
+
 		$.ajax({
 			cache : false, // 캐시 사용 없애기
 			type : 'get',
@@ -155,25 +174,22 @@
 				//alert(JSON.stringify(data));
 				var items = [];
 				var inHTML = "";
-				
+
 				var inHTMLCategoryName = "";
 
 				$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
-					
-					inHTML+="<li><a href=\"javascript:selectSubCategory("+categoryVO.category_srl+","+categoryVO.subcategory_srl+")\"><span>"+index+"</span>"+categoryVO.subcategory_name+"</a></li>";
-					
+
+					inHTML += "<li><a href=\"javascript:selectSubCategory(" + categoryVO.category_srl + "," + categoryVO.subcategory_srl + ")\"><span>" + index + "</span>" + categoryVO.subcategory_name + "</a></li>";
+
 					inHTMLCategoryName = categoryVO.category_name;
-					
 
 				});//each끝
 
-				if(isEmpty(category_srl)){
+				if (isEmpty(category_srl)) {
 					$('#CategoryTitle').html("전체");
+				} else {
+					$('#CategoryTitle').html(inHTMLCategoryName);
 				}
-				else{
-					$('#CategoryTitle').html(inHTMLCategoryName);	
-				}
-				
 
 				if (jQuery.isEmptyObject(data.subCategoryList)) {
 					$('#subCategoryList').html("<li><a href=\"#\">서브 카테고리 없음</a></li>");
@@ -189,7 +205,7 @@
 
 		});
 	}
-	
+
 	function servicePaging(nowPage, category_srl, subcategory_srl, board_type, searchType, keyword) {
 		//var params = "nowPage=" + nowPage + "&board_type=" + board_type + "&pageSize=6&blockPage=5&keyword=" + keyword + "&searchType=" + searchType;
 		//alert(params);
@@ -198,8 +214,8 @@
 
 	function getServiceSearchList(nowPage, category_srl, subcategory_srl, board_type, searchType, keyword) {
 
-		var params = "nowPage="+nowPage+"&board_type="+board_type+"&pageSize=6&blockPage=5&keyword="+keyword+"&searchType="+searchType;
-		
+		var params = "nowPage=" + nowPage + "&board_type=" + board_type + "&pageSize=6&blockPage=5&keyword=" + keyword + "&searchType=" + searchType;
+
 		//alert(params);
 
 		nowPage = typeof nowPage !== 'undefined' ? nowPage : 1;
@@ -213,11 +229,10 @@
 
 		keyword = typeof keyword !== 'undefined' ? keyword : "";
 
-
 		if (isEmpty(board_type)) {
 			board_type = "";
 		}
-		
+
 		if (isEmpty(category_srl)) {
 			category_srl = "";
 		}
@@ -243,7 +258,7 @@
 		$('#board_type').val(board_type);
 
 		initSideNav(category_srl);
-		
+
 		var url = "${pageContext.request.contextPath}/board/json/service_list.json";
 		var serviceMainImgPath = "${pageContext.request.contextPath}/resources/upload/service/";
 		//내용 지우기
@@ -251,7 +266,7 @@
 		$("#boardPagingDiv").empty();
 
 		var params = "nowPage=" + nowPage + "&category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl + "&board_type=" + board_type + "&pageSize=10&blockPage=10&keyword=" + keyword + "&searchType=" + searchType;
-		
+
 		//alert(params);
 
 		$.ajax({
@@ -473,29 +488,32 @@
 						<!-- 상단 버튼부분 -->
 						<div class="row" id="table-btn">
 							<div class="col-xs-6">
-								<button type="button" class="btn btn-default list-btn" id="">전체게시판</button>
+								<button type="button" class="btn btn-default list-btn" id="allplanners-btn">전체 게시판</button>
 								<button type="button" class="btn btn-default list-btn" id="engineer-btn">기술자 게시판</button>
 								<button type="button" class="btn btn-default list-btn" id="customer-btn">의뢰인 게시판</button>
 							</div>
-							<form class="form-inline" action="#">
-								<div class="from-group col-xs-2" id="from-group">
-									<select name="searchType" class="form-control" id="select-form-control">
-										<option value="t">제목</option>
-										<option value="c">내용</option>
-										<option value="tc">제목+내용</option>
-										<option value="i">작성자(ID)</option>
-									</select>
+							<div class="from-group col-xs-2" id="from-group">
+								<select name="searchType" class="form-control" id="select-form-control">
+									<option value="t">제목</option>
+									<option value="c">내용</option>
+									<option value="tc">제목+내용</option>
+									<option value="i">작성자(ID)</option>
+								</select>
+							</div>
+							<div class="input-group col-xs-4">
+								<input type="hidden" id="nowPage" value="${nowPage}"> 
+								<input type="hidden" id="category_srl" value="${ category_srl}"> 
+								<input type="hidden" id="subcategory_srl" value="${subcategory_srl }"> 
+								<input type="hidden" id="board_type" value="${board_type }"> 
+								<input type="text" class="form-control" placeholder="검색어" id="keyword" name="keyword" value="${keyword}" />
+								<div class="input-group-btn">
+									<button class="btn btn-default margin-right-15" id="searchBoardBtn">
+										<i class="glyphicon glyphicon-search"></i>
+									</button>
+									<button type="button" class="btn btn-success write-btn-list" id="writeBoardBtn">글쓰기</button>
 								</div>
-								<div class="input-group col-xs-4">
-									<input type="hidden" id="nowPage" value="${nowPage}"> <input type="hidden" id="category_srl" value="${ category_srl}"> <input type="hidden" id="subcategory_srl" value="${subcategory_srl }"> <input type="hidden" id="board_type" value="${board_type }"> <input type="text" class="form-control" placeholder="검색어" id="keyword" name="keyword" value="${keyword}" />
-									<div class="input-group-btn">
-										<button class="btn btn-default margin-right-15" id="searchBoardBtn" type="submit">
-											<i class="glyphicon glyphicon-search"></i>
-										</button>
-										<button type="button" class="btn btn-success write-btn-list" id="writeBoardBtn">글쓰기</button>
-									</div>
-								</div>
-							</form>
+							</div>
+
 						</div>
 
 

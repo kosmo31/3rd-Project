@@ -3,6 +3,17 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/view.css" />
+<script type="text/javascript" charset="utf-8">
+	sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
+	
+	//넘어온 값이 빈값인지 체크합니다. // !value 하면 생기는 논리적 오류를 제거하기 위해 // 명시적으로 value == 사용 //
+	//[], {} 도 빈값으로 처리
+	var isEmpty = function(value){ if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){ return true }else{ return false } };
+	var board_srl = '<c:out value="${view.board_srl}"/>';
+	
+	
+</script>
+
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#boardListBtn").on("click",function(){
@@ -22,9 +33,11 @@ $(document).ready(function(){
 		getServiceSearchList(nowPage, category_srl, subcategory_srl, board_type, searchType, keyword);
 	});
 	
+	var board_srl = '<c:out value="${view.board_srl}"/>';
+	
 	var srl = ${view.board_srl};
 	
-	getListComment(1, srl);
+	getListComment(1, srl, "R");
 	
 	/* var url = "./reply/list/"+${view.board_srl};
 	
@@ -49,21 +62,37 @@ $(document).ready(function(){
 		
 		//alert('요청등록');
 		
-		if($("textarea[name='requestComments']").val()==""){
+		if($("textarea[id='requestText']").val()==""){
 			alert("등록할 요청내용을 입력하세요");
 			return false;
 		}
 		
 		//$.ajax메소드 사용
-		var params = $('#requestCommentsForm').serialize();
+		
 		var submit_url = "${pageContext.request.contextPath}/comment";
-
+		var user_id = $("input[type='text'][name='user_id']").val();
+		var parent_board_srl = $("input[type='text'][id='parent_board_srl_R']").val();
+	 	var comments = $("textarea[name='comments']").val();
+	 	var params = $('#requestCommentsForm').serialize();
+	 	
+	 	//var comment_type = "R";
+	 	//alert(params);
+		
 		$.ajax({
-			url : submit_url,
-			dataType : "json",
+			cache : false, // 캐시 사용 없애기
+			url : "${pageContext.request.contextPath}/comment",
 			type : "post",
-			contentType : "text/html; charset:UTF-8",
+			dataType : "json",
+			//contentType : "text/html; charset=utf-8",
 			data : params,
+			
+			/*  data : JSON.stringify({
+				//user_id : user_id,
+				comment_type : comment_type,
+				parent_board_srl : parent_board_srl,
+				comments : comments
+		}),  */
+		
 			success : function(d){
 				if (d.result == "fail") {
 					if (d.errorMsg == "isNotLogin") {
@@ -74,21 +103,77 @@ $(document).ready(function(){
 				} else if (d.result == "success") {
 
 					/* console.log("result: " + d.result); */
-					popLayerMsg("글수정을 성공하였습니다.");
-					$('#boardListBtn').trigger('click');
+					popLayerMsg("채택 요청 작성이 성공하였습니다.");
+					getListComment(1, '<c:out value="${view.board_srl}"/>', 'R');
+					//$('#boardListBtn').trigger('click');
 					//location.href = "${pageContext.request.contextPath}/customercenter/board";
 				}
 
 			},
-			error : function(e) {
-				popLayerMsg("요청실패:" + e.status + " " + e.statusText);
+			error : function(request, status, error){
+				popLayerMsg("status:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 			}
 		});
 	});
 	 
 	 
-	$('#replySubmit').click(function(){
-			alert('댓글등록');	
+	$('#commentSubmit').click(function(){
+		//alert('요청등록');
+		
+		if($("textarea[id='commentText']").val()==""){
+			alert("후기를 입력하세요");
+			return false;
+		}
+		
+		//$.ajax메소드 사용
+		
+		var submit_url = "${pageContext.request.contextPath}/comment";
+		var user_id = $("input[type='text'][name='user_id']").val();
+		var parent_board_srl = $("input[type='text'][id='parent_board_srl_C']").val();
+	 	var comments = $("textarea[id='commentText']").val();
+	 	var params = $('#commentCommentsForm').serialize();
+	 	
+	 	//var comment_type = "R";
+	 	//alert(params);
+		
+		$.ajax({
+			cache : false, // 캐시 사용 없애기
+			url : "${pageContext.request.contextPath}/comment",
+			type : "post",
+			dataType : "json",
+			//contentType : "text/html; charset=utf-8",
+			data : params,
+			
+			/*  data : JSON.stringify({
+				//user_id : user_id,
+				comment_type : comment_type,
+				parent_board_srl : parent_board_srl,
+				comments : comments
+		}),  */
+		
+			success : function(d){
+				if (d.result == "fail") {
+					if (d.errorMsg == "isNotLogin") {
+						popLayerMsg("후기를 작성하시려면 로그인 해주세요.");
+						location.href = "${pageContext.request.contextPath}/member/login";
+					} 
+
+				} else if (d.result == "success") {
+
+					/* console.log("result: " + d.result); */
+					popLayerMsg("후기 작성이 성공하였습니다.");
+					
+					getListComment(1, '<c:out value="${view.board_srl}"/>', 'C');
+					
+					//$('#boardListBtn').trigger('click');
+					//location.href = "${pageContext.request.contextPath}/customercenter/board";
+				}
+
+			},
+			error : function(request, status, error){
+				popLayerMsg("status:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		});	
 	});
 	 
 	 
@@ -124,8 +209,8 @@ function deleteBoard(board_srl) {
 				//$(this).parent().hide();
 			}						
 		},
-		error:function(e){
-			popLayerMsg("AJAX Error 발생"+ e.status+":"+e.statusText);
+		error : function(request, status, error){
+			popLayerMsg("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 		}
 	});
 	}
@@ -154,10 +239,25 @@ var url = "${pageContext.request.contextPath}/board/service/"+board_srl+"/edit";
 	});
 }
 
+function choosePerson(user_id){
+	alert(user_id+"를 채택 하셨습니다.");
+}
 //리스트 가져오기
-function getListComment(nowPage, parent_board_srl) {
+function getListComment(nowPage, parent_board_srl, comment_type) {
 	nowPage = typeof nowPage !== 'undefined' ? nowPage : 1;
 
+	comment_type = typeof comment_type !== 'undefined' ? comment_type : 1;
+	
+	parent_board_srl = typeof parent_board_srl !== 'undefined' ? parent_board_srl : "";
+	
+	if (isEmpty(comment_type)) {
+		comment_type = "";
+	}
+	
+	if (isEmpty(parent_board_srl)) {
+		parent_board_srl = "";
+	}
+	
 	//service_srl = typeof service_srl !== 'undefined' ? service_srl : 1;
 
 	var url = "${pageContext.request.contextPath}/comment/json/comment_list.json";
@@ -165,7 +265,10 @@ function getListComment(nowPage, parent_board_srl) {
 
 	var inHTMLPaging = "";
 	$("#commentList").empty();
-	var params = "parent_board_srl=" + parent_board_srl + "&nowPage=" + nowPage;
+	var params = "comment_type="+comment_type+"&parent_board_srl=" + parent_board_srl + "&nowPage=" + nowPage;
+	
+	//alert(params);
+	
 	$.ajax({
 		url : url,
 		dataType : "json",
@@ -178,18 +281,29 @@ function getListComment(nowPage, parent_board_srl) {
 				inHTML += "<div class=\"table-responsive\">";
 				inHTML += "		<table class=\"table table-hover\" id=\"table-hover\">";
 				inHTML += "			<thead>";
-				inHTML += "			<tr class=\"success\">";
+				if(comment_type=="R")
+					inHTML += "			<tr class=\"success\">";	
+				else
+					inHTML += "			<tr class=\"info\">";
+				
 				inHTML += "				<th>아이디</th>";
+				if(comment_type=="R")
 				inHTML += "				<th colspan=\"2\">채택내용</th>";
+				else
+					inHTML += "				<th colspan=\"2\">후기내용</th>";
 				inHTML += "			</tr>";
 				inHTML += "			</thead>";
 				
 				inHTML += "			<tbody>";
 				inHTML += "			<tr>";
-				inHTML += "				<td>"+ commentList.user_id +"</td>";
+				//inHTML += "				<td><div class=\"popup\" onclick=\"popUserMenu2(\""+commentList.user_id+")\">"+ commentList.user_id +"</div></td>";
+				inHTML += "				<td>"+commentList.user_id +"</td>";
 				inHTML += "				<td>"+ commentList.comments +"</td>";
 				inHTML += "				<td>";
-				inHTML += "					<button type=\"button\" class=\"btn btn-default\" id=\"btn-select\">채택하기</button>";
+				if(comment_type=="R")
+				{
+					inHTML += "					<button type=\"button\" class=\"btn btn-info\" onclick=\"javascript:choosePerson('"+commentList.user_id+"')\">채택하기</button>";
+				}
 				inHTML += "				</td>";
 				inHTML += "			</tr>";
 				inHTML += "			</tbody>";
@@ -202,7 +316,12 @@ function getListComment(nowPage, parent_board_srl) {
 			inHTML += "</ul> </div>";
 			inHTML += "		</div>";
 			inHTML += "		</div>";
-			$("#commentList").html(inHTML);
+			if(comment_type=="R"){
+				$("#commentListR").html(inHTML);
+			}
+			else{
+				$("#commentListC").html(inHTML);
+			}
 			$("#commentPagingDiv").html(data.pagingDiv);
 		},
 		error : function(e) {
@@ -283,15 +402,15 @@ function getListComment(nowPage, parent_board_srl) {
 			<div class="view-comment-head">
 				<div class="container">
 					<ul class="nav nav-tabs" id="nav-tabs">
-						<li class="active"><a data-toggle="tab" href="#home">채택요청</a></li>
-						<li><a data-toggle="tab" href="#menu1">댓글후기</a></li>
+						<li class="active"><a data-toggle="tab" href="#home" onclick="getListComment(1, ${view.board_srl}, 'R');">채택요청</a></li>
+						<li><a data-toggle="tab" href="#menu1" onclick="getListComment(1, ${view.board_srl}, 'C');">댓글후기</a></li>
 					</ul>
 					<div class="tab-content">
 						<!-- 요청리스트부분 -->
 						<div id="home" class="tab-pane fade in active">
 							<div class="write-comment">
 								
-								<div id="commentList">
+								<div id="commentListR">
 									<%-- <div class="table-responsive">
 										<table class="table table-hover" id="table-hover">
 											<thead>
@@ -336,11 +455,14 @@ function getListComment(nowPage, parent_board_srl) {
 								</div> -->
 								<div class="view-comment-write">
 									<form id="requestCommentsForm">
-									<input type="hid den" name="parent_board_srl" value="${view.board_srl}" />
-									<input type="hid den" name="user_id" value="${loginUserInfo.user_id}" />
+									<input type="hidden" name="parent_board_srl" id="parent_board_srl_R" value="${view.board_srl}" />
+									<input type="hidden" name="user_id" value="${loginUserInfo.user_id}" />
+									<input type="hidden" name="comment_type" value="R" />
 									<div class="form-inline">
-										<textarea class="form-control" placeholder="채택요청을 입력하세요" name="requestComments"></textarea>
-										<button type="button" class="btn" id="requestSubmit">요청등록</button>
+										
+										
+										<textarea class="form-control" placeholder="채택요청을 입력하세요" id="requestText" name="comments"></textarea>
+										<button type="button" class="btn btn-info" id="requestSubmit">채택요청</button>
 									</div>
 									</form>
 								</div>
@@ -349,8 +471,9 @@ function getListComment(nowPage, parent_board_srl) {
 						<!-- 댓글후기 리스트 -->
 						<div id="menu1" class="tab-pane fade">
 							<div class="write-comment">
+							<div id="commentListC">
 								<div class="table-responsive">
-									<table class="table table-hover" id="table-hover">
+									<!-- <table class="table table-hover" id="table-hover">
 										<thead>
 											<tr class="info">
 												<th>아이디</th>
@@ -369,7 +492,8 @@ function getListComment(nowPage, parent_board_srl) {
 											</tr>
 
 										</tbody>
-									</table>
+									</table> -->
+								</div>
 								</div>
 								<!-- <div class="container-fluid" align="center">
 									<div class="pagination">
@@ -391,10 +515,19 @@ function getListComment(nowPage, parent_board_srl) {
 									</div>
 								</div> -->
 								<div class="view-comment-write">
-									<div class="form-inline">
-										<textarea class="form-control" placeholder="채택요청을 입력하세요"></textarea>
-										<button type="button" class="btn" id="replySubmit">후기등록</button>
+								<form id="commentCommentsForm">
+									<input type="hidden" name="parent_board_srl" id="parent_board_srl_C" value="${view.board_srl}" />
+									<input type="hidden" name="user_id" value="${loginUserInfo.user_id}" />
+									<input type="hidden" name="comment_type" value="C" />
+									<div class="form-inline">									
+										<textarea class="form-control" placeholder="후기를 등록하세요" id="commentText" name="comments"></textarea>
+										<button type="button" class="btn btn-success" id="commentSubmit">후기등록</button>
 									</div>
+									<div class="form-inline">
+									<div>서비스평가 점수 5점 만점</div>
+										<input type="number" name="service_score" min="0" max="5" step="1" value="5">
+									</div>
+								</form>
 								</div>
 							</div>
 						</div>

@@ -13,6 +13,15 @@ public class CommentCriteria extends Criteria{
 	private int step;
 	private int indent;
 	private Date last_update;
+	private String comment_type;
+	
+	
+	public String getComment_type() {
+		return comment_type;
+	}
+	public void setComment_type(String comment_type) {
+		this.comment_type = comment_type;
+	}
 	public int getComment_srl() {
 		return comment_srl;
 	}

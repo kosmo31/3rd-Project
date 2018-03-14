@@ -12,20 +12,13 @@ public class CommentVO {
 	private int step;
 	private int indent;
 	private Date last_update;
+	private String comment_type;
 	
-	public CommentVO() {}
-	
-	public CommentVO(int comment_srl, int parent_board_srl, String user_id, String comments, Date postdate,
-			int parent_comment_srl, int step, int indent, Date last_update) {
-		this.comment_srl = comment_srl;
-		this.parent_board_srl = parent_board_srl;
-		this.user_id = user_id;
-		this.comments = comments;
-		this.postdate = postdate;
-		this.parent_comment_srl = parent_comment_srl;
-		this.step = step;
-		this.indent = indent;
-		this.last_update = last_update;
+	public String getComment_type() {
+		return comment_type;
+	}
+	public void setComment_type(String comment_type) {
+		this.comment_type = comment_type;
 	}
 	public int getComment_srl() {
 		return comment_srl;
@@ -45,10 +38,10 @@ public class CommentVO {
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
-	public String getcomments() {
+	public String getComments() {
 		return comments;
 	}
-	public void setcomments(String comments) {
+	public void setComments(String comments) {
 		this.comments = comments;
 	}
 	public Date getPostdate() {
@@ -81,4 +74,6 @@ public class CommentVO {
 	public void setLast_update(Date last_update) {
 		this.last_update = last_update;
 	}
+	
+	
 }

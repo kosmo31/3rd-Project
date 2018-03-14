@@ -98,7 +98,7 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 	$("#search_list_paging_div").empty();
 	
 	var params = "nowPage="+nowPage+"&category_srl="+category_srl+"&subcategory_srl="+subcategory_srl+"&board_type="+board_type+"&pageSize=6&blockPage=5&keyword="+keyword+"&searchType="+searchType;
-	alert(params);
+	//alert(params);
 	$.ajax({
 		cache : false, // 캐시 사용 없애기
 		type : 'post',

@@ -34,6 +34,16 @@
 			</otherwise>
 
 		</choose>
+		
+		<choose>
+			<when test="comment_type == null or comment_type == ''">
+
+			</when>
+			<otherwise>
+				AND comment_type = #{comment_type}
+			</otherwise>
+
+		</choose>
 
 		<![CDATA[
   				ORDER BY comment_srl DESC ) Tb ) WHERE rNum Between #{pageStart} and #{pageEnd}
@@ -66,15 +76,22 @@
 			</otherwise>
 
 		</choose>
+		
+		<choose>
+			<when test="comment_type == null or comment_type == ''">
+
+			</when>
+			<otherwise>
+				AND comment_type = #{comment_type}
+			</otherwise>
+
+		</choose>
 
 	</select>
 	
-	<insert id="insertComment" parameterType="com.cafe24.ourplanners.comment.domain.CommentVO">
- 		insert into op_board_comment (comment_srl, parent_board_srl, user_id, comments,
- 			postdate, last_update) 
-		values (
-			OP_BOARD_COMMENT_SRL_SEQ.nextval, #{parent_board_srl}, #{user_id}, #{comments},
-			sysdate, sysdate) 
+	<insert id="insertComment">
+ 		insert into op_board_comment(comment_srl, parent_board_srl, user_id, comments,comment_type) 
+		values (op_board_comment_srl_seq.nextval, #{parent_board_srl}, #{user_id}, #{comments} ,#{comment_type}) 
  	</insert>
  	
  	<update id="updateComment">
