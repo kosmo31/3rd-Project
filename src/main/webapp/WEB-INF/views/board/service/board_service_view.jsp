@@ -356,12 +356,28 @@ $(document).ready(function() {
 	function getWriteFormBoard() {
 		
 		//$("#faqHead").text("FAQ 글쓰기");
-
+		var category_srl = $('#category_srl').val();
+		
+		var subcategory_srl = $('#subcategory_srl').val();
+		
+		var board_type = $('#board_type').val();
+		
+		var params = "board_type=" + board_type + "&category_srl=" + category_srl+"&subcategory_srl="+subcategory_srl;
+		
 		$.ajax({
 			url : "${pageContext.request.contextPath}/board/service/new",
 			type : "get",
 			dataType : "html",
 			contentType : "text/html; charset=UTF-8",
+			
+			/* data : JSON.stringify({
+				
+				board_type : board_type,
+				category_srl : category_srl,
+				subcategory_srl : subcategory_srl
+		}), */
+		data : params,
+		
 			success : function(d) {
 				//alert(d);
 				$("#boardBody").empty();
