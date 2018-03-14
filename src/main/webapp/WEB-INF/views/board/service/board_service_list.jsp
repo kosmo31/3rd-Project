@@ -16,7 +16,7 @@
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>|OUR PLANNERS</title>
+<title>서비스 게시판|OUR PLANNERS</title>
 <jsp:useBean id="today" class="java.util.Date" scope="page" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css?ver=<fmt:formatDate value="${today}" pattern="yyyyMMddHHmmss" />">
 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700|Raleway:300,400,500,600'>
@@ -59,7 +59,7 @@
 
 		//                  (nowPage, category_srl, subcategory_srl , board_type ,searchType,keyword) 		
 		//최초 페이지 로딩시 리스트 목록 가져오기	
-		getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "${board_type}", "${searchType}", "${keyword}");
+		
 
 		$("#writeBoardBtn").on("click", function() {
 			getWriteFormBoard();
@@ -376,6 +376,8 @@
 	//TOP 인기 검색어
 	$(document).ready(function() {
 
+		getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "${board_type}", "${searchType}", "${keyword}");
+		
 		var url = "${pageContext.request.contextPath}/board/json/top_search_list.json";
 
 		var params = "category=${category_srl}&subcategory=${subcategory_srl}";

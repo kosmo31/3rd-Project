@@ -9,9 +9,11 @@
 					<div class="navbar-header">
 						<a class="navbar-brand" id="navbar-brand" href="${pageContext.request.contextPath}"><b>♣</b> OurPlanners</a>
 					</div>
-					<form class="navbar-form navbar-left" action="#">
+					<form class="navbar-form navbar-left" action="${pageContext.request.contextPath}/board/search">
 						<div class="input-group">
-							<input type="text" class="form-control" placeholder="검색어를 입력해 주세요" name="search" id="form-control" />
+						<input type="hidden" name="board_type" value=""/>
+						<input type="hidden" name="searchType" value="tc"/>
+							<input type="text" class="form-control" placeholder="검색어를 입력해 주세요" name="keyword" id="form-control" />
 							<div class="input-group-btn">
 								<button class="btn btn-default" id="btn-default" type="submit">
 									<i class="glyphicon glyphicon-search"></i>

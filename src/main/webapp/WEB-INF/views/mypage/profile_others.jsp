@@ -126,7 +126,7 @@ function getProfile(user_id,nowPage){
 			<img src="${pageContext.request.contextPath}/resources/images/main_user_gray.png">
 		</div>
 		<div class="text-title">
-			<h4>kosmo1004</h4>
+			<h4>${profileInfo.user_id}</h4>
 			<p>한줄소개를 작성하여 자신의 프로필을 더욱 어필해보세요!</p>
 		</div>
 		<div class="nav-title">
@@ -154,7 +154,7 @@ function getProfile(user_id,nowPage){
 			<div class="col-xs-6 work-board">
 				<div class="row">
 					<div class="col-xs-9 board-view">
-						<h3>kosmo1004님의 서비스</h3>
+						<h3>${profileInfo.user_id}님의 서비스</h3>
 						<c:choose>
 							<c:when test="">
 							<div class="service-regist">
@@ -182,7 +182,7 @@ function getProfile(user_id,nowPage){
 							</c:otherwise>
 						</c:choose>
 						
-						<span class="margin-span"><span id="spanUserId">kosmo1004</span>님의 받은 평가
+						<span class="margin-span"><span id="spanUserId">${profileInfo.user_id}</span>님의 받은 평가
 						<img src="${pageContext.request.contextPath}/resources/images/star.png">
 						<img src="${pageContext.request.contextPath}/resources/images/star.png">
 						<img src="${pageContext.request.contextPath}/resources/images/star.png">
@@ -348,7 +348,7 @@ function getProfile(user_id,nowPage){
 							</div>
 
 							<h5 class="margin-top-0 margin-bottom-10">
-								<span class="NGB">소개</span> <span id="descriptionEditBtnGroup"> <span class="pull-right font-size-h6" v-show="description == null"><a class="user-edit-text" href="javascript:void(0);" v-on:click="openCreateInput('description')">+ 추가</a></span> <span class="pull-right font-size-h6" v-show="description != null"><a class="user-edit-text" href="javascript:void(0);" v-on:click="openUpdateInput('description')">편집</a></span>
+								<span class="NGB">소개</span> <span id="descriptionEditBtnGroup"> <span class="pull-right font-size-h6" v-show="description == null"><a class="user-edit-text" href="javascript:void(0);" v-on:click="openCreateInput('description')"></a></span> <span class="pull-right font-size-h6" v-show="description != null"><a class="user-edit-text" href="javascript:void(0);" v-on:click="openUpdateInput('description')">편집</a></span>
 								</span>
 							</h5>
 
