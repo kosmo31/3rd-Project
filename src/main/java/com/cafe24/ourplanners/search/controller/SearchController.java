@@ -125,7 +125,13 @@ public class SearchController {
 
 	// 글쓰기 폼 가져오기
 	@RequestMapping(value = "/board/service/new", method = RequestMethod.GET)
-	public String writeFormBoard() {
+	public String writeFormBoard(Model model, HttpServletRequest req,
+			@RequestParam(required = false, defaultValue = "") String category_srl,
+			@RequestParam(required = false, defaultValue = "") String subcategory_srl,
+			@RequestParam(required = false, defaultValue = "") String board_type) {
+		model.addAttribute("category_srl", category_srl);
+		model.addAttribute("subcategory_srl", subcategory_srl);
+		model.addAttribute("board_type", board_type);
 		return "board/service/board_service_write";
 	}
 

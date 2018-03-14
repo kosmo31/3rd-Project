@@ -115,16 +115,35 @@
 
 			//$("#faqHead").text("FAQ 글쓰기");
 
+			var category_srl = $('#category_srl').val();
+		
+		var subcategory_srl = $('#subcategory_srl').val();
+		
+		var board_type = $('#board_type').val();
+		
+		var params = "board_type=" + board_type + "&category_srl=" + category_srl+"&subcategory_srl="+subcategory_srl;
+		
+		
+		
 			$.ajax({
 				url : "${pageContext.request.contextPath}/board/service/new",
 				type : "get",
 				dataType : "html",
 				contentType : "text/html; charset=UTF-8",
-				success : function(d) {
+				data : params,
+				/* data : JSON.stringify({
+					
+					board_type : board_type,
+					category_srl : category_srl,
+					subcategory_srl : subcategory_srl
+			}), */
+			
+			success : function(d) {
 					//alert(d);
 					$("#boardBody").empty();
 					$("#boardBody").html(d);
 				},
+				
 				error : function(e) {
 					popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
 				}
