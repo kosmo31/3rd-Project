@@ -64,8 +64,8 @@
 				<div id="sidebar-charts">
 					<div class="sidebar-charts-inner">
 						<div class="sidebar-charts-left">
-							<div class="sidebar-chart-title">Orders</div>
-							<div class="sidebar-chart-number">1,256</div>
+							<div class="sidebar-chart-title">의뢰건수</div>
+							<div class="sidebar-chart-number">+26</div>
 						</div>
 						<div class="sidebar-charts-right" data-type="bar" data-color="theme">
 							<span class="dynamicbar1"></span>
@@ -74,8 +74,8 @@
 					<hr class="divider">
 					<div class="sidebar-charts-inner">
 						<div class="sidebar-charts-left">
-							<div class="sidebar-chart-title">Income</div>
-							<div class="sidebar-chart-number">$47,564</div>
+							<div class="sidebar-chart-title">기술건수</div>
+							<div class="sidebar-chart-number">+14</div>
 						</div>
 						<div class="sidebar-charts-right" data-type="bar" data-color="theme">
 							<span class="dynamicbar2"></span>
@@ -84,8 +84,8 @@
 					<hr class="divider">
 					<div class="sidebar-charts-inner">
 						<div class="sidebar-charts-left">
-							<div class="sidebar-chart-title">Visits</div>
-							<div class="sidebar-chart-number" id="number-visits">147,687</div>
+							<div class="sidebar-chart-title">방문자수</div>
+							<div class="sidebar-chart-number" id="number-visits">15</div>
 						</div>
 						<div class="sidebar-charts-right" data-type="bar" data-color="theme">
 							<span class="dynamicbar3"></span>

@@ -65,19 +65,20 @@
 								<div class="col-xs-9">
 									<div class="live-tile" data-mode="carousel" data-direction="vertical" data-delay="3500" data-height="56">
 										<div>
-											<small class="stat-title">Visits today</small>
-											<h1 class="m-0 w-300">25 610</h1>
+											<small class="stat-title">오늘 방문자</small>
+											<h1 class="m-0 w-300">5</h1>
 										</div>
 										<div>
-											<small class="stat-title">Visits yesterday</small>
-											<h1 class="m-0 w-300">22 420</h1>
+											<small class="stat-title">어제 방문자</small>
+											<h1 class="m-0 w-300">22</h1>
 										</div>
 									</div>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-6">
-									<small class="stat-title">New Visitors</small>
+							<div class="col-xs-3"></div>
+								<div class="col-xs-9">
+									<small class="stat-title">방문자수 변동률</small>
 									<div class="live-tile" data-mode="carousel" data-direction="vertical" data-delay="3500" data-height="30">
 										<div>
 											<h3 class="m-0 w-300">37.5%</h3>
@@ -87,17 +88,7 @@
 										</div>
 									</div>
 								</div>
-								<div class="col-xs-6">
-									<small class="stat-title">Bounce Rate</small>
-									<div class="live-tile" data-mode="carousel" data-direction="vertical" data-delay="3500" data-height="30">
-										<div>
-											<h3 class="m-0 w-500">5.6%</h3>
-										</div>
-										<div>
-											<h3 class="m-0 w-500">7.4%</h3>
-										</div>
-									</div>
-								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -110,17 +101,16 @@
 									<i class="glyph-icon flaticon-educational"></i>
 								</div>
 								<div class="col-xs-9">
-									<small class="stat-title">PAGES VIEW</small>
-									<h1 class="m-0 w-500">201k</h1>
+									<small class="stat-title">전체 페이지 조회수</small>
+									<h1 class="m-0 w-500">201</h1>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-6">
-									<small class="stat-title">Duration</small>
-									<h3 class="m-0 w-500">18:25</h3>
+								<div class="col-xs-3">
+									
 								</div>
-								<div class="col-xs-6">
-									<small class="stat-title">Pages / visits</small>
+								<div class="col-xs-9">
+									<small class="stat-title">페이지 / 방문수</small>
 									<h3 class="m-0 w-500">21</h3>
 								</div>
 							</div>
@@ -130,44 +120,29 @@
 				<div class="col-md-3 col-sm-12">
 					<div class="panel no-bd bd-3 panel-stat">
 						<div class="panel-body bg-green p-15">
-							<div class="row m-b-0">
+							<div class="row m-b-6">
 								<div class="col-xs-3">
 									<i class="glyph-icon flaticon-orders"></i>
 								</div>
 								<div class="col-xs-9">
-									<small class="stat-title">ORDERS THIS MONTH</small>
-									<div class="live-tile" data-delay="4000" data-animation-easing="fade" data-height="47">
-										<div>
-											<h1 class="m-0 w-500 bg-green">148</h1>
-										</div>
-										<div>
-											<h1 class="m-0 w-500 bg-green">+28%</h1>
-										</div>
-									</div>
+									<small class="stat-title">기술자 게시물 수</small>
+									<h1 class="m-0 w-500">
+										+<span class="animate-number" data-value="150" data-animation-duration="1400">0</span>
+									</h1>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-6">
-									<small class="stat-title">Last month</small>
-									<div class="live-tile" data-delay="4000" data-animation-easing="fade" data-height="30">
-										<div class="bg-green">
-											<h3 class="m-0 w-500">126</h3>
-										</div>
-										<div class="bg-green">
-											<h3 class="m-0 w-500">$12,545</h3>
-										</div>
-									</div>
+									<small class="stat-title">이번달</small>
+									<h3 class="m-0 w-500">
+										+<span class="animate-number" data-value="55" data-animation-duration="1400">0</span>
+									</h3>
 								</div>
 								<div class="col-xs-6">
-									<small class="stat-title">Last week</small>
-									<div class="live-tile" data-delay="4000" data-animation-easing="fade" data-height="30">
-										<div class="bg-green">
-											<h3 class="m-0 w-500">41</h3>
-										</div>
-										<div class="bg-green">
-											<h3 class="m-0 w-500">$4,237</h3>
-										</div>
-									</div>
+									<small class="stat-title">지난주</small>
+									<h3 class="m-0 w-500">
+										+<span class="animate-number" data-value="5" data-animation-duration="1400">0</span>
+									</h3>
 								</div>
 							</div>
 						</div>
@@ -178,26 +153,26 @@
 						<div class="panel-body bg-dark p-15">
 							<div class="row m-b-6">
 								<div class="col-xs-3">
-									<i class="glyph-icon flaticon-incomes"></i>
+									<i class="glyph-icon flaticon-orders"></i>
 								</div>
 								<div class="col-xs-9">
-									<small class="stat-title">INCOMES THIS MONTH</small>
+									<small class="stat-title">의뢰인 게시물 수</small>
 									<h1 class="m-0 w-500">
-										$<span class="animate-number" data-value="42567" data-animation-duration="1400">0</span>
+										+<span class="animate-number" data-value="217" data-animation-duration="1400">0</span>
 									</h1>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-xs-6">
-									<small class="stat-title">Last month</small>
+									<small class="stat-title">이번달</small>
 									<h3 class="m-0 w-500">
-										$<span class="animate-number" data-value="38547" data-animation-duration="1400">0</span>
+										+<span class="animate-number" data-value="15" data-animation-duration="1400">0</span>
 									</h3>
 								</div>
 								<div class="col-xs-6">
-									<small class="stat-title">Last week</small>
+									<small class="stat-title">지난주</small>
 									<h3 class="m-0 w-500">
-										$<span class="animate-number" data-value="8754" data-animation-duration="1400">0</span>
+										+<span class="animate-number" data-value="5" data-animation-duration="1400">0</span>
 									</h3>
 								</div>
 							</div>
@@ -251,81 +226,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-4">
-					<div class="panel no-bd bg-green">
-						<div class="panel-heading clearfix pos-rel">
-							<div class="pos-abs t-10 l-15 f-18">
-								<i class="fa fa-list"></i>
-							</div>
-							<h2 class="panel-title width-100p text-center w-500 f-20 carrois">To Do List</h2>
-							<div class="pos-abs t-10 r-5 f-18 cursor-pointer">
-								<div class="glyph-icon flaticon-plus16 f-32"></div>
-							</div>
-						</div>
-						<div class="panel-body bg-green p-t-0 p-b-10">
-							<div class="row">
-								<div class="col-md-12">
-									<div class="row m-b-10">
-										<input class="form-control" id="new-todo" placeholder="What needs to be done?" type="text" />
-									</div>
-									<div class="row" id="task-manager">
-										<div class="task-actions clearfix">
-											<div class="pull-left">
-												<div>
-													<input class="my_checkbox_all" type="checkbox">
-												</div>
-												<div class="p-l-40">Check All</div>
-											</div>
-											<div class="pull-right">
-												<a href="#" class="create-task c-white p-r-10"><i class="fa fa-plus-circle"></i> Create Task</a> <a href="#" class="delete-task c-white p-r-10"><i class="fa fa-minus-circle"></i> Delete All Tasks</a>
-											</div>
-										</div>
-										<ul id="sortable-todo">
-											<li class="sortable col-md-12 m-b-10 bd-3 bg-opacity-20 fade in"><a href="#" class="pull-right c-white p-l-10" data-dismiss="alert"><i class="fa fa-times f-18"></i></a> <a href="#" class="pull-right c-white" data-dismiss="alert"><i class="fa fa-pencil f-18"></i></a>
-												<div class="sortable-item">
-													<div class="pos-rel">
-														<input tabindex="13" type="checkbox" class="pull-left task-item">
-													</div>
-													<div class="p-l-40 pull-left">Find beautiful templates</div>
-												</div></li>
-											<li class="sortable col-md-12 m-b-10 bd-3 bg-opacity-20 fade in"><a href="#" class="pull-right c-white p-l-10" data-dismiss="alert"><i class="fa fa-times f-18"></i></a> <a href="#" class="pull-right c-white" data-dismiss="alert"><i class="fa fa-pencil f-18"></i></a>
-												<div class="sortable-item">
-													<div class="pos-rel">
-														<input tabindex="13" type="checkbox" class="pull-left task-item">
-													</div>
-													<div class="p-l-40 pull-left">Create new design</div>
-												</div></li>
-											<li class="sortable col-md-12 m-b-10 bd-3 bg-opacity-20 fade in"><a href="#" class="pull-right c-white p-l-10" data-dismiss="alert"><i class="fa fa-times f-18"></i></a> <a href="#" class="pull-right c-white" data-dismiss="alert"><i class="fa fa-pencil f-18"></i></a>
-												<div class="sortable-item">
-													<div class="pos-rel">
-														<input tabindex="13" type="checkbox" class="pull-left task-item">
-													</div>
-													<div class="p-l-40 pull-left">Go to Shop</div>
-												</div></li>
-											<li class="sortable col-md-12 m-b-10 bd-3 bg-opacity-20 fade in"><a href="#" class="pull-right c-white p-l-10" data-dismiss="alert"><i class="fa fa-times f-18"></i></a> <a href="#" class="pull-right c-white" data-dismiss="alert"><i class="fa fa-pencil f-18"></i></a>
-												<div class="sortable-item">
-													<div class="pos-rel">
-														<input tabindex="13" type="checkbox" class="pull-left task-item">
-													</div>
-													<div class="p-l-40 pull-left">Buy a new bike</div>
-												</div></li>
-											<li class="sortable col-md-12 p-10 m-b-10 bd-3 bg-opacity-20 fade in"><a href="#" class="pull-right c-white p-l-10" data-dismiss="alert"><i class="fa fa-times f-18"></i></a> <a href="#" class="pull-right c-white" data-dismiss="alert"><i class="fa fa-pencil f-18"></i></a>
-												<div class="sortable-item">
-													<div class="pos-rel">
-														<input tabindex="13" type="checkbox" class="pull-left">
-													</div>
-													<div class="p-l-40 pull-left">Write a book</div>
-												</div></li>
-										</ul>
-									</div>
-									<div class="row">
-										<div id="todo-stats"></div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
+				
 				<div class="col-md-4">
 					<div class="panel panel-default">
 						<div class="panel-heading clearfix pos-rel">

@@ -10,7 +10,7 @@
 				<a id="menu-medium" class="sidebar-toggle tooltips"> <i class="fa fa-outdent"></i>
 				</a> <a class="navbar-brand" href="${pageContext.request.contextPath}/admin/"></a>
 			</div>
-			<div class="navbar-center">Dashboard</div>
+			<div class="navbar-center">Admin Page</div>
 			<div class="navbar-collapse collapse">
 				<!-- BEGIN TOP NAVIGATION MENU -->
 				<ul class="nav navbar-nav pull-right header-menu">
@@ -23,22 +23,15 @@
 							</li>
 							<li>
 								<ul class="dropdown-menu-list withScroll" data-height="220">
-									<li><a href="#"> <i class="fa fa-star p-r-10 f-18 c-orange"></i> Steve have rated your photo <span class="dropdown-time">Just now</span>
+									<li><a href="#"> <i class="fa fa-star p-r-10 f-18 c-orange"></i> kosmo님이 쪽지를 발송 하셨습니다 <span class="dropdown-time">15분전</span>
 									</a></li>
-									<li><a href="#"> <i class="fa fa-heart p-r-10 f-18 c-red"></i> John added you to his favs <span class="dropdown-time">15 mins</span>
+									<li><a href="#"> <i class="fa fa-heart p-r-10 f-18 c-red"></i> kosmo님이 친구 추가를 요청 하셨습니다. <span class="dropdown-time">15분 전</span>
 									</a></li>
-									<li><a href="#"> <i class="fa fa-file-text p-r-10 f-18"></i> New document available <span class="dropdown-time">22 mins</span>
+									<li><a href="#"> <i class="fa fa-file-text p-r-10 f-18"></i> 당신의 글에 새로운 댓글이 작성 되었습니다 <span class="dropdown-time">60분 전</span>
 									</a></li>
-									<li><a href="#"> <i class="fa fa-picture-o p-r-10 f-18 c-blue"></i> New picture added <span class="dropdown-time">40 mins</span>
+									<li><a href="#"> <i class="fa fa-picture-o p-r-10 f-18 c-blue"></i>관심 글에 새로운 댓글이 작성 되었습니다. <span class="dropdown-time">40 mins</span>
 									</a></li>
-									<li><a href="#"> <i class="fa fa-bell p-r-10 f-18 c-orange"></i> Meeting in 1 hour <span class="dropdown-time">1 hour</span>
-									</a></li>
-									<li><a href="#"> <i class="fa fa-bell p-r-10 f-18"></i> Server 5 overloaded <span class="dropdown-time">2 hours</span>
-									</a></li>
-									<li><a href="#"> <i class="fa fa-comment p-r-10 f-18 c-gray"></i> Bill comment your post <span class="dropdown-time">3 hours</span>
-									</a></li>
-									<li><a href="#"> <i class="fa fa-picture-o p-r-10 f-18 c-blue"></i> New picture added <span class="dropdown-time">2 days</span>
-									</a></li>
+									
 								</ul>
 							</li>
 							<li class="dropdown-footer clearfix"><a href="${pageContext.request.contextPath}/admin/notification" class="pull-left">모든 알림 보기</a> <a href="${pageContext.request.contextPath}/admin/notification" class="pull-right"> <i class="fa fa-cog"></i>
@@ -58,38 +51,30 @@
 									</span>
 										<div class="clearfix">
 											<div>
-												<strong>Alexa Johnson</strong> <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time p-r-5"></span>12 mins ago
+												<strong>kosmo</strong> <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time p-r-5"></span>12 mins ago
 												</small>
 											</div>
-											<p>Lorem ipsum dolor sit amet, consectetur...</p>
+											<p>쪽지 내용 입니다</p>
 										</div></li>
 									<li class="clearfix"><span class="pull-left p-r-5"> <img src="${pageContext.request.contextPath}/resources/pixit/admin/assets/img/avatars/avatar4.png" alt="avatar 4">
 									</span>
 										<div class="clearfix">
 											<div>
-												<strong>John Smith</strong> <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time p-r-5"></span>47 mins ago
+												<strong>kosmo</strong> <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time p-r-5"></span>47 mins ago
 												</small>
 											</div>
-											<p>Lorem ipsum dolor sit amet, consectetur...</p>
+											<p>쪽지 내용 입니다</p>
 										</div></li>
 									<li class="clearfix"><span class="pull-left p-r-5"> <img src="${pageContext.request.contextPath}/resources/pixit/admin/assets/img/avatars/avatar5.png" alt="avatar 5">
 									</span>
 										<div class="clearfix">
 											<div>
-												<strong>Bobby Brown</strong> <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time p-r-5"></span>1 hour ago
+												<strong>kosmo</strong> <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time p-r-5"></span>1 hour ago
 												</small>
 											</div>
-											<p>Lorem ipsum dolor sit amet, consectetur...</p>
+											<p>쪽지 발송 테스트</p>
 										</div></li>
-									<li class="clearfix"><span class="pull-left p-r-5"> <img src="${pageContext.request.contextPath}/resources/pixit/admin/assets/img/avatars/avatar6.png" alt="avatar 6">
-									</span>
-										<div class="clearfix">
-											<div>
-												<strong>James Miller</strong> <small class="pull-right text-muted"> <span class="glyphicon glyphicon-time p-r-5"></span>2 days ago
-												</small>
-											</div>
-											<p>Lorem ipsum dolor sit amet, consectetur...</p>
-										</div></li>
+									
 								</ul>
 							</li>
 							<li class="dropdown-footer clearfix"><a href="${pageContext.request.contextPath}/admin/message" class="pull-left">모든 메시지 보기</a> <a href="${pageContext.request.contextPath}/admin/message" class="pull-right"> <i class="fa fa-cog"></i>
@@ -97,7 +82,22 @@
 						</ul></li>
 					<!-- END MESSAGES DROPDOWN -->
 					<!-- BEGIN USER DROPDOWN -->
-					<li class="dropdown" id="user-header"><a href="#" class="dropdown-toggle c-white" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> <img src="${pageContext.request.contextPath}/resources/pixit/admin/assets/img/avatars/avatar2.png" alt="user avatar" width="30" class="p-r-5"> <span class="username">Bob Nilson</span> <i class="fa fa-angle-down p-r-10"></i>
+					<li class="dropdown" id="user-header">
+					<a href="#" class="dropdown-toggle c-white" data-toggle="dropdown" data-hover="dropdown" data-close-others="true"> 
+					
+					<c:choose>
+								<c:when test="${loginUserInfo.profile_img_path==null}">
+									<img src="${pageContext.request.contextPath}/resources/images/main_user_gray.png" alt="user avatar" width="30" class="p-r-5">
+								</c:when>
+								<c:otherwise>
+								<img src="${pageContext.request.contextPath}/upload/displayFile?fileName=${loginUserInfo.profile_img_path}&directory=member/${loginUserInfo.member_srl}/profile" alt="user avatar" width="30" class="p-r-5">
+									
+								</c:otherwise>
+							</c:choose>
+							
+					 
+					<span class="username">${loginUserInfo.user_id}</span> 
+					<i class="fa fa-angle-down p-r-10"></i>
 					</a>
 						<ul class="dropdown-menu">
 							<li><a href="${pageContext.request.contextPath}/admin/profile"> <i class="glyph-icon flaticon-account"></i> 나의 프로필
@@ -118,9 +118,9 @@
 							<div class="chat-popup-inner bg-blue">
 								<div>
 									<div class="clearfix w-600">
-										<img src="${pageContext.request.contextPath}/resources/pixit/admin/assets/img/avatars/avatar3.png" alt="avatar 3" width="30" class="pull-left img-circle p-r-5">Alexa Johnson
+										<img src="${pageContext.request.contextPath}/resources/pixit/admin/assets/img/avatars/avatar3.png" alt="avatar 3" width="30" class="pull-left img-circle p-r-5">kosmo
 									</div>
-									<div class="message m-t-5">Hey you there?</div>
+									<div class="message m-t-5">쪽지 내용입니다.</div>
 								</div>
 							</div>
 						</div></li>

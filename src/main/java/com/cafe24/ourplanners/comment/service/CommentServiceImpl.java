@@ -1,20 +1,20 @@
 package com.cafe24.ourplanners.comment.service;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import com.cafe24.ourplanners.comment.domain.CommentVO;
 import com.cafe24.ourplanners.comment.persistence.CommentDAO;
-import com.cafe24.ourplanners.faq.domain.FAQVO;
+import com.cafe24.ourplanners.member.domain.MemberVO;
 import com.cafe24.ourplanners.util.CommentCriteria;
 import com.cafe24.ourplanners.util.PagingUtil;
 
@@ -82,11 +82,29 @@ public class CommentServiceImpl implements CommentService{
 		CommentVO vo = new CommentVO();
 		vo = dao.readComment(comment_srl);
 		//싱글 쿼테이션 더블 쿼테이션 변경
-		vo.setcomments(vo.getcomments().replaceAll("'", "\"").replaceAll("’", "\"").replaceAll("‘", "\"").replaceAll("\"", "\""));
+		vo.setComments(vo.getComments().replaceAll("'", "\"").replaceAll("’", "\"").replaceAll("‘", "\"").replaceAll("\"", "\""));
 		//줄바꿈 처리
-		vo.setcomments(vo.getcomments().replaceAll("\r\n", "<br/>"));
+		vo.setComments(vo.getComments().replaceAll("\r\n", "<br/>"));
 		//vo.setContents(vo.getContents().replaceAll(System.getProperty("line.separator"), "<br/>"));
 		model.addAttribute("commentVO", vo);
 		return vo;
+	}
+
+
+	@Override
+	public int addComment(HttpServletRequest req, Map<String, Object> map) {
+		
+		HttpSession session = req.getSession();
+		MemberVO memVO = (MemberVO)session.getAttribute("loginUserInfo");
+		CommentVO vo = new CommentVO();
+		String user_id = memVO.getUser_id();
+		String comments = req.getParameter("comments");
+		int parent_board_srl = Integer.parseInt(req.getParameter("parent_board_srl"));
+		String comment_type = req.getParameter("comment_type");
+		vo.setComment_type(comment_type);
+		vo.setParent_board_srl(parent_board_srl);
+		vo.setUser_id(user_id);
+		vo.setComments(comments);
+		return dao.addComment(vo);
 	}
 }

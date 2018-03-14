@@ -42,7 +42,8 @@ public class CommentController {
 			@RequestParam(required = false) Integer comment_srl,
 			@RequestParam(required = false) Integer parent_board_srl,
 			@RequestParam(required = false, defaultValue = "") String user_id,
-
+			@RequestParam(required = false, defaultValue = "") String comment_type,
+			
 			@RequestParam(required = false) Integer pageSize, @RequestParam(required = false) Integer blockPage,
 
 			@RequestParam(required = false, defaultValue = "") String searchType,
@@ -86,6 +87,9 @@ public class CommentController {
 		scri.setPageSize(pageSize);
 		scri.setBlockPage(blockPage);
 		scri.setUser_id(user_id);
+		
+		scri.setComment_type(comment_type);
+		
 		System.out.println("nowPage:" + nowPage);
 
 		service.getCommentListJson(scri, map);
@@ -95,8 +99,7 @@ public class CommentController {
 
 	// 댓글 쓰기
 	@RequestMapping(value = "comment", method = RequestMethod.POST)
-	public ResponseEntity<Map<String, Object>> register(@RequestBody CommentVO vo, HttpSession session) {
-
+	public ResponseEntity<Map<String, Object>> writeActionBoard(HttpServletRequest req, HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		ResponseEntity<Map<String, Object>> entity = null;
 
@@ -105,35 +108,37 @@ public class CommentController {
 				map.put("result", "fail");
 				map.put("errorMsg", "isNotLogin");
 
-			}
-
-			int result = service.addComment(vo);
-
-			if (result <= 0) {
-				map.put("result", "fail");
-				map.put("errorMsg", "sqlError");
 			} else {
-				map.put("result", "success");
+
+				int result = service.addComment(req, map);
+
+				if (result <= 0) {
+					map.put("result", "fail");
+					map.put("errorMsg", "sqlError");
+				} else {
+					map.put("result", "success");
+				}
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 			map.put("result", "fail");
-			map.put("layer_msg", e.getMessage());
+			map.put("layer_msg", "sqlError");
 			entity = new ResponseEntity<Map<String, Object>>(HttpStatus.BAD_REQUEST);
 		}
 
 		if (((String) map.get("result")).equals("fail")) {
 			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.BAD_REQUEST);
 		} else if (((String) map.get("result")).equals("success")) {
-			System.out.println("글작성 성공");
+			System.out.println("글수정 성공");
 			entity = new ResponseEntity<Map<String, Object>>(map, HttpStatus.OK);
 		}
-
 		return entity;
 	}
 
-	@RequestMapping(value = "comment/{rno}", method = { RequestMethod.PUT, RequestMethod.PATCH })
+	
+	//댓글 수정
+	@RequestMapping(value = "comment/{comment_srl}", method = { RequestMethod.PUT, RequestMethod.PATCH })
 	public ResponseEntity<Map<String, Object>> update(@PathVariable("comment_srl") Integer comment_srl,
 			@RequestBody CommentVO vo, HttpSession session, Model model) {
 
@@ -145,7 +150,7 @@ public class CommentController {
 		String origin_id = originVO.getUser_id();
 		// 세션 아이디와 비교
 		String user_id = ((MemberVO) session.getAttribute("loginUserInfo")).getUser_id();
-
+		
 		Map<String, Object> map = new HashMap<String, Object>();
 		ResponseEntity<Map<String, Object>> entity = null;
 
@@ -156,7 +161,7 @@ public class CommentController {
 
 			} else {
 
-				if (!user_id.equalsIgnoreCase(origin_id)) {
+				if ((!user_id.equalsIgnoreCase(origin_id))&&!((MemberVO) session.getAttribute("loginUserInfo")).getIs_admin().equalsIgnoreCase("Y")) {
 					map.put("result", "fail");
 					map.put("errorMsg", "hasNotAuth");
 
@@ -188,21 +193,34 @@ public class CommentController {
 		return entity;
 	}
 
-	@RequestMapping(value = "comment/{rno}", method = RequestMethod.DELETE)
-	public ResponseEntity<Map<String, Object>> remove(@PathVariable Integer comment_srl, HttpSession session) {
+	@RequestMapping(value = "comment/{comment_srl}", method = RequestMethod.DELETE)
+	public ResponseEntity<Map<String, Object>> remove(@PathVariable Integer comment_srl, HttpSession session, Model model) {
 
 		Map<String, Object> map = new HashMap<String, Object>();
 		ResponseEntity<Map<String, Object>> entity = null;
 
+		CommentVO vo = service.readComment(comment_srl, model);
+		
+		vo.setComment_srl(comment_srl);
+
+		// 원본 객체를 가져와서
+		CommentVO originVO = service.readComment(comment_srl, model);
+		// 사용자 아이디를 저장후
+		String origin_id = originVO.getUser_id();
+		// 세션 아이디와 비교
+		String user_id = ((MemberVO) session.getAttribute("loginUserInfo")).getUser_id();
+		
+		
 		try {
 			if (session.getAttribute("loginUserInfo") == null) {
 				map.put("result", "fail");
 				map.put("errorMsg", "isNotLogin");
 			} else {
 
-				if (!((MemberVO) session.getAttribute("loginUserInfo")).getIs_admin().equalsIgnoreCase("Y")) {
+				if ((!user_id.equalsIgnoreCase(origin_id))&&!((MemberVO) session.getAttribute("loginUserInfo")).getIs_admin().equalsIgnoreCase("Y")) {
 					map.put("result", "fail");
-					map.put("errorMsg", "isNotAdmin");
+					map.put("errorMsg", "hasNotAuth");
+
 				} else {
 
 					int result = service.deleteComment(comment_srl);

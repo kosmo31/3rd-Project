@@ -232,8 +232,8 @@ function getMyPlanList(nowPage, board_type,user_id, service_expired, color) {
 				inHTML += "<tr>";
 					inHTML += "<td>"+lists.subcategory_name+"</td>";
 					/* inHTML += "<td>"+lists.user_id+"</td>"; */
-					inHTML += "<td><div class=\"popup\" onclick=\"myFunction()\">"+lists.user_id;
-					inHTML += "<span class=\"popuptext\" id=\"myPopup\">";
+					inHTML += "<td><div class=\"popup\" onclick=\"popUserMenu()\">"+lists.user_id;
+					inHTML += "<span class=\"popuptext\" id=\"userPopup\">";
 					inHTML += "<a href=\"${pageContext.request.contextPath}/profile/${loginUserInfo.user_id}\">회원정보보기</a><br/>";
 					inHTML += "<a href=\"${pageContext.request.contextPath}/message\">쪽지보내기</a><br/>";
 					<c:if test="${not empty loginUserInfo && loginUserInfo.is_admin=='Y'}">

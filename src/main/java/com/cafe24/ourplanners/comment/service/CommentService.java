@@ -1,6 +1,7 @@
 package com.cafe24.ourplanners.comment.service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +22,8 @@ public interface CommentService {
 	  public int count(Integer bno) throws Exception;
 
 	CommentVO readComment(Integer comment_srl, Model model);
+
+	int addComment(HttpServletRequest req, Map<String, Object> map);
 
 
 

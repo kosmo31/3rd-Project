@@ -426,6 +426,7 @@ public class PagingUtil {
 		int nowPage = scri.getNowPage();
 		int parent_board_srl = scri.getParent_board_srl();
 		
+		String comment_type = scri.getComment_type();
 		
 		// 1.전체페이지 구하기
 		int totalPage = (int) (Math.ceil(((double) totalRecordCount / pageSize)));
@@ -439,11 +440,11 @@ public class PagingUtil {
 		// 처음페이지 & 이전페이지를 위한 로직
 		if (intTemp != 1) {
 
-			pagingStr += "<li><a href='javascript:" + jsFnName + "(1," + parent_board_srl
+			pagingStr += "<li><a href='javascript:" + jsFnName + "(1," + parent_board_srl+ "," + comment_type
 					+ ");'> <span class=\"glyphicon glyphicon-backward\"></span></a></li>";
 
 			// 블럭 페이지의 마지막 페이지 번호로
-			pagingStr += "<li><a href='javascript:" + jsFnName + "(" + (intTemp - 1) + "," + parent_board_srl 
+			pagingStr += "<li><a href='javascript:" + jsFnName + "(" + (intTemp - 1) + "," + parent_board_srl + "," + comment_type
 					+ ");'>"
 					// 블럭 페이지의 첫번째 페이지번호로
 					// pagingStr += "<li><a href='javascript:paging("+(intTemp - blockPage) + ");'>"
@@ -460,7 +461,7 @@ public class PagingUtil {
 			if (intTemp == nowPage) {
 				pagingStr += "<li class=\"active\"><a href=\"javascript:;\">" + intTemp + "</a></li>";
 			} else {
-				pagingStr += "<li><a href='javascript:" + jsFnName + "(" + intTemp + "," + parent_board_srl 
+				pagingStr += "<li><a href='javascript:" + jsFnName + "(" + intTemp + "," + parent_board_srl + "," + comment_type
 						 + ");'>" + intTemp + "</a></li>";
 			}
 
@@ -470,10 +471,10 @@ public class PagingUtil {
 
 		// 다음 및 마지막 페이지를 위한 로직
 		if (intTemp <= totalPage) {
-			pagingStr += "<li><a href='javascript:" + jsFnName + "(" + intTemp + "," + parent_board_srl 
+			pagingStr += "<li><a href='javascript:" + jsFnName + "(" + intTemp + "," + parent_board_srl  + "," + comment_type
 					+ ");'>" + "<span class=\"glyphicon glyphicon-chevron-right\"></span></a></li>";
 
-			pagingStr += "<li><a href='javascript:" + jsFnName + "(" + totalPage + "," + parent_board_srl 
+			pagingStr += "<li><a href='javascript:" + jsFnName + "(" + totalPage + "," + parent_board_srl + "," + comment_type
 					 + ");'>" + "<span class=\"glyphicon	glyphicon-forward\"></span></a></li>";
 		}
 		pagingStr += "</ul></div>";
