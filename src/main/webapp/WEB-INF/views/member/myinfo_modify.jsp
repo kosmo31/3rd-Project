@@ -424,7 +424,7 @@ function isNumeric(num, opt){
 
 									<c:choose>
 
-										<c:when test="${(not empty loginUserInfo) && loginUserInfo.profile_img_path!=''}">
+										<c:when test="${not empty loginUserInfo.profile_img_path}">
 
 											<img src="${pageContext.request.contextPath}/resources/upload/member/${loginUserInfo.member_srl}/profile/${loginUserInfo.profile_img_path}" id="profile_Img" class="profile-image" />
 

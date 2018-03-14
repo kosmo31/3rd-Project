@@ -16,7 +16,7 @@
 <meta charset="utf-8">
 <meta name="description" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>|OUR PLANNERS</title>
+<title>서비스 게시판 (갤러리형)|OUR PLANNERS</title>
 <jsp:useBean id="today" class="java.util.Date" scope="page" />
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css?ver=<fmt:formatDate value="${today}" pattern="yyyyMMddHHmmss" />">
 <link rel='stylesheet' href='http://fonts.googleapis.com/css?family=Open+Sans:300,400,400italic,600,700|Raleway:300,400,500,600'>
@@ -43,20 +43,176 @@
 
 <script type="text/javascript" charset="utf-8">
 	sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
-	var isEmpty = function(value){ if( value == "" || value == null || value == undefined || ( value != null && typeof value == "object" && !Object.keys(value).length ) ){ return true }else{ return false } };
+	
+	var isEmpty = function(value) {
+		if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
+			return true
+		} else {
+			return false
+		}
+	};
 </script>
 
 <script>
+$(document).ready(function() {
+
+	//                  (nowPage, category_srl, subcategory_srl , board_type ,searchType,keyword) 		
+	//최초 페이지 로딩시 리스트 목록 가져오기	
+	//서치 리스트
+	getServiceSearchList(1, "${category_srl}", "${subcategory_srl}" , "${board_type}" ,"${searchType}","${keyword}");
+		
+
+	$("#writeBoardBtn").on("click", function() {
+		getWriteFormBoard();
+	});
+
+	$("#allplanners-btn").on("click", function() {
+		getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "", $('#searchType').val(), $('#keyword').val());
+	});
+
+	$("#engineer-btn").on("click", function() {
+		//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "E", "${searchType}", "${keyword}");
+		getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "E", $('#searchType').val(), $('#keyword').val());
+	});
+
+	$("#customer-btn").on("click", function() {
+		//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "C", "${searchType}", "${keyword}");
+		getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "C", $('#searchType').val(), $('#keyword').val());
+	});
+
+	$('#searchBoardBtn').click(function() {
+
+		var searchType = $('#select-form-control option:selected').val();
+
+		var keyword = $('#keyword').val();
+
+		var category_srl = $('#category_srl').val();
+
+		var subcategory_srl = $('#subcategory_srl').val();
+
+		var board_type = $('#board_type').val();
+
+		if (isEmpty(keyword)) {
+			popLayerMsg("검색어를 입력하세요.");
+			return;
+		} else {
+
+			getServiceSearchList(1, category_srl, subcategory_srl, board_type, searchType, keyword);
+		}
+
+	});
+	
+	//검색폼에서 엔터로 검색 
+	$('#keyword').keydown(function(event) {
+	    // enter has keyCode = 13, change it if you want to use another button
+	    if (event.keyCode == 13) {
+	    	$('#searchBoardBtn').trigger('click');
+	      return false;
+	    }
+	  });
+
+	//글쓰기 폼 가져오기
+	function getWriteFormBoard() {
+
+		//$("#faqHead").text("FAQ 글쓰기");
+
+		$.ajax({
+			url : "${pageContext.request.contextPath}/board/service/new",
+			type : "get",
+			dataType : "html",
+			contentType : "text/html; charset=UTF-8",
+			success : function(d) {
+				//alert(d);
+				$("#boardBody").empty();
+				$("#boardBody").html(d);
+			},
+			error : function(e) {
+				popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
+			}
+		});
+	}
+});
+
+
+//세자리 콤마
+function numberWithCommas(x) {
+	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function selectCategory(category_srl) {
+	getServiceSearchList(1, category_srl);
+}
+
+function selectSubCategory(category_srl, subcategory_srl) {
+	getServiceSearchList(1, category_srl, subcategory_srl);
+}
+
+function initSideNav(category_srl) {
+
+	category_srl = typeof category_srl !== 'undefined' ? category_srl : "";
+
+	if (isEmpty(category_srl)) {
+
+		category_srl = "";
+	}
+
+	$('#CategoryTitle').empty();
+	$('#subCategoryList').empty();
+
+	var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
+	var params = "category_srl=" + category_srl;
+
+	$.ajax({
+		cache : false, // 캐시 사용 없애기
+		type : 'get',
+		url : url,
+		data : params,
+		//data : JSON.stringify({ board_type: 'E', pageSize: '3', blockPage: '1'}),
+		//contentType: 'application/json; charset=utf-8',
+		dataType : 'json',
+		//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
+		//dataType: "text",	
+		success : function(data) {
+			//alert(JSON.stringify(data));
+			var items = [];
+			var inHTML = "";
+
+			var inHTMLCategoryName = "";
+
+			$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
+
+				inHTML += "<li><a href=\"javascript:selectSubCategory(" + categoryVO.category_srl + "," + categoryVO.subcategory_srl + ")\"><span>" + index + "</span>" + categoryVO.subcategory_name + "</a></li>";
+
+				inHTMLCategoryName = categoryVO.category_name;
+
+			});//each끝
+
+			if (isEmpty(category_srl)) {
+				$('#CategoryTitle').html("전체");
+			} else {
+				$('#CategoryTitle').html(inHTMLCategoryName);
+			}
+
+			if (jQuery.isEmptyObject(data.subCategoryList)) {
+				$('#subCategoryList').html("<li><a href=\"#\">서브 카테고리 없음</a></li>");
+			} else {
+				$('#subCategoryList').html(inHTML);
+			}
+
+		},
+
+		error : function(e) {
+			popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
+		}
+
+	});
+}
+
 function servicePaging(nowPage, category_srl, subcategory_srl , board_type,searchType,keyword) {
 	//var params = "board_type="+board_type+"&pageSize=6&blockPage=5&keyword="+keyword+"&searchType="+searchType;
 	//alert(params);
 	getServiceSearchList(nowPage, category_srl, subcategory_srl , board_type,searchType,keyword);
 }
-
-function initSideNav(category_srl,subcategory_srl){
-	
-}
-
 
 function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_type ,searchType,keyword) {
 
@@ -90,6 +246,19 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 	if (isEmpty(keyword)) {
 		keyword = "";
 	}
+	
+	//히든 폼에 페이지 영역 저장
+	$('#nowPage').val(nowPage);
+
+	$('#keyword').val(keyword);
+
+	$('#category_srl').val(category_srl);
+
+	$('#subcategory_srl').val(subcategory_srl);
+
+	$('#board_type').val(board_type);
+
+	initSideNav(category_srl);
 	
 	var url = "${pageContext.request.contextPath}/board/json/service_list.json";
 	var serviceMainImgPath = "${pageContext.request.contextPath}/resources/upload/service/";
@@ -244,8 +413,6 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 			}
 		});
 		
-		//서치 리스트
-		getServiceSearchList(1, "${category_srl}", "${subcategory_srl}" , "${board_type}" ,"${searchType}","${keyword}");
 		
 	});
 </script>
@@ -292,6 +459,36 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-7 col-md-9 col-md-push-3 col-sm-push-5 space-left push-off">
+						<!-- 상단 버튼부분 -->
+						<div class="row" id="table-btn">
+							<div class="col-xs-6">
+								<button type="button" class="btn btn-default list-btn" id="allplanners-btn">전체 게시판</button>
+								<button type="button" class="btn btn-default list-btn" id="engineer-btn">기술자 게시판</button>
+								<button type="button" class="btn btn-default list-btn" id="customer-btn">의뢰인 게시판</button>
+							</div>
+							<div class="from-group col-xs-2" id="from-group">
+								<select name="searchType" class="form-control" id="select-form-control">
+									<option value="t">제목</option>
+									<option value="c">내용</option>
+									<option value="tc">제목+내용</option>
+									<option value="i">작성자(ID)</option>
+								</select>
+							</div>
+							<div class="input-group col-xs-4">
+								<input type="hidden" id="nowPage" value="${nowPage}"> 
+								<input type="hidden" id="category_srl" value="${ category_srl}"> 
+								<input type="hidden" id="subcategory_srl" value="${subcategory_srl }"> 
+								<input type="hidden" id="board_type" value="${board_type }"> 
+								<input type="text" class="form-control" placeholder="검색어" id="keyword" name="keyword" value="${keyword}" />
+								<div class="input-group-btn">
+									<button class="btn btn-default margin-right-15" id="searchBoardBtn">
+										<i class="glyphicon glyphicon-search"></i>
+									</button>
+									<button type="button" class="btn btn-success write-btn-list" id="writeBoardBtn">글쓰기</button>
+								</div>
+							</div>
+
+						</div>
 						<div id="portfolio-isotope">
 							<div class="portfolio-container">
 								<div id="search_list_div" class="row mt10">

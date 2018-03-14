@@ -18,7 +18,6 @@
 									</div>
 								</form>
 							</div>
-							
 							<!-- 카테고리별 서브카테고리 부분 -->
 							<div class="sidebar-widget">
 								<h3 class="sidebar-title mb30"><span id="CategoryTitle"></span> 서브 카테고리</h3>

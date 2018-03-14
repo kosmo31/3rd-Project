@@ -332,7 +332,8 @@ function viewPage(board_srl){
 									<div class="col-xs-12 dashboard-profile text-center">
 										<div class="dashboard-profile-body">
 											<c:choose>
-												<c:when test="${(not empty loginUserInfo) && loginUserInfo.profile_img_path!='' && not empty loginUserInfo.profile_img_path}">
+											<c:when test="${not empty loginUserInfo.profile_img_path}">
+			<%-- 									<c:when test="${(not empty loginUserInfo) && loginUserInfo.profile_img_path!='' && not empty loginUserInfo.profile_img_path}"> --%>
 													<img src="${pageContext.request.contextPath}/resources/upload/member/${loginUserInfo.member_srl}/profile/${loginUserInfo.profile_img_path}" class="border-round" />
 												</c:when>
 												<c:otherwise>

@@ -199,22 +199,23 @@ public class MyPageController {
 		 * type => E:기술자시점 C:의뢰인시점
 		 */
 		
-		MemberVO memVO = (MemberVO)session.getAttribute("loginUserInfo");
+		MemberVO loginMemVO = (MemberVO)session.getAttribute("loginUserInfo");
 		
 		
-		if(memVO.getUser_id().equalsIgnoreCase(user_id)) {
+		if(loginMemVO.getUser_id().equalsIgnoreCase(user_id)) {
 			logger.info("자신의 서비스 프로필 보기(기본 정보 수정 가능)");
-			memVO = memberService.getUserInfoById(user_id);
-			model.addAttribute("profileInfo",memVO);
+			loginMemVO = memberService.getUserInfoById(user_id);
+			model.addAttribute("profileInfo",loginMemVO);
 			mv.setViewName("mypage/profile");
 		}
 		
 		else {
 			//나중에 memberDTO로 변경할것!
-			memVO = memberService.getUserInfoById(user_id);
-			model.addAttribute("profileInfo",memVO);
+			logger.info("상대방 서비스 프로필 보기(문의하기 기능 message)");		
+			loginMemVO = memberService.getUserInfoById(user_id);
+			model.addAttribute("profileInfo",loginMemVO);
 			mv.setViewName("mypage/profile_others");
-			logger.info("상대방 서비스 프로필 보기(문의하기 기능 message)");			
+				
 		}
 		model.addAttribute("profile_user_id",user_id);
 		
