@@ -10,14 +10,14 @@ import org.springframework.ui.Model;
 import com.cafe24.ourplanners.board.domain.BoardVO;
 import com.cafe24.ourplanners.board.domain.SubCategoryVO;
 import com.cafe24.ourplanners.util.Criteria;
-import com.cafe24.ourplanners.util.SearchCriteria;
 import com.cafe24.ourplanners.util.SearchServiceBoardCriteria;
+import com.cafe24.ourplanners.util.ServiceBoardCriteria;
 
 public interface SearchService {
 
 	public void getHotServiceList(Criteria cri, HashMap<String, Object> map);
 
-	public void getHotKeyWordList(Criteria cri, HashMap<String, Object> map);
+	public void getHotKeyWordList(ServiceBoardCriteria cri, HashMap<String, Object> map);
 
 	public void getSubCategoryListSearch(SubCategoryVO vo, HashMap<String, Object> map);
 

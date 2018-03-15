@@ -72,7 +72,7 @@ $(document).ready(function() {
 						
 						//배열에 푸쉬후 뿌려줄 영역에 html메소드로 넣기
 						//items.push("<a class='title' href='bbs/bbs_detail.jsp?num=" + hotKeyWord.num + "&nowPage=1'>"+hotKeyWord.title+"</a>");
-						items.push("<span><a href='./board/service?category="+hotKeyWord.category_srl+"&subcategory="+hotKeyWord.subcategory_srl+"'>"+hotKeyWord.searchword+"</a></span>");						
+						items.push("<span><a href='./board/service?category_srl="+hotKeyWord.category_srl+"&subcategory_srl="+hotKeyWord.subcategory_srl+"'>"+hotKeyWord.searchword+"</a></span>");						
 					});//each끝
 					
 					$('#tagsList').html(items.join(''));

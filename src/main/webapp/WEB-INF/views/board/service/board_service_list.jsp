@@ -66,15 +66,29 @@
 		});
 
 		$("#allplanners-btn").on("click", function() {
+			
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$(this).addClass('btn-info');
+			
 			getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "", $('#searchType').val(), $('#keyword').val());
 		});
-
+		
 		$("#engineer-btn").on("click", function() {
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$(this).addClass('btn-info');
 			//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "E", "${searchType}", "${keyword}");
 			getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "E", $('#searchType').val(), $('#keyword').val());
 		});
 
 		$("#customer-btn").on("click", function() {
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$(this).addClass('btn-info');
 			//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "C", "${searchType}", "${keyword}");
 			getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "C", $('#searchType').val(), $('#keyword').val());
 		});
@@ -161,6 +175,7 @@
 	}
 
 	function selectSubCategory(category_srl, subcategory_srl) {
+		
 		getServiceSearchList(1, category_srl, subcategory_srl);
 	}
 
@@ -230,6 +245,88 @@
 		//alert(params);
 		getServiceSearchList(nowPage, category_srl, subcategory_srl, board_type, searchType, keyword);
 	}
+	
+	function getTagsList(category_srl,subcategory_srl){
+		
+		var url = "${pageContext.request.contextPath}/board/json/top_search_list.json";
+
+		category_srl = typeof category_srl !== 'undefined' ? category_srl : "";
+		
+		subcategory_srl = typeof subcategory_srl !== 'undefined' ? subcategory_srl : "";
+		
+		if (isEmpty(category_srl)) {
+			category_srl = "";
+		}
+		
+		if (isEmpty(subcategory_srl)) {
+			subcategory_srl = "";
+		}
+		
+		var params = "category_srl="+category_srl+"&subcategory_srl="+subcategory_srl;
+		
+		//태그리스트 내용 지우기
+		$("#tags").empty();
+
+		//var params="";
+		//alert(url);
+
+		$.ajax({
+			cache : false, // 캐시 사용 없애기
+			type : 'post',
+			url : url,
+			param : params,
+			//contentType: 'application/json; charset=utf-8',
+			dataType : 'json',
+			//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
+			//dataType: "text",	
+			success : function(resdata) { //success에 성공했을 때 동작 넣기.
+
+				//data= JSON.parse(resdata)
+
+				var data;
+
+				try {
+					data = JSON.parse(JSON.stringify(resdata));
+					//var data = JSON.parse( jsonData );								/* JSON 형식의 text 를 객체로 컨버팅 */
+				} catch (e) {
+
+					popLayerMsg(resdata + " : JSON 객체 파서 에러");
+					popLayerMsg(" 페이지 JSON 객체 파서 에러 errURL : " + document.location + " , sendURL : " + url);
+
+					return;
+				}
+
+				//alert(responseData.bbsList[0]);
+				//var data = JSON.parse(responseData);
+
+				//$("#bbs_content1").html("");
+
+				//var key = Object.keys(data["bbsList"][0]); // 키 값 가져오기 num, title, content, id, postdate,visitcount, name, commentCnt
+
+				var items = [];
+				var tagInHTML = "";
+				$.each(resdata.list, function(index, hotKeyWord) { // each로 모든 데이터 가져와서 items 배열에 넣고
+
+					if (index == 10)
+						return false; //break; true=>continue
+
+					//배열에 푸쉬후 뿌려줄 영역에 html메소드로 넣기
+					//items.push("<a class='title' href='bbs/bbs_detail.jsp?num=" + hotKeyWord.num + "&nowPage=1'>"+hotKeyWord.title+"</a>");
+					//<a href='${pageContext.request.contextPath}/board/service?category="+hotKeyWord.category_srl+"&subcategory="+hotKeyWord.subcategory_srl+"' title='"+hotKeyWord.searchword+"'><i class='fa fa-tag'></i> "+hotKeyWord.searchword+"</a>
+					tagInHTML += "<span><a href='${pageContext.request.contextPath}/board/service?category_srl=" + hotKeyWord.category_srl + "&subcategory_srl=" + hotKeyWord.subcategory_srl + "' title='10 Topics'><i class='fa fa-tag'></i> " + hotKeyWord.searchword + "</a></span>";
+
+				});//each끝
+				//alert(tagInHTML);
+				$('#tags').html(tagInHTML);
+				//$('#tagsList').html(items.join(''));
+			},
+			error : function(e) {
+				popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
+
+			}
+		});
+		
+	}
 
 	function getServiceSearchList(nowPage, category_srl, subcategory_srl, board_type, searchType, keyword) {
 
@@ -277,7 +374,12 @@
 		$('#board_type').val(board_type);
 
 		initSideNav(category_srl);
-
+	
+		getTagsList(category_srl, subcategory_srl);
+		
+		if (!isEmpty(subcategory_srl))
+		$("#cateTitle").html(setCategoryTitle(category_srl,subcategory_srl));
+		
 		var url = "${pageContext.request.contextPath}/board/json/service_list.json";
 		var serviceMainImgPath = "${pageContext.request.contextPath}/resources/upload/service/";
 		//내용 지우기
@@ -285,7 +387,8 @@
 		$("#boardPagingDiv").empty();
 
 		var params = "nowPage=" + nowPage + "&category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl + "&board_type=" + board_type + "&pageSize=10&blockPage=10&keyword=" + keyword + "&searchType=" + searchType;
-
+		
+		
 		//alert(params);
 
 		$.ajax({
@@ -360,6 +463,7 @@
 
 				$("#boardPagingDiv").html(data.pagingDiv);
 
+				$(window).scrollTop(0);
 				//alert(inHTML);
 				//$('#hot_engineer_div').html(items);
 
@@ -392,75 +496,92 @@
 		});
 	}
 
-	//TOP 인기 검색어
-	$(document).ready(function() {
-
-		getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "${board_type}", "${searchType}", "${keyword}");
+function setCategoryTitle(category_srl,subcategory_srl){
 		
-		var url = "${pageContext.request.contextPath}/board/json/top_search_list.json";
+		var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
 
-		var params = "category=${category_srl}&subcategory=${subcategory_srl}";
-		//태그리스트 내용 지우기
-		$("#tags").empty();
-
-		//var params="";
-		//alert(url);
+		var returnLabel ="";
+		var params = "category_srl="+category_srl+"&subcategory_srl="+subcategory_srl;
 
 		$.ajax({
+			async : false,
 			cache : false, // 캐시 사용 없애기
-			type : 'post',
+			type : 'get',
 			url : url,
-			param : params,
+			data : params,
+			//data : JSON.stringify({ board_type: 'E', pageSize: '3', blockPage: '1'}),
 			//contentType: 'application/json; charset=utf-8',
 			dataType : 'json',
 			//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
 			//dataType: "text",	
-			success : function(resdata) { //success에 성공했을 때 동작 넣기.
+			success : function(data) {
+				//alert(JSON.stringify(data));
+				$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
 
-				//data= JSON.parse(resdata)
-
-				var data;
-
-				try {
-					data = JSON.parse(JSON.stringify(resdata));
-					//var data = JSON.parse( jsonData );								/* JSON 형식의 text 를 객체로 컨버팅 */
-				} catch (e) {
-
-					popLayerMsg(resdata + " : JSON 객체 파서 에러");
-					popLayerMsg(" 페이지 JSON 객체 파서 에러 errURL : " + document.location + " , sendURL : " + url);
-
-					return;
-				}
-
-				//alert(responseData.bbsList[0]);
-				//var data = JSON.parse(responseData);
-
-				//$("#bbs_content1").html("");
-
-				//var key = Object.keys(data["bbsList"][0]); // 키 값 가져오기 num, title, content, id, postdate,visitcount, name, commentCnt
-
-				var items = [];
-				var tagInHTML = "";
-				$.each(resdata.list, function(index, hotKeyWord) { // each로 모든 데이터 가져와서 items 배열에 넣고
-
-					if (index == 10)
-						return false; //break; true=>continue
-
-					//배열에 푸쉬후 뿌려줄 영역에 html메소드로 넣기
-					//items.push("<a class='title' href='bbs/bbs_detail.jsp?num=" + hotKeyWord.num + "&nowPage=1'>"+hotKeyWord.title+"</a>");
-					//<a href='${pageContext.request.contextPath}/board/service?category="+hotKeyWord.category_srl+"&subcategory="+hotKeyWord.subcategory_srl+"' title='"+hotKeyWord.searchword+"'><i class='fa fa-tag'></i> "+hotKeyWord.searchword+"</a>
-					tagInHTML += "<span><a href='${pageContext.request.contextPath}/board/service?category=" + hotKeyWord.category_srl + "&subcategory=" + hotKeyWord.subcategory_srl + "' title='10 Topics'><i class='fa fa-tag'></i> " + hotKeyWord.searchword + "</a></span>";
+					if(categoryVO.category_srl==1)
+					returnLabel += "<h2 class=\"category label label-default text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
+					else if(categoryVO.category_srl==1)
+					returnLabel += "<h2 class=\"category label label-primary text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
+					else if(categoryVO.category_srl==1)
+					returnLabel += "<h2 class=\"category label label-success text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
+					else if(categoryVO.category_srl==1)
+					returnLabel += "<h2 class=\"category label label-info text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
+					else if(categoryVO.category_srl==1)
+					returnLabel += "<h2 class=\"category label label-warning text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
+					else 
+					returnLabel += "<h2 class=\"category label label-danger text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
+							
+					
+					
+					return false;
 
 				});//each끝
-				//alert(tagInHTML);
-				$('#tags').html(tagInHTML);
-				//$('#tagsList').html(items.join(''));
+				
+
+				//alert(inHTML);
+				//$('#hot_engineer_div').html(items);
+
 			},
+
 			error : function(e) {
 				popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
-
 			}
+
 		});
+		
+		return returnLabel;
+	}
+	
+	//첫 페이지 로딩
+	$(document).ready(function() {
+
+		
+		var board_type = '<c:out value="${board_type}"/>';
+		
+		if(board_type=="E")
+		{
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$('#engineer-btn').addClass('btn-info');	
+		}else if(board_type=="C")
+		{
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$('#customer-btn').addClass('btn-info');	
+		}else{
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$('#engineer-btn').addClass('btn-info');	
+		}
+		
+		getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "${board_type}", "${searchType}", "${keyword}");
+		
+		getTagsList("${category_srl}", "${subcategory_srl}");
+		
+		
 
 	});
 </script>
@@ -491,7 +612,7 @@
 					<div class="col-sm-10 col-sm-offset-1">
 						<div class="text-center">
 							<div class="mb0">
-								<h2 class="title-h2">현재 카테고리 인기 검색어 목록</h2>
+								<h2 class="title-h2" id="cateTitle">현재 카테고리 인기 검색어 목록</h2>
 								<div id="tags" class="tags">
 									<a href="#" title="10 Topics"><i class="fa fa-tag"></i> 검색어</a>
 								</div>

@@ -67,15 +67,27 @@ $(document).ready(function() {
 	});
 
 	$("#allplanners-btn").on("click", function() {
+		$('#allplanners-btn').removeClass('btn-info');
+		$('#engineer-btn').removeClass('btn-info');
+		$('#customer-btn').removeClass('btn-info');
+		$(this).addClass('btn-info');
 		getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "", $('#searchType').val(), $('#keyword').val());
 	});
 
 	$("#engineer-btn").on("click", function() {
+		$('#allplanners-btn').removeClass('btn-info');
+		$('#engineer-btn').removeClass('btn-info');
+		$('#customer-btn').removeClass('btn-info');
+		$(this).addClass('btn-info');
 		//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "E", "${searchType}", "${keyword}");
 		getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "E", $('#searchType').val(), $('#keyword').val());
 	});
 
 	$("#customer-btn").on("click", function() {
+		$('#allplanners-btn').removeClass('btn-info');
+		$('#engineer-btn').removeClass('btn-info');
+		$('#customer-btn').removeClass('btn-info');
+		$(this).addClass('btn-info');
 		//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "C", "${searchType}", "${keyword}");
 		getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "C", $('#searchType').val(), $('#keyword').val());
 	});
@@ -312,18 +324,25 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 				inHTML += "<div class=\"col-md-4\">";
 				inHTML += "<div class=\"card card-blog\">";
 				inHTML += "<div class=\"card-image\">";
-				inHTML += "<a href=\"#pablo\"> <img class=\"img img-raised\" src=\""+serviceMainImgPath+boardVO.board_srl+"/images/"+boardVO.main_image+"\">";
+				
+				if(boardVO.main_image==null){
+					inHTML += "<a href=\"#pablo\"> <img class=\"img img-raised\" src=\"${pageContext.request.contextPath}/resources/images/noimage.gif\">";
+				}else{
+					inHTML += "<a href=\"#pablo\"> <img class=\"img img-raised\" src=\""+serviceMainImgPath+boardVO.main_image+"\">";
+				}
+				
 				inHTML += "</a>";
-				inHTML += "<div class=\"colored-shadow\" style=\"background-image: url('" + serviceMainImgPath + boardVO.board_srl + "/images/" + boardVO.main_image + "'); opacity: 1;\"></div>";
+				inHTML += "<div class=\"colored-shadow\" style=\"background-image: url('" + serviceMainImgPath + boardVO.main_image + "'); opacity: 1;\"></div>";
 				inHTML += "<div class=\"ripple-container\"></div>";
 				inHTML += "</div>";
 				inHTML += "<div class=\"card-content\">";
-				inHTML += "<h6 class=\"category text-info\">"+boardVO.category_srl+"-"+ boardVO.subcategory_srl + "</h6>";
+				//inHTML += "<h6 class=\"category text-info\">"+boardVO.category_srl+"-"+ boardVO.subcategory_srl + "</h6>";
+				inHTML += getLabelName(boardVO.category_srl, boardVO.subcategory_srl);
 				inHTML += "<h4 class=\"card-title\">";
 				inHTML += "<a href=\"${pageContext.request.contextPath}/board/service/"+boardVO.board_srl+"\">" + boardVO.title + "</a>";
 				inHTML += "</h4>";
 				inHTML += "<p class=\"card-description text-left\">";
-				
+				inHTML +="작성자 : "+boardVO.user_id+"<br/>";
 				inHTML +="서비스 지역 : " +boardVO.location+"<br/>";
 				inHTML +="서비스 비용 : " +boardVO.service_cost+"<br/>";
 				inHTML +="서비스 기간 : " +boardVO.service_time_start + " ~ " + boardVO.service_time_end+"<br/>";
@@ -348,6 +367,8 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 
 			$("#search_list_paging_div").html(data.pagingDiv);
 			
+			$(window).scrollTop(0);
+			
 			//alert(inHTML);
 			//$('#hot_engineer_div').html(items);
 
@@ -360,6 +381,61 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 	});
 }
 
+function getLabelName(category_srl,subcategory_srl){
+	
+	var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
+
+	var returnLabel ="";
+	var params = "category_srl="+category_srl+"&subcategory_srl="+subcategory_srl;
+
+	$.ajax({
+		async : false,
+		cache : false, // 캐시 사용 없애기
+		type : 'get',
+		url : url,
+		data : params,
+		//data : JSON.stringify({ board_type: 'E', pageSize: '3', blockPage: '1'}),
+		//contentType: 'application/json; charset=utf-8',
+		dataType : 'json',
+		//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
+		//dataType: "text",	
+		success : function(data) {
+			//alert(JSON.stringify(data));
+			$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
+
+				if(categoryVO.category_srl==1)
+				returnLabel += "<h6 class=\"category label label-default text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
+				else if(categoryVO.category_srl==1)
+				returnLabel += "<h6 class=\"category label label-primary text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
+				else if(categoryVO.category_srl==1)
+				returnLabel += "<h6 class=\"category label label-success text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
+				else if(categoryVO.category_srl==1)
+				returnLabel += "<h6 class=\"category label label-info text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
+				else if(categoryVO.category_srl==1)
+				returnLabel += "<h6 class=\"category label label-warning text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
+				else 
+				returnLabel += "<h6 class=\"category label label-danger text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
+						
+				
+				
+				return false;
+
+			});//each끝
+			
+
+			//alert(inHTML);
+			//$('#hot_engineer_div').html(items);
+
+		},
+
+		error : function(e) {
+			popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
+		}
+
+	});
+	
+	return returnLabel;
+}
 //TOP 인기 검색어
 	$(document).ready(function() {
 
@@ -415,7 +491,7 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 					//배열에 푸쉬후 뿌려줄 영역에 html메소드로 넣기
 					//items.push("<a class='title' href='bbs/bbs_detail.jsp?num=" + hotKeyWord.num + "&nowPage=1'>"+hotKeyWord.title+"</a>");
 					//<a href='${pageContext.request.contextPath}/board/engineer?category="+hotKeyWord.category_srl+"&subcategory="+hotKeyWord.subcategory_srl+"' title='"+hotKeyWord.searchword+"'><i class='fa fa-tag'></i> "+hotKeyWord.searchword+"</a>
-					tagInHTML += "<span><a href='${pageContext.request.contextPath}/board/service?category=" + hotKeyWord.category_srl + "&subcategory=" + hotKeyWord.subcategory_srl + "' title='10 Topics'><i class='fa fa-tag'></i> " + hotKeyWord.searchword + "</a></span>";
+					tagInHTML += "<span><a href='${pageContext.request.contextPath}/board/service?category_srl=" + hotKeyWord.category_srl + "&subcategory_srl=" + hotKeyWord.subcategory_srl + "' title='10 Topics'><i class='fa fa-tag'></i> " + hotKeyWord.searchword + "</a></span>";
 
 				});//each끝
 				//alert(tagInHTML);

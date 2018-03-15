@@ -21,8 +21,30 @@
 	select searchword, category_srl, subcategory_srl, searchcount, ranking 
 from
     ( select Wc.*, rownum ranking from 
-(select count(*) as searchcount,searchword,category_srl,subcategory_srl from op_wordcloud where searchdate>sysdate-7 group by searchword,category_srl,subcategory_srl order by searchcount desc) Wc )    
-    where ranking between 1 and 20
+(select count(*) as searchcount,searchword,category_srl,subcategory_srl from op_wordcloud where searchdate>sysdate-7 
+]]>
+
+ <choose>
+			<when test="category_srl == null or category_srl == ''">
+
+			</when>
+			<otherwise>
+				AND category_srl = #{category_srl}
+			</otherwise>
+		</choose>
+
+		<choose>
+			<when test="subcategory_srl == null or subcategory_srl == ''">
+
+			</when>
+			<otherwise>
+				AND subcategory_srl = #{subcategory_srl}
+			</otherwise>
+		</choose>
+		
+		<![CDATA[
+group by searchword,category_srl,subcategory_srl order by searchcount desc) Wc )    
+    where ranking Between #{pageStart} and #{pageEnd}
      		]]>
      		
  	</select>
