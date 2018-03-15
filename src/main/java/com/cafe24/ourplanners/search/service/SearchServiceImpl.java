@@ -17,14 +17,11 @@ import org.springframework.ui.Model;
 import com.cafe24.ourplanners.board.domain.BoardVO;
 import com.cafe24.ourplanners.board.domain.SubCategoryVO;
 import com.cafe24.ourplanners.board.domain.WordCloudVO;
-import com.cafe24.ourplanners.board.dto.BoardDTO;
-import com.cafe24.ourplanners.faq.domain.FAQVO;
-import com.cafe24.ourplanners.member.domain.MemberVO;
-import com.cafe24.ourplanners.notice.domain.NoticeVO;
 import com.cafe24.ourplanners.search.persistence.SearchDAO;
 import com.cafe24.ourplanners.util.Criteria;
 import com.cafe24.ourplanners.util.PagingUtil;
 import com.cafe24.ourplanners.util.SearchServiceBoardCriteria;
+import com.cafe24.ourplanners.util.ServiceBoardCriteria;
 import com.cafe24.ourplanners.util.wordcloud.KoreanWords;
 
 @Service
@@ -43,7 +40,7 @@ public class SearchServiceImpl implements SearchService {
 	}
 
 	@Override
-	public void getHotKeyWordList(Criteria cri, HashMap<String, Object> map) {
+	public void getHotKeyWordList(ServiceBoardCriteria cri, HashMap<String, Object> map) {
 		List<WordCloudVO> list = new ArrayList<WordCloudVO>();
 
 		list = dao.getHotKeyWordList(cri);

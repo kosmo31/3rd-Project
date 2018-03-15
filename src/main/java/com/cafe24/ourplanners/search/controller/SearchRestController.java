@@ -30,6 +30,8 @@ public class SearchRestController {
 	@RequestMapping(value = "/board/json/top_search_list.json")
 	public HashMap<String, Object> getHotKeyWordList(HttpServletRequest req, Model model,
 			@RequestParam(required = false, defaultValue = "1") Integer nowPage,
+			@RequestParam(required = false) Integer pageSize, 
+			@RequestParam(required = false) Integer blockPage,
 			@RequestParam(required = false, defaultValue = "") String board_type,
 			@RequestParam(required = false, defaultValue = "") Integer category_srl,
 			@RequestParam(required = false, defaultValue = "") Integer subcategory_srl,
@@ -37,33 +39,26 @@ public class SearchRestController {
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 
-		// 외부파일에서 페이지 설정값 가져오기(Environment 객체 사용)
-		int pageSize = 5;
-		int blockPage = 5;
+		if (pageSize == null || blockPage == null) {
+			ConfigurableApplicationContext ctx = new GenericXmlApplicationContext();
 
-		// 설정값으로 외부파일을 사용하기 위한 방법
-		// 1) 스프링 컨텍스트 파일을 생성한다.
-		ConfigurableApplicationContext ctx = new GenericXmlApplicationContext();
+			ConfigurableEnvironment env = ctx.getEnvironment();
 
-		// 2)Environment 객체를 생성
-		ConfigurableEnvironment env = ctx.getEnvironment();
+			MutablePropertySources propertySources = env.getPropertySources();
 
-		// 3)PropertySources를 가져옴
-		MutablePropertySources propertySources = env.getPropertySources();
+			try {
+				propertySources.addLast(new ResourcePropertySource("classpath:Environment.properties"));
+				if(pageSize == null)
+				pageSize = Integer.parseInt(env.getProperty("hotKeyword.pageSize"));
+				if(blockPage == null)
+				blockPage = Integer.parseInt(env.getProperty("hotKeyword.blockPage"));
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+			}
 
-		try {
-			// 4) 외부파일인 properties 파일을 가져와서 addLast로 추가한다
-			propertySources.addLast(new ResourcePropertySource("classpath:Environment.properties"));
-			// 5) getProperty로 해당 데이터를 읽어와서 변수에 저장한다.
-			// 단, 반환 결과가 String 타입이므로 사용하려는 int타입으로 캐스팅 후 사용해야 한다.
-			
-			pageSize = Integer.parseInt(env.getProperty("board.pageSize"));
-			blockPage = Integer.parseInt(env.getProperty("board.blockPage"));
-		} catch (Exception e) {
-			e.printStackTrace();
+			ctx.close();
 		}
-
-		ctx.close();
 
 		ServiceBoardCriteria cri = new ServiceBoardCriteria();
 

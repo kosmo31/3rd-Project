@@ -39,6 +39,12 @@ public class UploadFileUtils {
 
 		// 파일 경로(기존의 업로드경로+날짜별경로), 파일명을 받아 파일 객체 생성
 		File target = new File(uploadPath + savedPath, savedName);
+		
+		/*//폴더 없으면 생성
+		if(!target.exists()) {
+			target.mkdirs();
+		}*/
+		
 		// 임시 디렉토리에 업로드된 파일을 지정된 디렉토리로 복사
 		FileCopyUtils.copy(fileData, target);
 		// 썸네일을 생성하기 위한 파일의 확장자 검사

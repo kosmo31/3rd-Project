@@ -67,7 +67,7 @@
 
 		board_type = typeof board_type !== 'undefined' ? board_type : "";
 
-		var url = "${pageContext.request.contextPath}/board/engineer/comment/json/comment_list.json";
+		var url = "${pageContext.request.contextPath}/comment/json/comment_list.json";
 		var inHTML = "";
 		
 		var inHTMLPaging = "";

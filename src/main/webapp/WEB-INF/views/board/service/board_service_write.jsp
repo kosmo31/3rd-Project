@@ -151,7 +151,7 @@ $(document).ready(function(){
 		<form id="writeFrm">
 			
 			<input type="hidden" name="user_id" value="${loginUserInfo.user_id }" />
-			<input type="hidden" name="board_type" value="${board_type }" />
+			<input type="hidden" name="board_type" value="${board_type}" />
 		 	<input type="hidden" name="category_srl" value="${category_srl }" />
 			<input type="hidden" name="subcategory_srl" value="${subcategory_srl }" />
 			

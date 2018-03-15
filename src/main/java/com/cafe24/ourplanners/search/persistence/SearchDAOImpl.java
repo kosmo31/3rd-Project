@@ -11,9 +11,9 @@ import org.springframework.stereotype.Repository;
 import com.cafe24.ourplanners.board.domain.BoardVO;
 import com.cafe24.ourplanners.board.domain.SubCategoryVO;
 import com.cafe24.ourplanners.board.domain.WordCloudVO;
-import com.cafe24.ourplanners.board.dto.BoardDTO;
 import com.cafe24.ourplanners.util.Criteria;
 import com.cafe24.ourplanners.util.SearchServiceBoardCriteria;
+import com.cafe24.ourplanners.util.ServiceBoardCriteria;
 
 @Repository
 public class SearchDAOImpl implements SearchDAO {
@@ -31,7 +31,7 @@ public class SearchDAOImpl implements SearchDAO {
 		 
 	}
 	@Override
-	public List<WordCloudVO> getHotKeyWordList(Criteria cri) {
+	public List<WordCloudVO> getHotKeyWordList(ServiceBoardCriteria cri) {
 		
 		return sqlSession.selectList(wordCloudMapper + ".getHotWordCloud", cri);
 	}

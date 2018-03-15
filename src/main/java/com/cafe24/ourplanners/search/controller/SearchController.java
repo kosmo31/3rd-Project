@@ -120,6 +120,19 @@ public class SearchController {
 
 		model.addAttribute("board_srl", board_srl);
 
+		BoardVO bVO = service.readBoard(board_srl, model);
+		
+		String board_type = bVO.getBoard_type();
+		Integer category_srl = bVO.getCategory_srl();
+		Integer subcategory_srl = bVO.getSubcategory_srl();
+		
+		
+		model.addAttribute("board_type", board_type);
+		if (category_srl != null)
+			model.addAttribute("category_srl", category_srl);
+		if (subcategory_srl != null)
+			model.addAttribute("subcategory_srl", subcategory_srl);
+		
 		return "board/service/board_service_view";
 	}
 
