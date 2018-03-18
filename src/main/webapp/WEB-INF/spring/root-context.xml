@@ -11,7 +11,10 @@
 	
 			<!-- c3p0가 제공하는 ComboPooledDataSource 클래스를 이용하여 DataSource를 설정할 수 있다. -->
 	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
-		<property name="driverClass" value="oracle.jdbc.driver.OracleDriver" />
+	 
+		<property name="driverClass" value="net.sf.log4jdbc.sql.jdbcapi.DriverSpy"/>
+		
+		<!-- <property name="driverClass" value="oracle.jdbc.driver.OracleDriver" /> -->
 		<property name="jdbcUrl" value="jdbc:oracle:thin:@localhost:1521:orcl" />
 		<property name="user" value="ko31ourplanners" />
 		<property name="password" value="1234" />

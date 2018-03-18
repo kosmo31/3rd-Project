@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.kosmo.project03">
+	<logger name="com.cafe24.ourplanners">
 		<level value="info" />
 	</logger>
 	
