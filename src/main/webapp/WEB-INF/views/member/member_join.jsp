@@ -1457,7 +1457,7 @@ body{
 
 					<div class=" container">
 						<div class="text-center">
-							<button class="btn btn-info join-one-btn" type="button" onclick="location.href='${pageContext.request.contextPath}';">확인</button>
+							<button class="btn btn-info join-one-btn" type="button" onclick="location.href='${pageContext.request.contextPath}/member/login';">확인</button>
 						</div>
 					</div>
 
