@@ -41,35 +41,33 @@
 					inHTML += "<div class=\"col-md-4\">";
 					inHTML += "<div class=\"card card-blog\">";
 					inHTML += "<div class=\"card-image\">";
-					if(hotEngineerBoardList.main_image==null){
+					if (hotEngineerBoardList.main_image == null) {
 						inHTML += "<a href=\"#pablo\"> <img style=\"height:270px;\" class=\"img img-raised\" src=\"${pageContext.request.contextPath}/resources/images/op_main_img.png\">";
-					}else{
+					} else {
 						inHTML += "<a href=\"#pablo\"> <img style=\"height:270px;\" class=\"img img-raised\" src=\""+serviceMainImgPath+hotEngineerBoardList.main_image+"\">";
 					}
-					
-					
-					
+
 					inHTML += "</a>";
 					inHTML += "<div class=\"colored-shadow\" style=\"background-image: url('" + serviceMainImgPath + hotEngineerBoardList.main_image + "'); opacity: 1;\"></div>";
 					inHTML += "<div class=\"ripple-container\"></div>";
 					inHTML += "</div>";
 					inHTML += "<div class=\"card-content\">";
-					
+
 					//inHTML += "<h6 class=\"category label label-primary text-danger\">" + hotEngineerBoardList.category_srl +"-"+ hotEngineerBoardList.subcategory_srl + "</h6>";
 					inHTML += getLabelName(hotEngineerBoardList.category_srl, hotEngineerBoardList.subcategory_srl);
 					inHTML += "<h4 class=\"card-title\">";
 					inHTML += "<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\">" + hotEngineerBoardList.title + "</a>";
 					inHTML += "</h4>";
 					inHTML += "<p class=\"card-description text-left\">";
-					
-					inHTML +="작성자 : "+hotEngineerBoardList.user_id+"<br/>";
-					inHTML +="서비스 지역 : " +hotEngineerBoardList.location+"<br/>";
-					inHTML +="서비스 비용 : " +hotEngineerBoardList.service_cost+"<br/>";
-					inHTML +="서비스 기간 : " +hotEngineerBoardList.service_time_start + " ~ " + hotEngineerBoardList.service_time_end+"<br/>";
-					inHTML +="<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\"> 자세히 보기 </a>";
-					
+
+					inHTML += "작성자 : " + hotEngineerBoardList.user_id + "<br/>";
+					inHTML += "서비스 지역 : " + hotEngineerBoardList.location + "<br/>";
+					inHTML += "서비스 비용 : " + numberWithCommas(hotEngineerBoardList.service_cost) + "<br/>";
+					inHTML += "서비스 기간 : " + hotEngineerBoardList.service_time_start + " ~ " + hotEngineerBoardList.service_time_end + "<br/>";
+					inHTML += "<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\"> 자세히 보기 </a>";
+
 					//inHTML += replaceContents(hotEngineerBoardList.contents) + "<a href=\"./board/engineer/"+hotEngineerBoardList.board_srl+"\"> 자세히 보기 </a>";
-					
+
 					inHTML += "</p>";
 					inHTML += "</div>";
 					inHTML += "</div>";
@@ -79,8 +77,12 @@
 					//inHTML+="<span><a href='./board/engineer/"+hotEngineerBoardList.board_srl+"?category="+hotKeyWord.category_srl+"&subcategory="+hotKeyWord.subcategory_srl+"'>"+hotKeyWord.searchword+"</a></span>");						
 
 				});//each끝
-				$('#hot_engineer_div').html(inHTML);
 
+				if (jQuery.isEmptyObject(data.list)) {
+					$('#hot_engineer_div').html("<div class=\"row text-center\">인기 게시물이 없습니다.</div>");
+				} else {
+					$('#hot_engineer_div').html(inHTML);
+				}
 				//alert(inHTML);
 				//$('#hot_engineer_div').html(items);
 
@@ -129,22 +131,21 @@
 					inHTML += "<div class=\"ripple-container\"></div>";
 					inHTML += "</div>";
 					inHTML += "<div class=\"card-content\">";
-					
+
 					//inHTML += "<h6 class=\"category label label-primary text-danger\">" + hotEngineerBoardList.category_srl +"-"+ hotEngineerBoardList.subcategory_srl + "</h6>";
 					inHTML += getLabelName(hotEngineerBoardList.category_srl, hotEngineerBoardList.subcategory_srl);
 					inHTML += "<h4 class=\"card-title\">";
 					inHTML += "<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\">" + hotEngineerBoardList.title + "</a>";
 					inHTML += "</h4>";
 					inHTML += "<p class=\"card-description text-left\">";
-					
+
 					//inHTML += replaceContents(hotEngineerBoardList.contents) + "<a href=\"./board/client/"+hotEngineerBoardList.board_srl+"\"> 자세히 보기 </a>";
-					inHTML +="작성자 : "+hotEngineerBoardList.user_id+"<br/>";
-					inHTML +="서비스 지역 : " +hotEngineerBoardList.location+"<br/>";
-					inHTML +="서비스 비용 : " +hotEngineerBoardList.service_cost+"<br/>";
-					inHTML +="서비스 기간 : " +hotEngineerBoardList.service_time_start + " ~ " + hotEngineerBoardList.service_time_end+"<br/>";
-					inHTML +="<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\"> 자세히 보기 </a>";
-					
-					
+					inHTML += "작성자 : " + hotEngineerBoardList.user_id + "<br/>";
+					inHTML += "서비스 지역 : " + hotEngineerBoardList.location + "<br/>";
+					inHTML += "서비스 비용 : " + numberWithCommas(hotEngineerBoardList.service_cost) + "<br/>";
+					inHTML += "서비스 기간 : " + hotEngineerBoardList.service_time_start + " ~ " + hotEngineerBoardList.service_time_end + "<br/>";
+					inHTML += "<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\"> 자세히 보기 </a>";
+
 					inHTML += "</p>";
 					inHTML += "</div>";
 					inHTML += "</div>";
@@ -154,8 +155,12 @@
 					//inHTML+="<span><a href='./board/engineer/"+hotEngineerBoardList.board_srl+"?category="+hotKeyWord.category_srl+"&subcategory="+hotKeyWord.subcategory_srl+"'>"+hotKeyWord.searchword+"</a></span>");						
 
 				});//each끝
-				$('#hot_client_div').html(inHTML);
 
+				if (jQuery.isEmptyObject(data.list)) {
+					$('#hot_client_div').html("<div class=\"row text-center\">인기 게시물이 없습니다.</div>");
+				} else {
+					$('#hot_client_div').html(inHTML);
+				}
 				//alert(inHTML);
 				//$('#hot_engineer_div').html(items);
 
@@ -168,13 +173,13 @@
 		});
 
 	});
-	
-	function getLabelName(category_srl,subcategory_srl){
-		
+
+	function getLabelName(category_srl, subcategory_srl) {
+
 		var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
 
-		var returnLabel ="";
-		var params = "category_srl="+category_srl+"&subcategory_srl="+subcategory_srl;
+		var returnLabel = "";
+		var params = "category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl;
 
 		$.ajax({
 			async : false,
@@ -191,25 +196,22 @@
 				//alert(JSON.stringify(data));
 				$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
 
-					if(categoryVO.category_srl==1)
-					returnLabel += "<h6 class=\"category label label-default text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
-					else if(categoryVO.category_srl==1)
-					returnLabel += "<h6 class=\"category label label-primary text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
-					else if(categoryVO.category_srl==1)
-					returnLabel += "<h6 class=\"category label label-success text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
-					else if(categoryVO.category_srl==1)
-					returnLabel += "<h6 class=\"category label label-info text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
-					else if(categoryVO.category_srl==1)
-					returnLabel += "<h6 class=\"category label label-warning text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
-					else 
-					returnLabel += "<h6 class=\"category label label-danger text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h6>";
-							
-					
-					
+					if (categoryVO.category_srl == 1)
+						returnLabel += "<h6 class=\"category label label-default text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h6>";
+					else if (categoryVO.category_srl == 2)
+						returnLabel += "<h6 class=\"category label label-primary text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h6>";
+					else if (categoryVO.category_srl == 3)
+						returnLabel += "<h6 class=\"category label label-success text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h6>";
+					else if (categoryVO.category_srl == 4)
+						returnLabel += "<h6 class=\"category label label-info text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h6>";
+					else if (categoryVO.category_srl == 5)
+						returnLabel += "<h6 class=\"category label label-warning text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h6>";
+					else
+						returnLabel += "<h6 class=\"category label label-danger text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h6>";
+
 					return false;
 
 				});//each끝
-				
 
 				//alert(inHTML);
 				//$('#hot_engineer_div').html(items);
@@ -221,10 +223,15 @@
 			}
 
 		});
-		
+
 		return returnLabel;
 	}
 
+	//세자리 콤마
+	function numberWithCommas(x) {
+	    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	
 	function replaceContents(contents) {
 		//이미지 제거
 		var img_tag = /<IMG(.*?)>/gi;
@@ -235,22 +242,20 @@
 		return contents;
 	}
 
-/* 
-	var x = "<span><i>Hello</i> <b>world</b>!</span>";
-	console.log(removeTags(x)); // Hello world!
-	console.log(removeTags(x, ["span", "i"])); // <span><i>Hello</i> world!</span>
- */
- 
-	function removeTags(string, array){
-		  return array ? string.split("<").filter(function(val){ return f(array, val); }).map(function(val){ return f(array, val); }).join("") : string.split("<").map(function(d){ return d.split(">").pop(); }).join("");
-		  function f(array, value){
-		    return array.map(function(d){ return value.includes(d + ">"); }).indexOf(true) != -1 ? "<" + value : value.split(">")[1];
-		  }
-		}
+	/* 
+	 var x = "<span><i>Hello</i> <b>world</b>!</span>";
+	 console.log(removeTags(x)); // Hello world!
+	 console.log(removeTags(x, ["span", "i"])); // <span><i>Hello</i> world!</span>
 
+	
+	 function removeTags(string, array){
+	 return array ? string.split("<").filter(function(val){ return f(array, val); }).map(function(val){ return f(array, val); }).join("") : string.split("<").map(function(d){ return d.split(">").pop(); }).join("");
+	 function f(array, value){
+	 return array.map(function(d){ return value.includes(d + ">"); }).indexOf(true) != -1 ? "<" + value : value.split(">")[1];
+	 }
+	 }
+	 */
 
-		
-		
 	$(window).load(function() {
 		//slide(슬라이드부분)
 		// Instantiate the Bootstrap carousel

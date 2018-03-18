@@ -59,22 +59,21 @@
 
 		//                  (nowPage, category_srl, subcategory_srl , board_type ,searchType,keyword) 		
 		//최초 페이지 로딩시 리스트 목록 가져오기	
-		
 
 		$("#writeBoardBtn").on("click", function() {
 			getWriteFormBoard();
 		});
 
 		$("#allplanners-btn").on("click", function() {
-			
+
 			$('#allplanners-btn').removeClass('btn-info');
 			$('#engineer-btn').removeClass('btn-info');
 			$('#customer-btn').removeClass('btn-info');
 			$(this).addClass('btn-info');
-			
+
 			getServiceSearchList(1, $('#category_srl').val(), $('#subcategory_srl').val(), "", $('#searchType').val(), $('#keyword').val());
 		});
-		
+
 		$("#engineer-btn").on("click", function() {
 			$('#allplanners-btn').removeClass('btn-info');
 			$('#engineer-btn').removeClass('btn-info');
@@ -111,18 +110,19 @@
 			} else {
 
 				getServiceSearchList(1, category_srl, subcategory_srl, board_type, searchType, keyword);
+
 			}
 
 		});
-		
+
 		//검색폼에서 엔터로 검색 
 		$('#keyword').keydown(function(event) {
-		    // enter has keyCode = 13, change it if you want to use another button
-		    if (event.keyCode == 13) {
-		    	$('#searchBoardBtn').trigger('click');
-		      return false;
-		    }
-		  });
+			// enter has keyCode = 13, change it if you want to use another button
+			if (event.keyCode == 13) {
+				$('#searchBoardBtn').trigger('click');
+				return false;
+			}
+		});
 
 		//글쓰기 폼 가져오기
 		function getWriteFormBoard() {
@@ -130,15 +130,27 @@
 			//$("#faqHead").text("FAQ 글쓰기");
 
 			var category_srl = $('#category_srl').val();
-		
-		var subcategory_srl = $('#subcategory_srl').val();
-		
-		var board_type = $('#board_type').val();
-		
-		var params = "board_type=" + board_type + "&category_srl=" + category_srl+"&subcategory_srl="+subcategory_srl;
-		
-		
-		
+
+			var subcategory_srl = $('#subcategory_srl').val();
+
+			var board_type = $('#board_type').val();
+
+			if (isEmpty(board_type)) {
+				popLayerMsg("게시판 타입(기술자/의뢰인)을 선택하세요.");
+				return false;
+			}
+
+			if (isEmpty(category_srl)) {
+				popLayerMsg("카테고리를 선택하세요.");
+				return false;
+			}
+			if (isEmpty(subcategory_srl)) {
+				popLayerMsg("서브 카테고리를 선택하세요.");
+				return false;
+			}
+
+			var params = "board_type=" + board_type + "&category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl;
+
 			$.ajax({
 				url : "${pageContext.request.contextPath}/board/service/new",
 				type : "get",
@@ -150,14 +162,14 @@
 					board_type : board_type,
 					category_srl : category_srl,
 					subcategory_srl : subcategory_srl
-			}), */
-			
-			success : function(d) {
+				}), */
+
+				success : function(d) {
 					//alert(d);
 					$("#boardBody").empty();
 					$("#boardBody").html(d);
 				},
-				
+
 				error : function(e) {
 					popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
 				}
@@ -175,8 +187,20 @@
 	}
 
 	function selectSubCategory(category_srl, subcategory_srl) {
-		
+
 		getServiceSearchList(1, category_srl, subcategory_srl);
+	}
+
+	function keyExists(key, search) {
+		if (!search || (search.constructor !== Array && search.constructor !== Object)) {
+			return false;
+		}
+		for (var i = 0; i < search.length; i++) {
+			if (search[i] === key) {
+				return true;
+			}
+		}
+		return key in search;
 	}
 
 	function initSideNav(category_srl) {
@@ -210,17 +234,26 @@
 				var inHTML = "";
 
 				var inHTMLCategoryName = "";
-
+				var count = 0;
 				$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
+					if (isEmpty(category_srl)) {
+						if (!keyExists(categoryVO.category_name, items)) {
+							count++;
+							inHTML += "<li><a href=\"javascript:selectCategory(" + categoryVO.category_srl + ")\"><span>" + count + "</span>" + categoryVO.category_name + "</a></li>";
+							items.push(categoryVO.category_name);
+							inHTMLCategoryName = categoryVO.category_name;
+						}
 
-					inHTML += "<li><a href=\"javascript:selectSubCategory(" + categoryVO.category_srl + "," + categoryVO.subcategory_srl + ")\"><span>" + index + "</span>" + categoryVO.subcategory_name + "</a></li>";
-
-					inHTMLCategoryName = categoryVO.category_name;
+					} else {
+						count++;
+						inHTML += "<li><a href=\"javascript:selectSubCategory(" + categoryVO.category_srl + "," + categoryVO.subcategory_srl + ")\"><span>" + count + "</span>" + categoryVO.subcategory_name + "</a></li>";
+						inHTMLCategoryName = categoryVO.category_name + " 서브 카테고리";
+					}
 
 				});//each끝
 
 				if (isEmpty(category_srl)) {
-					$('#CategoryTitle').html("전체");
+					$('#CategoryTitle').html("전체 카테고리");
 				} else {
 					$('#CategoryTitle').html(inHTMLCategoryName);
 				}
@@ -245,78 +278,57 @@
 		//alert(params);
 		getServiceSearchList(nowPage, category_srl, subcategory_srl, board_type, searchType, keyword);
 	}
-	
-	function getTagsList(category_srl,subcategory_srl){
-		
+
+	function getTagsList(category_srl, subcategory_srl) {
+
 		var url = "${pageContext.request.contextPath}/board/json/top_search_list.json";
 
 		category_srl = typeof category_srl !== 'undefined' ? category_srl : "";
-		
+
 		subcategory_srl = typeof subcategory_srl !== 'undefined' ? subcategory_srl : "";
-		
+
 		if (isEmpty(category_srl)) {
 			category_srl = "";
 		}
-		
+
 		if (isEmpty(subcategory_srl)) {
 			subcategory_srl = "";
 		}
-		
-		var params = "category_srl="+category_srl+"&subcategory_srl="+subcategory_srl;
-		
+
+		var params = "category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl;
+
 		//태그리스트 내용 지우기
 		$("#tags").empty();
 
-		//var params="";
-		//alert(url);
+		//alert(url+"?"+params);
 
 		$.ajax({
 			cache : false, // 캐시 사용 없애기
-			type : 'post',
+			type : 'get',
 			url : url,
-			param : params,
+			data : params,
 			//contentType: 'application/json; charset=utf-8',
 			dataType : 'json',
 			//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
 			//dataType: "text",	
-			success : function(resdata) { //success에 성공했을 때 동작 넣기.
-
-				//data= JSON.parse(resdata)
-
-				var data;
-
-				try {
-					data = JSON.parse(JSON.stringify(resdata));
-					//var data = JSON.parse( jsonData );								/* JSON 형식의 text 를 객체로 컨버팅 */
-				} catch (e) {
-
-					popLayerMsg(resdata + " : JSON 객체 파서 에러");
-					popLayerMsg(" 페이지 JSON 객체 파서 에러 errURL : " + document.location + " , sendURL : " + url);
-
-					return;
-				}
-
-				//alert(responseData.bbsList[0]);
-				//var data = JSON.parse(responseData);
-
-				//$("#bbs_content1").html("");
+			success : function(data) { //success에 성공했을 때 동작 넣기.
 
 				//var key = Object.keys(data["bbsList"][0]); // 키 값 가져오기 num, title, content, id, postdate,visitcount, name, commentCnt
 
 				var items = [];
 				var tagInHTML = "";
-				$.each(resdata.list, function(index, hotKeyWord) { // each로 모든 데이터 가져와서 items 배열에 넣고
 
+				$.each(data.list, function(index, hotKeyWord) { // each로 모든 데이터 가져와서 items 배열에 넣고
 					if (index == 10)
 						return false; //break; true=>continue
 
+					//alert(hotKeyWord.ranking);
 					//배열에 푸쉬후 뿌려줄 영역에 html메소드로 넣기
 					//items.push("<a class='title' href='bbs/bbs_detail.jsp?num=" + hotKeyWord.num + "&nowPage=1'>"+hotKeyWord.title+"</a>");
 					//<a href='${pageContext.request.contextPath}/board/service?category="+hotKeyWord.category_srl+"&subcategory="+hotKeyWord.subcategory_srl+"' title='"+hotKeyWord.searchword+"'><i class='fa fa-tag'></i> "+hotKeyWord.searchword+"</a>
 					tagInHTML += "<span><a href='${pageContext.request.contextPath}/board/service?category_srl=" + hotKeyWord.category_srl + "&subcategory_srl=" + hotKeyWord.subcategory_srl + "' title='10 Topics'><i class='fa fa-tag'></i> " + hotKeyWord.searchword + "</a></span>";
 
 				});//each끝
-				//alert(tagInHTML);
 				$('#tags').html(tagInHTML);
 				//$('#tagsList').html(items.join(''));
 			},
@@ -325,7 +337,7 @@
 
 			}
 		});
-		
+
 	}
 
 	function getServiceSearchList(nowPage, category_srl, subcategory_srl, board_type, searchType, keyword) {
@@ -373,13 +385,30 @@
 
 		$('#board_type').val(board_type);
 
+		if (board_type == "E") {
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$('#engineer-btn').addClass('btn-info');
+		} else if (board_type == "C") {
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$('#customer-btn').addClass('btn-info');
+		} else {
+			$('#allplanners-btn').removeClass('btn-info');
+			$('#engineer-btn').removeClass('btn-info');
+			$('#customer-btn').removeClass('btn-info');
+			$('#allplanners-btn').addClass('btn-info');
+		}
+
 		initSideNav(category_srl);
-	
+
 		getTagsList(category_srl, subcategory_srl);
-		
-		if (!isEmpty(subcategory_srl))
-		$("#cateTitle").html(setCategoryTitle(category_srl,subcategory_srl));
-		
+
+		if (!isEmpty(category_srl)||!isEmpty(subcategory_srl))
+		$("#cateTitle").html(setCategoryTitle(category_srl, subcategory_srl));
+
 		var url = "${pageContext.request.contextPath}/board/json/service_list.json";
 		var serviceMainImgPath = "${pageContext.request.contextPath}/resources/upload/service/";
 		//내용 지우기
@@ -387,8 +416,7 @@
 		$("#boardPagingDiv").empty();
 
 		var params = "nowPage=" + nowPage + "&category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl + "&board_type=" + board_type + "&pageSize=10&blockPage=10&keyword=" + keyword + "&searchType=" + searchType;
-		
-		
+
 		//alert(params);
 
 		$.ajax({
@@ -460,7 +488,7 @@
 				} else {
 					$('#boardBody').html(inHTML);
 				}
-
+				getTagsList(category_srl, subcategory_srl);
 				$("#boardPagingDiv").html(data.pagingDiv);
 
 				$(window).scrollTop(0);
@@ -496,12 +524,19 @@
 		});
 	}
 
-function setCategoryTitle(category_srl,subcategory_srl){
-		
+	function setCategoryTitle(category_srl, subcategory_srl) {
+
 		var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
 
-		var returnLabel ="";
-		var params = "category_srl="+category_srl+"&subcategory_srl="+subcategory_srl;
+		var returnLabel = "";
+
+		subcategory_srl = typeof subcategory_srl !== 'undefined' ? subcategory_srl : "";
+
+		if (isEmpty(subcategory_srl)) {
+			subcategory_srl = "";
+		}
+
+		var params = "category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl;
 
 		$.ajax({
 			async : false,
@@ -518,25 +553,48 @@ function setCategoryTitle(category_srl,subcategory_srl){
 				//alert(JSON.stringify(data));
 				$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
 
-					if(categoryVO.category_srl==1)
-					returnLabel += "<h2 class=\"category label label-default text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-					else if(categoryVO.category_srl==1)
-					returnLabel += "<h2 class=\"category label label-primary text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-					else if(categoryVO.category_srl==1)
-					returnLabel += "<h2 class=\"category label label-success text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-					else if(categoryVO.category_srl==1)
-					returnLabel += "<h2 class=\"category label label-info text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-					else if(categoryVO.category_srl==1)
-					returnLabel += "<h2 class=\"category label label-warning text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-					else 
-					returnLabel += "<h2 class=\"category label label-danger text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-							
+					
+				
 					
 					
+					if (isEmpty(subcategory_srl)) {
+						
+						categoryVO.category_name = categoryVO.category_name + " 인기 검색어 목록";
+						
+						if (categoryVO.category_srl == 1)
+							returnLabel += "<h2 class=\"category label label-default text-danger\">" + categoryVO.category_name + "</h2>";
+						else if (categoryVO.category_srl == 2)
+							returnLabel += "<h2 class=\"category label label-primary text-danger\">" + categoryVO.category_name + "</h2>";
+						else if (categoryVO.category_srl == 3)
+							returnLabel += "<h2 class=\"category label label-success text-danger\">" + categoryVO.category_name  + "</h2>";
+						else if (categoryVO.category_srl == 4)
+							returnLabel += "<h2 class=\"category label label-info text-danger\">" + categoryVO.category_name  + "</h2>";
+						else if (categoryVO.category_srl == 5)
+							returnLabel += "<h2 class=\"category label label-warning text-danger\">" + categoryVO.category_name + "</h2>";
+						else
+							returnLabel += "<h2 class=\"category label label-danger text-danger\">" + categoryVO.category_name  + "</h2>";
+
+					} else {
+
+						categoryVO.subcategory_name = categoryVO.subcategory_name + " 인기 검색어 목록";
+						
+						if (categoryVO.category_srl == 1)
+							returnLabel += "<h2 class=\"category label label-default text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+						else if (categoryVO.category_srl == 2)
+							returnLabel += "<h2 class=\"category label label-primary text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+						else if (categoryVO.category_srl == 3)
+							returnLabel += "<h2 class=\"category label label-success text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+						else if (categoryVO.category_srl == 4)
+							returnLabel += "<h2 class=\"category label label-info text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+						else if (categoryVO.category_srl == 5)
+							returnLabel += "<h2 class=\"category label label-warning text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+						else
+							returnLabel += "<h2 class=\"category label label-danger text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+					}
+				
 					return false;
 
 				});//each끝
-				
 
 				//alert(inHTML);
 				//$('#hot_engineer_div').html(items);
@@ -548,40 +606,35 @@ function setCategoryTitle(category_srl,subcategory_srl){
 			}
 
 		});
-		
+
 		return returnLabel;
 	}
-	
+
 	//첫 페이지 로딩
 	$(document).ready(function() {
 
-		
 		var board_type = '<c:out value="${board_type}"/>';
-		
-		if(board_type=="E")
-		{
+
+		if (board_type == "E") {
 			$('#allplanners-btn').removeClass('btn-info');
 			$('#engineer-btn').removeClass('btn-info');
 			$('#customer-btn').removeClass('btn-info');
-			$('#engineer-btn').addClass('btn-info');	
-		}else if(board_type=="C")
-		{
+			$('#engineer-btn').addClass('btn-info');
+		} else if (board_type == "C") {
 			$('#allplanners-btn').removeClass('btn-info');
 			$('#engineer-btn').removeClass('btn-info');
 			$('#customer-btn').removeClass('btn-info');
-			$('#customer-btn').addClass('btn-info');	
-		}else{
+			$('#customer-btn').addClass('btn-info');
+		} else {
 			$('#allplanners-btn').removeClass('btn-info');
 			$('#engineer-btn').removeClass('btn-info');
 			$('#customer-btn').removeClass('btn-info');
-			$('#engineer-btn').addClass('btn-info');	
+			$('#allplanners-btn').addClass('btn-info');
 		}
-		
+
 		getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "${board_type}", "${searchType}", "${keyword}");
-		
+
 		getTagsList("${category_srl}", "${subcategory_srl}");
-		
-		
 
 	});
 </script>
@@ -612,7 +665,7 @@ function setCategoryTitle(category_srl,subcategory_srl){
 					<div class="col-sm-10 col-sm-offset-1">
 						<div class="text-center">
 							<div class="mb0">
-								<h2 class="title-h2" id="cateTitle">현재 카테고리 인기 검색어 목록</h2>
+								<h2 class="title-h2" id="cateTitle">전체 카테고리 인기 검색어 목록</h2>
 								<div id="tags" class="tags">
 									<a href="#" title="10 Topics"><i class="fa fa-tag"></i> 검색어</a>
 								</div>
@@ -643,11 +696,7 @@ function setCategoryTitle(category_srl,subcategory_srl){
 								</select>
 							</div>
 							<div class="input-group col-xs-4">
-								<input type="hidden" id="nowPage" value="${nowPage}"> 
-								<input type="hidden" id="category_srl" value="${ category_srl}"> 
-								<input type="hidden" id="subcategory_srl" value="${subcategory_srl }"> 
-								<input type="hidden" id="board_type" value="${board_type }"> 
-								<input type="text" class="form-control" placeholder="검색어" id="keyword" name="keyword" value="${keyword}" />
+								<input type="hidden" id="nowPage" value="${nowPage}"> <input type="hidden" id="category_srl" value="${ category_srl}"> <input type="hidden" id="subcategory_srl" value="${subcategory_srl }"> <input type="hidden" id="board_type" value="${board_type }"> <input type="text" class="form-control" placeholder="검색어" id="keyword" name="keyword" value="${keyword}" />
 								<div class="input-group-btn">
 									<button class="btn btn-default margin-right-15" id="searchBoardBtn">
 										<i class="glyphicon glyphicon-search"></i>

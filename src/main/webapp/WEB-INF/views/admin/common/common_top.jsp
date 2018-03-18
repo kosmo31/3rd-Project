@@ -87,10 +87,10 @@
 					
 					<c:choose>
 								<c:when test="${loginUserInfo.profile_img_path==null}">
-									<img src="${pageContext.request.contextPath}/resources/images/main_user_gray.png" alt="user avatar" width="30" class="p-r-5">
+									<img id="top_profile_Img" src="${pageContext.request.contextPath}/resources/images/main_user_gray.png" alt="user avatar" width="30" class="p-r-5">
 								</c:when>
 								<c:otherwise>
-								<img src="${pageContext.request.contextPath}/upload/displayFile?fileName=${loginUserInfo.profile_img_path}&directory=member/${loginUserInfo.member_srl}/profile" alt="user avatar" width="30" class="p-r-5">
+								<img id="top_profile_Img" src="${pageContext.request.contextPath}/upload/displayFile?fileName=${loginUserInfo.profile_img_path}&directory=member/${loginUserInfo.member_srl}/profile" alt="user avatar" width="30" class="p-r-5">
 									
 								</c:otherwise>
 							</c:choose>

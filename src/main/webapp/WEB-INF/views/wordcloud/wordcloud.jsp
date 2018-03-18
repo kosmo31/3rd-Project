@@ -30,7 +30,7 @@ $(document).ready(function() {
 			cache : false, // 캐시 사용 없애기
 			type: 'post',
 			url: url,
-			//param : params,
+			//data : params,
 			//contentType: 'application/json; charset=utf-8',
 		    dataType:'json',      
 		    //contentType: "application/x-www-form-urlencoded; charset=utf-8",				
@@ -440,6 +440,7 @@ function limitCharacters(textid, limit, spanid)
 						<div class="col-xs-12">
 							<div class="col-xs-12 search-group form-inline">
 								<select class="form-control" id="board_type" name="board_type">
+									<option value="">전체</option>
 									<option value="E">기술자</option>
 									<option value="C">요청자</option>
 								</select>

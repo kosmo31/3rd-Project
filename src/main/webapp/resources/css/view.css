@@ -60,7 +60,7 @@
 	text-align: right;
 }
 
-#btn-delete, #btn-modify, #btn-list {
+#btn-delete, #btn-modify, #btn-list ,#boardListBtn{
 	margin-left: 10px;
 	border-radius: 0px;
 	height: 35px;
