@@ -327,7 +327,7 @@ var setColor = function(color) {
 
 	var ctx = getContextPath();
 	
-	$('#theme-color').attr("href", absoluteUrl+"/resources/pixit/admin/assets/css/colors/" + color_ + ".css");
+	$('#theme-color').attr("href", "../resources/pixit/admin/assets/css/colors/" + color_ + ".css");
 	if ($.cookie) {
 		$.cookie('style-color', color);
 	}
@@ -398,9 +398,9 @@ var ctx = getContextPath();
 /* If skin color selected in menu, we display it */
 if ($.cookie('style-color')) {
 	var color_ = 'color-' + $.cookie('style-color');
-	$('#theme-color').attr("href", absoluteUrl+"/resources/pixit/admin/assets/css/colors/" + color_ + ".css");
+	$('#theme-color').attr("href", "../resources/pixit/admin/assets/css/colors/" + color_ + ".css");
 } else {
-	$('#theme-color').attr("href", absoluteUrl+"/resources/pixit/admin/assets/css/colors/color-dark.css");
+	$('#theme-color').attr("href", "../resources/pixit/admin/assets/css/colors/color-dark.css");
 }
 
 // *********************************** CUSTOM FUNCTIONS
