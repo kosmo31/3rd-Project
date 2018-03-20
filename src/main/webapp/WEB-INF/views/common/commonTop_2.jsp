@@ -1,13 +1,72 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <script>
+var isEmpty = function(value) {
+	if (value == "" || value == null || value == undefined || (value != null && typeof value == "object" && !Object.keys(value).length)) {
+		return true
+	} else {
+		return false
+	}
+};
+function keyExists(key, search) {
+	if (!search || (search.constructor !== Array && search.constructor !== Object)) {
+		return false;
+	}
+	for (var i = 0; i < search.length; i++) {
+		if (search[i] === key) {
+			return true;
+		}
+	}
+	return key in search;
+}
+
 $(document).ready(function() {
-	initTopNav(1);
-	initTopNav(2);
-	initTopNav(3);
-	initTopNav(4);
-	initTopNav(5);
-	initTopNav(6);
+	maxCategoryCount = getCategoryCount();
+	for (var i = 1; i <= maxCategoryCount; i++) {
+		initTopNav(i);
+	}
 });
+
+function getCategoryCount() {
+	var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
+	
+	var returnVal = 0;
+	$.ajax({
+		async : false, //반드시 비동기로 카운트 가져오고 나서 후처리 되어야함
+		cache : false, // 캐시 사용 없애기
+		type : 'get',
+		url : url,
+		//data : params,
+		//data : JSON.stringify({ board_type: 'E', pageSize: '3', blockPage: '1'}),
+		//contentType: 'application/json; charset=utf-8',
+		dataType : 'json',
+		//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
+		//dataType: "text",	
+		success : function(data) {
+
+			
+			var items = [];
+			
+			$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
+
+				if (!keyExists(categoryVO.category_srl, items)) {
+					returnVal++;
+					items.push(categoryVO.category_srl);
+					
+				}
+
+			});
+
+		},
+
+		error : function(e) {
+			popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
+		}
+
+	});
+	
+	return returnVal;
+}
+
 function initTopNav(category_srl){
 	
  	category_srl = typeof category_srl !== 'undefined' ? category_srl : "";
