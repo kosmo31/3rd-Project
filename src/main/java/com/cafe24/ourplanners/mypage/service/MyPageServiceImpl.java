@@ -100,64 +100,69 @@ public class MyPageServiceImpl implements MyPageService{
 	}
 	
 	@Override
-	public int getClientListCheck_TotalRecordConut(String user_id) throws Exception {
-		return dao.getClientListCheck_TotalRecordConut(user_id);
+	public int getClientListCheck_TotalRecordCount(String user_id) throws Exception {
+		return dao.getClientListCheck_TotalRecordCount(user_id);
 	}
 	
 	@Override
-	public int getClientListUnCheck_TotalRecordConut(String user_id) throws Exception {
-		return dao.getClientListUnCheck_TotalRecordConut(user_id);
+	public int getClientListUnCheck_TotalRecordCount(String user_id) throws Exception {
+		return dao.getClientListUnCheck_TotalRecordCount(user_id);
 	}
 	
 	@Override
-	public int getClientList_TotalRecordConut(String user_id) throws Exception {
-		return dao.getClientList_TotalRecordConut(user_id);
+	public int getClientList_TotalRecordCount(String user_id) throws Exception {
+		return dao.getClientList_TotalRecordCount(user_id);
 	}
 	
 	@Override
-	public int getEngineerListCheck_TotalRecordConut(String user_id) throws Exception {
-		return dao.getEngineerListCheck_TotalRecordConut(user_id);
+	public int getEngineerListCheck_TotalRecordCount(String user_id) throws Exception {
+		return dao.getEngineerListCheck_TotalRecordCount(user_id);
 	}
 	
 	@Override
-	public int getEngineerListUnCheck_TotalRecordConut(String user_id) throws Exception {
-		return dao.getEngineerListUnCheck_TotalRecordConut(user_id);
+	public int getEngineerListUnCheck_TotalRecordCount(String user_id) throws Exception {
+		return dao.getEngineerListUnCheck_TotalRecordCount(user_id);
 	}
 	
 	
 	@Override
-	public int getEngineerList_TotalRecordConut(String user_id) throws Exception {
-		return dao.getEngineerList_TotalRecordConut(user_id);
+	public int getEngineerList_TotalRecordCount(String user_id) throws Exception {
+		return dao.getEngineerList_TotalRecordCount(user_id);
 	}
 	
 	@Override
-	public int getEngineerMember_TotalConut() throws Exception {
-		return dao.getEngineerMember_TotalConut();
-	}
-	
-	@Override
-	public int getEngineerCateGory1_TotalConut() throws Exception {
-		return dao.getEngineerCateGory1_TotalConut();
-	}
-	
-	@Override
-	public int getEngineerCateGory2_TotalConut() throws Exception {
-		return dao.getEngineerCateGory2_TotalConut();
-	}
-	
-	@Override
-	public int getEngineerCateGory3_TotalConut() throws Exception {
-		return dao.getEngineerCateGory3_TotalConut();
-	}
-	
-	@Override
-	public int getEngineerCateGory4_TotalConut() throws Exception {
-		return dao.getEngineerCateGory4_TotalConut();
-	}
-	
-	@Override
-	public int getEngineerCateGory5_TotalConut() throws Exception {
-		return dao.getEngineerCateGory5_TotalConut();
+	public void getServiceData(Model model, HttpServletRequest req) {
+		
+		//엔지니어회원 총 회원수 구하기 
+		int engineerMember_TotalCount = 0;
+		//엔지니어 카테고리1~6 글 총 구하기
+		int engineerCateGory1_TotalCount = 0;
+		int engineerCateGory2_TotalCount = 0;
+		int engineerCateGory3_TotalCount = 0;
+		int engineerCateGory4_TotalCount = 0;
+		int engineerCateGory5_TotalCount = 0;
+		
+		try {
+			engineerMember_TotalCount = dao.getEngineerMember_TotalCount();
+			//엔지니어 카테고리1~6 글 총 구하기
+			engineerCateGory1_TotalCount = dao.getEngineerCateGory1_TotalCount();
+			engineerCateGory2_TotalCount = dao.getEngineerCateGory2_TotalCount();
+			engineerCateGory3_TotalCount = dao.getEngineerCateGory3_TotalCount();
+			engineerCateGory4_TotalCount = dao.getEngineerCateGory4_TotalCount();
+			engineerCateGory5_TotalCount = dao.getEngineerCateGory5_TotalCount();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		model.addAttribute("engineerMember_TotalCount", engineerMember_TotalCount);
+		model.addAttribute("engineerCateGory1_TotalCount", engineerCateGory1_TotalCount);
+		model.addAttribute("engineerCateGory2_TotalCount", engineerCateGory2_TotalCount);
+		model.addAttribute("engineerCateGory3_TotalCount", engineerCateGory3_TotalCount);
+		model.addAttribute("engineerCateGory4_TotalCount", engineerCateGory4_TotalCount);
+		model.addAttribute("engineerCateGory5_TotalCount", engineerCateGory5_TotalCount);
+		
+
 	}
 }
 

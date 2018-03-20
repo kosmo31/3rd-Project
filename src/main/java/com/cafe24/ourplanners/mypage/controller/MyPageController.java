@@ -45,41 +45,41 @@ public class MyPageController {
 		int clientMatchingPrecent = 0;
 		int engineerMatchingPrecent = 0;
 		
-		int clientListCheck_TotalRecordConut = 0;
+		int clientListCheck_TotalRecordCount = 0;
 		
-		int clientListUnCheck_TotalRecordConut = 0;
+		int clientListUnCheck_TotalRecordCount = 0;
 		
-		int clientList_TotalRecordConut = 0;
-		int engineerListCheck_TotalRecordConut = 0;
-		int engineerListUnCheck_TotalRecordConut = 0;
+		int clientList_TotalRecordCount = 0;
+		int engineerListCheck_TotalRecordCount = 0;
+		int engineerListUnCheck_TotalRecordCount = 0;
 		
-		int engineerList_TotalRecordConut = 0;
+		int engineerList_TotalRecordCount = 0;
 		
 		String user_id = ((MemberVO)session.getAttribute("loginUserInfo")).getUser_id();
 		
 		try {
-			clientListCheck_TotalRecordConut = myPageService.getClientListCheck_TotalRecordConut(user_id);
+			clientListCheck_TotalRecordCount = myPageService.getClientListCheck_TotalRecordCount(user_id);
 			
-			clientListUnCheck_TotalRecordConut = myPageService.getClientListUnCheck_TotalRecordConut(user_id);
-			clientList_TotalRecordConut = myPageService.getClientList_TotalRecordConut(user_id);
-			engineerListCheck_TotalRecordConut = myPageService.getEngineerListCheck_TotalRecordConut(user_id);
-			engineerListUnCheck_TotalRecordConut = myPageService.getEngineerListUnCheck_TotalRecordConut(user_id);
-			engineerList_TotalRecordConut = myPageService.getEngineerList_TotalRecordConut(user_id);
+			clientListUnCheck_TotalRecordCount = myPageService.getClientListUnCheck_TotalRecordCount(user_id);
+			clientList_TotalRecordCount = myPageService.getClientList_TotalRecordCount(user_id);
+			engineerListCheck_TotalRecordCount = myPageService.getEngineerListCheck_TotalRecordCount(user_id);
+			engineerListUnCheck_TotalRecordCount = myPageService.getEngineerListUnCheck_TotalRecordCount(user_id);
+			engineerList_TotalRecordCount = myPageService.getEngineerList_TotalRecordCount(user_id);
 		} 
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		clientMatchingPrecent = (int)(((double)clientListCheck_TotalRecordConut/clientList_TotalRecordConut)*100);
-		engineerMatchingPrecent = (int)(((double)engineerListCheck_TotalRecordConut/engineerList_TotalRecordConut)*100);
+		clientMatchingPrecent = (int)(((double)clientListCheck_TotalRecordCount/clientList_TotalRecordCount)*100);
+		engineerMatchingPrecent = (int)(((double)engineerListCheck_TotalRecordCount/engineerList_TotalRecordCount)*100);
 		
-		model.addAttribute("clientListCheck_TotalRecordConut", clientListCheck_TotalRecordConut);
-		model.addAttribute("clientListUnCheck_TotalRecordConut", clientListCheck_TotalRecordConut);
+		model.addAttribute("clientListCheck_TotalRecordCount", clientListCheck_TotalRecordCount);
+		model.addAttribute("clientListUnCheck_TotalRecordCount", clientListUnCheck_TotalRecordCount);
 		
-		model.addAttribute("clientList_TotalRecordConut", clientList_TotalRecordConut);
-		model.addAttribute("engineerListCheck_TotalRecordConut", engineerListCheck_TotalRecordConut);
-		model.addAttribute("engineerListUnCheck_TotalRecordConut", engineerListCheck_TotalRecordConut);
-		model.addAttribute("engineerList_TotalRecordConut", engineerList_TotalRecordConut);
+		model.addAttribute("clientList_TotalRecordCount", clientList_TotalRecordCount);
+		model.addAttribute("engineerListCheck_TotalRecordCount", engineerListCheck_TotalRecordCount);
+		model.addAttribute("engineerListUnCheck_TotalRecordCount", engineerListUnCheck_TotalRecordCount);
+		model.addAttribute("engineerList_TotalRecordCount", engineerList_TotalRecordCount);
 		model.addAttribute("clientMatchingPrecent", clientMatchingPrecent);
 		model.addAttribute("engineerMatchingPrecent", engineerMatchingPrecent);
 		

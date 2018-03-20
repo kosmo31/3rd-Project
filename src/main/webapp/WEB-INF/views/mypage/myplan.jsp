@@ -46,6 +46,7 @@
 $(document).ready(function(){
 
 	var value = getMyStarScore("${loginUserInfo.user_id}");
+	
 	setMyStarScore(value);
 	
 	//요청자 진행건 버튼 클릭시발동
@@ -72,9 +73,61 @@ $(document).ready(function(){
 		$("#service_expired").val("Y");
 	});
 	
-	
-	
 });
+
+
+function getLabelName(category_srl, subcategory_srl) {
+
+	var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
+
+	var returnLabel = "";
+	var params = "category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl;
+
+	$.ajax({
+		async : false,
+		cache : false, // 캐시 사용 없애기
+		type : 'get',
+		url : url,
+		data : params,
+		//data : JSON.stringify({ board_type: 'E', pageSize: '3', blockPage: '1'}),
+		//contentType: 'application/json; charset=utf-8',
+		dataType : 'json',
+		//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
+		//dataType: "text",	
+		success : function(data) {
+			//alert(JSON.stringify(data));
+			$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
+
+				if (categoryVO.category_srl == 1)
+					returnLabel += "<span class=\"category label label-default text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</span>";
+				else if (categoryVO.category_srl == 2)
+					returnLabel += "<span class=\"category label label-primary text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</span>";
+				else if (categoryVO.category_srl == 3)
+					returnLabel += "<span class=\"category label label-success text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</span>";
+				else if (categoryVO.category_srl == 4)
+					returnLabel += "<span class=\"category label label-info text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</span>";
+				else if (categoryVO.category_srl == 5)
+					returnLabel += "<span class=\"category label label-warning text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</span>";
+				else
+					returnLabel += "<span class=\"category label label-danger text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</span>";
+
+				return false;
+
+			});//each끝
+
+			//alert(inHTML);
+			//$('#hot_engineer_div').html(items);
+
+		},
+
+		error : function(e) {
+			popLayerMsg("AJAX Error 발생" + e.status + ":" + e.statusText);
+		}
+
+	});
+
+	return returnLabel;
+}
 
 function getMyStarScore(user_id){
 	var params = "nowPage=1&board_type=&user_id="+user_id+"&service_expired=Y";
@@ -98,11 +151,11 @@ function getMyStarScore(user_id){
 				totalScore += lists.service_score;	
 			});//each끝
 			
-			//alert("해당 자료는 총 "+count.searchList.length+"개 입니다.");
+			//alert("해당 자료는 총 "+Count.searchList.length+"개 입니다.");
 		    
-			
+			if(data.searchList.length>0)
 			avgScore = totalScore / data.searchList.length;
-			//alert(count);
+			//alert(Count);
 			for(var i=1;i<=avgScore ;i++){
 				
 				$("#starScoreImg").append("<img src=\"${pageContext.request.contextPath}/resources/images/star.png\">");
@@ -147,11 +200,11 @@ function getMyPlanCount(nowPage, board_type,user_id, service_expired){
 			
 			//성공자료 갯수파악
 			//alert("sucess : " + data);
-			var count = data;
-			//alert("해당 자료는 총 "+count.searchList.length+"개 입니다.");
-		    returnVal = count.searchList.length;
+			var Count = data;
+			//alert("해당 자료는 총 "+Count.searchList.length+"개 입니다.");
+		    returnVal = Count.searchList.length;
 			
-			//alert(count);
+			//alert(Count);
 			
 			
 		},
@@ -195,7 +248,7 @@ function getMyPlanList(nowPage, board_type,user_id, service_expired, color) {
 			inHTML += "<thead>";
 			if(typeof service_srl !== 'undefined') 
 			inHTML += "<tr class=\""+color+"\">";
-				inHTML += "<th>서브카테고리</th>";
+				inHTML += "<th>서비스 구분</th>";
 				inHTML += "<th>아이디</th>";
 				inHTML += "<th>제목</th>";
 				inHTML += "<th>예상비용</th>";
@@ -221,16 +274,16 @@ function getMyPlanList(nowPage, board_type,user_id, service_expired, color) {
 			
 			//성공자료 갯수파악
 			//alert("sucess : " + data);
-			var count = data;
-			//alert(count);
-			//alert("해당 자료는 총 "+count.searchList.length+"개 입니다.");
+			var Count = data;
+			//alert(Count);
+			//alert("해당 자료는 총 "+Count.searchList.length+"개 입니다.");
 			
 			$.each(data.searchList, function(index, lists) { // each로 모든 데이터 가져와서 items 배열에 넣고
 				
 				
 				
 				inHTML += "<tr>";
-					inHTML += "<td>"+lists.subcategory_name+"</td>";
+					inHTML += "<td>"+getLabelName(lists.category_srl, lists.subcategory_srl)+"</td>";
 					/* inHTML += "<td>"+lists.user_id+"</td>"; */
 					inHTML += "<td><div class=\"popup\" onclick=\"popUserMenu()\">"+lists.user_id;
 					inHTML += "<span class=\"popuptext\" id=\"userPopup\">";
@@ -318,7 +371,7 @@ function viewPage(board_srl){
 		<div class="row myplan-title">
 			<div class="col-xs-12 height-good">
 				<h2>
-					<b>나의 플레너스</b>
+					<b>나의 플래너스</b>
 				</h2>
 			</div>
 		</div>
@@ -419,25 +472,25 @@ function viewPage(board_srl){
 									<div class="col-xs-3 text-center border-right">
 										<button type="button" class="btn btn-default btn-sotitle" id="btn_client_ing">요청자 진행 건</button>
 											<h4 class="header-margin-none margin-top-5">
-												<b>(<span>${clientListUnCheck_TotalRecordConut}</span>) </b>
+												<b>(<span>${clientListUnCheck_TotalRecordCount}</span>) </b>
 											</h4>
 									</div>
 									<div class="col-xs-3 text-center border-right">
 										<button type="button" class="btn btn-default btn-sotitle" id="btn_client_check">요청자 완료 건</button>
 											<h4 class="header-margin-none margin-top-5">
-												<b>(<span>${clientListCheck_TotalRecordConut}</span>) </b>
+												<b>(<span>${clientListCheck_TotalRecordCount}</span>) </b>
 											</h4>
 									</div>
 									<div class="col-xs-3 text-center border-right">
 										<button type="button" class="btn btn-default btn-sotitle" id="btn_engineer_ing">기술자 진행 건</button>
 											<h4 class="header-margin-none margin-top-5">
-												<b>(<span>${engineerListUnCheck_TotalRecordConut}</span>) </b>
+												<b>(<span>${engineerListUnCheck_TotalRecordCount}</span>) </b>
 											</h4>
 									</div>
 									<div class="col-xs-3 text-center">
 										<button type="button" class="btn btn-default btn-sotitle" id="btn_engineer_check">기술자 완료 건</button>
 											<h4 class="header-margin-none margin-top-5">
-												<b>(<span>${engineerListCheck_TotalRecordConut}</span>) </b>
+												<b>(<span>${engineerListCheck_TotalRecordCount}</span>) </b>
 											</h4>
 									</div>
 								</div>

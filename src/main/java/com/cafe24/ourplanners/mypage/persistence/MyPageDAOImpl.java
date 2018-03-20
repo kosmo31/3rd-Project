@@ -45,63 +45,63 @@ public class MyPageDAOImpl implements MyPageDAO{
 	}
 	
 	@Override
-	public int getClientListCheck_TotalRecordConut(String user_id) throws Exception {
-		return sqlSession.selectOne(namespace + ".getClientListCheck_TotalRecordConut", user_id); 
+	public int getClientListCheck_TotalRecordCount(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getClientListCheck_TotalRecordCount", user_id); 
 	}
 	
 	@Override
-	public int getClientListUnCheck_TotalRecordConut(String user_id) throws Exception {
-		return sqlSession.selectOne(namespace + ".getClientListUnCheck_TotalRecordConut", user_id); 
+	public int getClientListUnCheck_TotalRecordCount(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getClientListUnCheck_TotalRecordCount", user_id); 
 	}
 	
 	@Override
-	public int getClientList_TotalRecordConut(String user_id) throws Exception {
-		return sqlSession.selectOne(namespace + ".getClientList_TotalRecordConut", user_id); 
+	public int getClientList_TotalRecordCount(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getClientList_TotalRecordCount", user_id); 
 	}
 	
 	@Override
-	public int getEngineerListCheck_TotalRecordConut(String user_id) throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerListCheck_TotalRecordConut", user_id); 
+	public int getEngineerListCheck_TotalRecordCount(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerListCheck_TotalRecordCount", user_id); 
 	}
 	
 	@Override
-	public int getEngineerListUnCheck_TotalRecordConut(String user_id) throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerListCheck_TotalRecordConut", user_id); 
+	public int getEngineerListUnCheck_TotalRecordCount(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerListUnCheck_TotalRecordCount", user_id); 
 	}
 	
 	@Override
-	public int getEngineerList_TotalRecordConut(String user_id) throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerList_TotalRecordConut", user_id); 
+	public int getEngineerList_TotalRecordCount(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerList_TotalRecordCount", user_id); 
 	}
 	
 	@Override
-	public int getEngineerMember_TotalConut() throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerMember_TotalConut"); 
+	public int getEngineerMember_TotalCount() throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerMember_TotalCount"); 
 	}
 	
 	@Override
-	public int getEngineerCateGory1_TotalConut() throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerCateGory1_TotalConut"); 
+	public int getEngineerCateGory1_TotalCount() throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerCateGory1_TotalCount"); 
 	}
 	
 	@Override
-	public int getEngineerCateGory2_TotalConut() throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerCateGory2_TotalConut"); 
+	public int getEngineerCateGory2_TotalCount() throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerCateGory2_TotalCount"); 
 	}
 	
 	@Override
-	public int getEngineerCateGory3_TotalConut() throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerCateGory3_TotalConut"); 
+	public int getEngineerCateGory3_TotalCount() throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerCateGory3_TotalCount"); 
 	}
 	
 	@Override
-	public int getEngineerCateGory4_TotalConut() throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerCateGory4_TotalConut"); 
+	public int getEngineerCateGory4_TotalCount() throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerCateGory4_TotalCount"); 
 	}
 	
 	@Override
-	public int getEngineerCateGory5_TotalConut() throws Exception {
-		return sqlSession.selectOne(namespace + ".getEngineerCateGory5_TotalConut"); 
+	public int getEngineerCateGory5_TotalCount() throws Exception {
+		return sqlSession.selectOne(namespace + ".getEngineerCateGory5_TotalCount"); 
 	}
 	
 	
