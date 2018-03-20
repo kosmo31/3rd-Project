@@ -30,54 +30,60 @@
 		delete from op_board where board_srl=#{board_srl}
 	</delete>
 	
-	<select id="getClientListCheck_TotalRecordConut" resultType="int">
+	<select id="getClientListCheck_TotalRecordCount" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='C' AND service_expired='Y' AND user_id=#{user_id,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="getClientListUnCheck_TotalRecordConut" resultType="int">
+	<select id="getClientListUnCheck_TotalRecordCount" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='C' AND service_expired='N' AND user_id=#{user_id,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="getClientList_TotalRecordConut" resultType="int">
+	<select id="getClientList_TotalRecordCount" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='C' AND user_id=#{user_id}
 	</select>
 	
-	<select id="getEngineerListCheck_TotalRecordConut" resultType="int">
-		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='Y' AND user_id=#{user_id}
+	<select id="getEngineerListCheck_TotalRecordCount" resultType="int">
+		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='Y' AND user_id=#{user_id,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="getEngineerListUnCheck_TotalRecordConut" resultType="int">
-		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='N' AND user_id=#{user_id}
+	<select id="getEngineerListUnCheck_TotalRecordCount" resultType="int">
+		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='N' AND user_id=#{user_id,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="getEngineerList_TotalRecordConut" resultType="int">
-		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND user_id=#{user_id}
+	<select id="getEngineerList_TotalRecordCount" resultType="int">
+		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND user_id=#{user_id,jdbcType=VARCHAR}
 	</select>
 	
-	<select id="getEngineerMember_TotalConut" resultType="int">
-		SELECT COUNT(*) FROM op_member WHERE member_type='C'
-	</select>
+	 <select id="getEngineerMember_TotalCount" resultType="Integer">
+ 	SELECT count(DISTINCT user_id) FROM op_board where board_type='E'
+ 	</select>
  
- 	<select id="getEngineerCateGory1_TotalConut" resultType="int">
+  	<select id="getClientMember_TotalCount" resultType="Integer">
+ 	SELECT count(DISTINCT user_id) FROM op_board where board_type='C'
+ 	</select>
+ 
+ 
+ 	<select id="getEngineerCateGory1_TotalCount" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='N' AND category_srl='1'
 	</select>
 	
-	<select id="getEngineerCateGory2_TotalConut" resultType="int">
+	<select id="getEngineerCateGory2_TotalCount" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='N' AND category_srl='2'
 	</select>
 	
-	<select id="getEngineerCateGory3_TotalConut" resultType="int">
+	<select id="getEngineerCateGory3_TotalCount" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='N' AND category_srl='3'
 	</select>
 	
-	<select id="getEngineerCateGory4_TotalConut" resultType="int">
+	<select id="getEngineerCateGory4_TotalCount" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='N' AND category_srl='4'
 	</select>
 	
-	<select id="getEngineerCateGory5_TotalConut" resultType="int">
+	<select id="getEngineerCateGory5_TotalCount" resultType="int">
 		SELECT COUNT(*) FROM op_board WHERE board_type='E' AND service_expired='N' AND category_srl='5'
 	</select>
  
+
  
  
 

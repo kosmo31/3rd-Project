@@ -124,36 +124,36 @@
 			<div class="col-lg-8 col-sm-10 col-xs-12">
 				<div class="service-title-div">
 					<h1>전문적인 서비스</h1>
-					<h2>각 분야의 전문가 <b>${engineerMember_TotalConut}명</b>의 <b>차별화된 서비스</b>를 이용해보세요.</h2>
+					<h2>각 분야의 전문가 <b>${engineerMember_TotalCount}명</b>의 <b>차별화된 서비스</b>를 이용해보세요.</h2>
 					
 					<div class="position-relative bg-color-f6 padding-all-20" style="width: 29%">
                         <img class="position-absolute bottom-0 right-0" src="${pageContext.request.contextPath}/resources/images/img_category_design.png">
                         <h4 class="margin-none font-color-lighter">디자인 전문가의 자료</h4>
-                        <div class="margin-top-30" style="font-size: 28px !important;"><span class="count">${engineerCateGory1_TotalConut}</span>건</div>
+                        <div class="margin-top-30" style="font-size: 28px !important;"><span class="count">${engineerCateGory1_TotalCount}</span>건</div>
                     </div>
                     
                     <div class="position-relative bg-color-f6 padding-all-20 margin-left-10" style="width: 24%">
                         <img class="position-absolute bottom-0 right-0" src="${pageContext.request.contextPath}/resources/images/img_category_marketing.png">
                         <h4 class="margin-none font-color-lighter">마케팅 전문가의 자료</h4>
-                        <div class="margin-top-30" style="font-size: 28px !important;"><span class="count">${engineerCateGory2_TotalConut}</span>건</div>
+                        <div class="margin-top-30" style="font-size: 28px !important;"><span class="count">${engineerCateGory2_TotalCount}</span>건</div>
                     </div>
                     
                     <div class="position-relative bg-color-f6 padding-all-20 margin-left-10" style="width: 17%">
                         <img class="position-absolute bottom-0 right-0" src="${pageContext.request.contextPath}/resources/images/img_category_it.png">
                         <h4 class="margin-none font-color-lighter">IT&amp;개발 전문가자료</h4>
-                        <div class="margin-top-30" style="font-size: 28px !important;"><span class="count">${engineerCateGory3_TotalConut}</span>건</div>
+                        <div class="margin-top-30" style="font-size: 28px !important;"><span class="count">${engineerCateGory3_TotalCount}</span>건</div>
                     </div>
                     
                     <div class="position-relative bg-color-f6 padding-all-20 margin-left-10" style="width: 11%">
                         <img class="position-absolute bottom-0 right-0" src="${pageContext.request.contextPath}/resources/images/img_category_content.png">
                         <h4 class="margin-none font-color-lighter line-height">컨텐츠제작<br>전문가<br>자료</h4>
-                        <div class="margin-top-10" style="font-size: 20px !important;"><span class="count">${engineerCateGory4_TotalConut}</span>건</div>
+                        <div class="margin-top-10" style="font-size: 20px !important;"><span class="count">${engineerCateGory4_TotalCount}</span>건</div>
                     </div>
                     
                     <div class="position-relative bg-color-f6 padding-all-20 margin-left-10" style="width: 10%">
                         <img class="position-absolute bottom-0 right-0" src="${pageContext.request.contextPath}/resources/images/img_category_translate.png">
                         <h4 class="margin-none font-color-lighter line-height">번역&amp;<br>통역전문<br>자료</h4>
-                        <div class="margin-top-10" style="font-size: 20px !important;"><span class="count">${engineerCateGory5_TotalConut}</span>건</div>
+                        <div class="margin-top-10" style="font-size: 20px !important;"><span class="count">${engineerCateGory5_TotalCount}</span>건</div>
                     </div>
 				</div>
 			</div>

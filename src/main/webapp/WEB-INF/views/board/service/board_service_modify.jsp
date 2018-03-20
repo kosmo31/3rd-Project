@@ -263,7 +263,7 @@ $(document).ready(function(){
 					</div>
 					<div class="write-btn">
 						<button type="button" class="btn btn-success" id="boardListBtn">목록보기</button>
-						<button type="button" class="btn btn-success" id="modifyActionBtn">수정하기</button>
+						<button type="button" class="btn btn-warning" id="modifyActionBtn">수정하기</button>
 					</div>
 				
 			</div>
