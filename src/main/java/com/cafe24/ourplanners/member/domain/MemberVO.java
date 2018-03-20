@@ -2,8 +2,6 @@ package com.cafe24.ourplanners.member.domain;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 public class MemberVO {
 	
 	private int member_srl;	

@@ -73,10 +73,10 @@
 							<a class="dropdown-toggle margin-left-10" data-toggle="dropdown" href="javascript:void(0);">
 							<c:choose>
 								<c:when test="${loginUserInfo.profile_img_path==null}">
-									<img class="id-image" src="${pageContext.request.contextPath}/resources/images/main_user_gray.png"  />
+									<img id="top_profile_Img" class="id-image" src="${pageContext.request.contextPath}/resources/images/main_user_gray.png"  />
 								</c:when>
 								<c:otherwise>
-									<img class="id-image" src="${pageContext.request.contextPath}/upload/displayFile?fileName=${loginUserInfo.profile_img_path}&directory=member/${loginUserInfo.member_srl}/profile"  />
+									<img id="top_profile_Img" class="id-image" src="${pageContext.request.contextPath}/upload/displayFile?fileName=${loginUserInfo.profile_img_path}&directory=member/${loginUserInfo.member_srl}/profile"  />
 								</c:otherwise>
 							</c:choose>
 							<span class="text-uppercase">${loginUserInfo.user_id}님</span> <span class="caret"></span></a>

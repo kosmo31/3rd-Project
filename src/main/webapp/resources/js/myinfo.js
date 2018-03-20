@@ -30,7 +30,8 @@ function fileChange(e) {
         reader.onload = function(e) {
         	//alert("온로드");
             $("#profile_Img").attr("src", e.target.result);
-        	//$("#profileImg").css("height", "53px")
+            $("#top_profile_Img").attr("src", e.target.result);
+            //$("#profileImg").css("height", "53px")
         	//$("#profileImg").css("width", "53px")
         }
         reader.readAsDataURL(f);

@@ -20,7 +20,7 @@
 							</div>
 							<!-- 카테고리별 서브카테고리 부분 -->
 							<div class="sidebar-widget">
-								<h3 class="sidebar-title mb30"><span id="CategoryTitle"></span> 서브 카테고리</h3>
+								<h3 class="sidebar-title mb30"><span id="CategoryTitle"></span></h3>
 								<ul class="categories" id="subCategoryList">
 								
 									<li><a href="#"><span>1</span>목조</a></li>

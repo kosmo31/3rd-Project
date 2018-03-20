@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/view.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/view.css?ver=<fmt:formatDate value="${today}" pattern="yyyyMMddHHmmss" />">
 <script type="text/javascript" charset="utf-8">
 	sessionStorage.setItem("contextpath", "${pageContext.request.contextPath}");
 	
@@ -383,12 +383,12 @@ function getListComment(nowPage, parent_board_srl, comment_type) {
 			<!-- 뷰페이지 버튼부분 -->
 			<div class="view-btn">
 			
-			<c:if test="${sessionScope.loginUserInfo.user_id eq view.user_id}">
+			<c:if test="${loginUserInfo.user_id eq view.user_id || loginUserInfo.is_admin =='Y'}">
 				
-				<button type="button" class="btn btn-success" id="btn-modify" 
+				<button type="button" class="btn btn-info" id="btn-modify" 
 					name="modifyBtn" onclick="javascript:modifyBoard(${view.board_srl});">수정하기</button>
 				
-				<button type="button" class="btn btn-success" id="btn-delete"
+				<button type="button" class="btn btn-danger" id="btn-delete"
 					
 					onclick="javascript:deleteBoard(${view.board_srl});">삭제하기</button>
 			</c:if>

@@ -118,7 +118,7 @@ public class MemberController {
 				HttpStatus.CREATED);
 
 		String memberPicture = (String) imgPath.getBody();
-
+		System.out.println("이미지 업로드 file path: "+memberPicture);
 		logger.info(memberPicture);
 
 		memVO.setProfile_img_path(memberPicture);

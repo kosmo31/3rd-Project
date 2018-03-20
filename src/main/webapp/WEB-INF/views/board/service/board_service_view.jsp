@@ -51,6 +51,13 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	
+	initSideNav("${category_srl}");
+	
+	getTagsList("${category_srl}", "${subcategory_srl}");
+	
+	if (!isEmpty("${subcategory_srl}"))
+	$("#cateTitle").html(setCategoryTitle("${category_srl}","${subcategory_srl}"));
+	
 	//최초 상세보기 페이지 로딩시 게시판 번호에 따른 페이지 ajax로 가져오기
 	viewPage("${board_srl}");
 	//해당 글번호에 따른 댓글 가져오기
@@ -78,7 +85,7 @@ $(document).ready(function(){
 		$('#allplanners-btn').removeClass('btn-info');
 		$('#engineer-btn').removeClass('btn-info');
 		$('#customer-btn').removeClass('btn-info');
-		$('#engineer-btn').addClass('btn-info');	
+		$('#allplanners-btn').addClass('btn-info');	
 	}
 	
 	getListComment(1, "${board_srl}", "R");
@@ -355,6 +362,7 @@ $(document).ready(function() {
 			
 			//getServiceSearchList(1, "${category_srl}", "${subcategory_srl}", "${board_type}", "${searchType}", "${keyword}");
 			getServiceSearchList(1, category_srl, subcategory_srl, board_type, searchType, keyword);
+			
 		}
 		
 	});
@@ -501,22 +509,33 @@ function selectSubCategory(category_srl,subcategory_srl){
 	getServiceSearchList(1, category_srl, subcategory_srl);
 }
 
-function initSideNav(category_srl){
-	
+function keyExists(key, search) {
+    if (!search || (search.constructor !== Array && search.constructor !== Object)) {
+        return false;
+    }
+    for (var i = 0; i < search.length; i++) {
+        if (search[i] === key) {
+            return true;
+        }
+    }
+    return key in search;
+}
+
+function initSideNav(category_srl) {
+
 	category_srl = typeof category_srl !== 'undefined' ? category_srl : "";
-	
+
 	if (isEmpty(category_srl)) {
-		
+
 		category_srl = "";
 	}
-	
-	
+
 	$('#CategoryTitle').empty();
 	$('#subCategoryList').empty();
-		
+
 	var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
-	var params = "category_srl=" + category_srl ;
-	
+	var params = "category_srl=" + category_srl;
+
 	$.ajax({
 		cache : false, // 캐시 사용 없애기
 		type : 'get',
@@ -531,25 +550,32 @@ function initSideNav(category_srl){
 			//alert(JSON.stringify(data));
 			var items = [];
 			var inHTML = "";
-			
-			var inHTMLCategoryName = "";
 
+			var inHTMLCategoryName = "";
+			var count=0;
 			$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
-				
-				inHTML+="<li><a href=\"javascript:selectSubCategory("+categoryVO.category_srl+","+categoryVO.subcategory_srl+")\"><span>"+index+"</span>"+categoryVO.subcategory_name+"</a></li>";
-				
-				inHTMLCategoryName = categoryVO.category_name;
+				if (isEmpty(category_srl)) {
+					if(!keyExists(categoryVO.category_name, items)){
+						count++;
+						inHTML += "<li><a href=\"javascript:selectCategory(" + categoryVO.category_srl + ")\"><span>" + count + "</span>" + categoryVO.category_name + "</a></li>";
+						items.push(categoryVO.category_name);
+						inHTMLCategoryName = categoryVO.category_name;
+					}
+					
+				}else{
+					count++;
+					inHTML += "<li><a href=\"javascript:selectSubCategory(" + categoryVO.category_srl + "," + categoryVO.subcategory_srl + ")\"><span>" + count + "</span>" + categoryVO.subcategory_name + "</a></li>";
+					inHTMLCategoryName = categoryVO.category_name+" 서브 카테고리";
+				}
 				
 
 			});//each끝
 
-			if(isEmpty(category_srl)){
-				$('#CategoryTitle').html("전체");
+			if (isEmpty(category_srl)) {
+				$('#CategoryTitle').html("전체 카테고리");
+			} else {
+				$('#CategoryTitle').html(inHTMLCategoryName);
 			}
-			else{
-				$('#CategoryTitle').html(inHTMLCategoryName);	
-			}
-			
 
 			if (jQuery.isEmptyObject(data.subCategoryList)) {
 				$('#subCategoryList').html("<li><a href=\"#\">서브 카테고리 없음</a></li>");
@@ -594,7 +620,7 @@ function getTagsList(category_srl,subcategory_srl){
 		cache : false, // 캐시 사용 없애기
 		type : 'post',
 		url : url,
-		param : params,
+		data : params,
 		//contentType: 'application/json; charset=utf-8',
 		dataType : 'json',
 		//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
@@ -691,11 +717,30 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 
 	$('#board_type').val(board_type);
 	
+	if(board_type=="E")
+	{
+		$('#allplanners-btn').removeClass('btn-info');
+		$('#engineer-btn').removeClass('btn-info');
+		$('#customer-btn').removeClass('btn-info');
+		$('#engineer-btn').addClass('btn-info');	
+	}else if(board_type=="C")
+	{
+		$('#allplanners-btn').removeClass('btn-info');
+		$('#engineer-btn').removeClass('btn-info');
+		$('#customer-btn').removeClass('btn-info');
+		$('#customer-btn').addClass('btn-info');	
+	}else{
+		$('#allplanners-btn').removeClass('btn-info');
+		$('#engineer-btn').removeClass('btn-info');
+		$('#customer-btn').removeClass('btn-info');
+		$('#allplanners-btn').addClass('btn-info');	
+	}
+	
 	initSideNav(category_srl);
 	
 	getTagsList(category_srl, subcategory_srl);
 	
-	if (!isEmpty(subcategory_srl))
+	if (!isEmpty(category_srl)||!isEmpty(subcategory_srl))
 	$("#cateTitle").html(setCategoryTitle(category_srl,subcategory_srl));
 		
 	var url = "${pageContext.request.contextPath}/board/json/service_list.json";
@@ -780,8 +825,10 @@ function getServiceSearchList(nowPage, category_srl, subcategory_srl , board_typ
 				$('#boardBody').html(inHTML);
 			}
 
+			getTagsList(category_srl, subcategory_srl);
 			$("#boardPagingDiv").html(data.pagingDiv);
 			$(window).scrollTop(0);
+			
 			//alert(inHTML);
 			//$('#hot_engineer_div').html(items);
 
@@ -816,12 +863,19 @@ function viewPage(board_srl){
 	
 }
 
-function setCategoryTitle(category_srl,subcategory_srl){
-	
+function setCategoryTitle(category_srl, subcategory_srl) {
+
 	var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
 
-	var returnLabel ="";
-	var params = "category_srl="+category_srl+"&subcategory_srl="+subcategory_srl;
+	var returnLabel = "";
+
+	subcategory_srl = typeof subcategory_srl !== 'undefined' ? subcategory_srl : "";
+
+	if (isEmpty(subcategory_srl)) {
+		subcategory_srl = "";
+	}
+
+	var params = "category_srl=" + category_srl + "&subcategory_srl=" + subcategory_srl;
 
 	$.ajax({
 		async : false,
@@ -838,25 +892,48 @@ function setCategoryTitle(category_srl,subcategory_srl){
 			//alert(JSON.stringify(data));
 			$.each(data.subCategoryList, function(index, categoryVO) { // each로 모든 데이터 가져와서 items 배열에 넣고
 
-				if(categoryVO.category_srl==1)
-				returnLabel += "<h2 class=\"category label label-default text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-				else if(categoryVO.category_srl==1)
-				returnLabel += "<h2 class=\"category label label-primary text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-				else if(categoryVO.category_srl==1)
-				returnLabel += "<h2 class=\"category label label-success text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-				else if(categoryVO.category_srl==1)
-				returnLabel += "<h2 class=\"category label label-info text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-				else if(categoryVO.category_srl==1)
-				returnLabel += "<h2 class=\"category label label-warning text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-				else 
-				returnLabel += "<h2 class=\"category label label-danger text-danger\">" + categoryVO.category_name +"-"+ categoryVO.subcategory_name + "</h2>";
-						
+				
+			
 				
 				
+				if (isEmpty(subcategory_srl)) {
+					
+					categoryVO.category_name = categoryVO.category_name + " 인기 검색어 목록";
+					
+					if (categoryVO.category_srl == 1)
+						returnLabel += "<h2 class=\"category label label-default text-danger\">" + categoryVO.category_name + "</h2>";
+					else if (categoryVO.category_srl == 2)
+						returnLabel += "<h2 class=\"category label label-primary text-danger\">" + categoryVO.category_name + "</h2>";
+					else if (categoryVO.category_srl == 3)
+						returnLabel += "<h2 class=\"category label label-success text-danger\">" + categoryVO.category_name  + "</h2>";
+					else if (categoryVO.category_srl == 4)
+						returnLabel += "<h2 class=\"category label label-info text-danger\">" + categoryVO.category_name  + "</h2>";
+					else if (categoryVO.category_srl == 5)
+						returnLabel += "<h2 class=\"category label label-warning text-danger\">" + categoryVO.category_name + "</h2>";
+					else
+						returnLabel += "<h2 class=\"category label label-danger text-danger\">" + categoryVO.category_name  + "</h2>";
+
+				} else {
+
+					categoryVO.subcategory_name = categoryVO.subcategory_name + " 인기 검색어 목록";
+					
+					if (categoryVO.category_srl == 1)
+						returnLabel += "<h2 class=\"category label label-default text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+					else if (categoryVO.category_srl == 2)
+						returnLabel += "<h2 class=\"category label label-primary text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+					else if (categoryVO.category_srl == 3)
+						returnLabel += "<h2 class=\"category label label-success text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+					else if (categoryVO.category_srl == 4)
+						returnLabel += "<h2 class=\"category label label-info text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+					else if (categoryVO.category_srl == 5)
+						returnLabel += "<h2 class=\"category label label-warning text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+					else
+						returnLabel += "<h2 class=\"category label label-danger text-danger\">" + categoryVO.category_name + "-" + categoryVO.subcategory_name + "</h2>";
+				}
+			
 				return false;
 
 			});//each끝
-			
 
 			//alert(inHTML);
 			//$('#hot_engineer_div').html(items);
@@ -868,7 +945,7 @@ function setCategoryTitle(category_srl,subcategory_srl){
 		}
 
 	});
-	
+
 	return returnLabel;
 }
 
@@ -888,7 +965,7 @@ function setCategoryTitle(category_srl,subcategory_srl){
 			cache : false, // 캐시 사용 없애기
 			type : 'post',
 			url : url,
-			param : params,
+			data : params,
 			//contentType: 'application/json; charset=utf-8',
 			dataType : 'json',
 			//contentType: "application/x-www-form-urlencoded; charset=utf-8",				
@@ -972,7 +1049,7 @@ function setCategoryTitle(category_srl,subcategory_srl){
 					<div class="col-sm-10 col-sm-offset-1">
 						<div class="text-center">
 							<div class="mb0">
-								<h2 class="title-h2" id="cateTitle">현재 카테고리 인기 검색어 목록</h2>
+								<h2 class="title-h2" id="cateTitle">전체 카테고리 인기 검색어 목록</h2>
 								<div id="tags" class="tags">
 									<a href="#" title="10 Topics"><i class="fa fa-tag"></i> 검색어</a>
 								</div>
@@ -1073,12 +1150,12 @@ function setCategoryTitle(category_srl,subcategory_srl){
 			<!-- 뷰페이지 버튼부분 -->
 			<div class="view-btn">
 			
-			<c:if test="${sessionScope.loginUserInfo.user_id eq view.user_id}">
+			<c:if test="${loginUserInfo.user_id eq view.user_id || loginUserInfo.is_admin =='Y'}">
 				
-				<button type="button" class="btn btn-success" id="btn-modify" 
+				<button type="button" class="btn btn-info" id="btn-modify" 
 					name="modifyBtn" onclick="javascript:modifyBoard(${view.board_srl});">수정하기</button>
 				
-				<button type="button" class="btn btn-success" id="btn-delete"
+				<button type="button" class="btn btn-danger" id="btn-delete"
 					
 					onclick="javascript:deleteBoard(${view.board_srl});">삭제하기</button>
 			</c:if>

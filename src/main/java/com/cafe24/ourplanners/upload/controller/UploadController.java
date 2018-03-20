@@ -118,14 +118,14 @@ public class UploadController {
         //파일 기본경로
          String path = request.getSession().getServletContext().getRealPath("/resources/upload/"+directory);
          
-  		File file = new File(path);
+  		/*File file = new File(path);
   		if(!file.exists()) {
   		  file.mkdirs();
-  		}
-  		
-  		System.out.println("display 전체 파일 경로명:"+path+File.separator+fileName); 		
+  		}*/
+  		System.out.println("display path : "+path);
+  		System.out.println("display / filename 전체 파일 경로명:"+path+File.separator+fileName); 		
           
-          in = new FileInputStream(path +File.separator+ fileName);
+          in = new FileInputStream(path + fileName);
           //System.out.println("upload path :"+uploadPath);
           // 이미지 파일이면
           if (mType != null) { 

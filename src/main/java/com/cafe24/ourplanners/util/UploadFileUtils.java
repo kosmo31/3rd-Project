@@ -34,16 +34,18 @@ public class UploadFileUtils {
 		logger.info("업로드 경로 : " + uploadPath);
 		// \2017\12\27 같은 형태로 저장해준다.
 		// 업로드할 디렉토리(날짜별 폴더) 생성
-
-		String savedPath = calcPath(uploadPath);
-
+		//String savedPath = calcPath(uploadPath);
+		//File target = new File(uploadPath + savedPath, savedName);
 		// 파일 경로(기존의 업로드경로+날짜별경로), 파일명을 받아 파일 객체 생성
-		File target = new File(uploadPath + savedPath, savedName);
+		File target = new File(uploadPath);
 		
-		/*//폴더 없으면 생성
-		if(!target.exists()) {
+		//상위 폴더 없으면 생성
+		
+		 if(!target.exists()) {
 			target.mkdirs();
-		}*/
+		}
+		 target = new File(uploadPath, savedName);
+		 
 		
 		// 임시 디렉토리에 업로드된 파일을 지정된 디렉토리로 복사
 		FileCopyUtils.copy(fileData, target);
@@ -54,11 +56,11 @@ public class UploadFileUtils {
 		// 이미지 파일은 썸네일 사용
 		if (MediaUtils.getMediaType(formatName) != null) {
 			// 썸네일 생성
-			uploadedFileName = makeThumbnail(uploadPath, savedPath, savedName);
+			uploadedFileName = makeThumbnail(uploadPath, savedName);
 			// 나머지는 아이콘
 		} else {
 			// 아이콘 생성
-			uploadedFileName = makeIcon(uploadPath, savedPath, savedName);
+			uploadedFileName = makeIcon(uploadPath, savedName);
 		}
 		return uploadedFileName;
 
@@ -100,13 +102,14 @@ public class UploadFileUtils {
 	}
 
 	// 썸네일 생성
-	private static String makeThumbnail(String uploadPath, String path, String fileName) throws Exception {
+	private static String makeThumbnail(String uploadPath, String fileName) throws Exception {
 		// 이미지를 읽기 위한 버퍼
-		BufferedImage sourceImg = ImageIO.read(new File(uploadPath + path, fileName));
+		BufferedImage sourceImg = ImageIO.read(new File(uploadPath  , fileName));
 		// 100픽셀 단위의 썸네일 생성
-		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.AUTOMATIC, Scalr.Mode.FIT_TO_HEIGHT, 100);
+		BufferedImage destImg = Scalr.resize(sourceImg, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_TO_HEIGHT, 200);
+		
 		// 썸네일의 이름을 생성(원본파일명에 's_'를 붙임)
-		String thumbnailName = uploadPath + path + File.separator + "s_" + fileName;
+		String thumbnailName = uploadPath +  File.separator + "s_" + fileName;
 		File newFile = new File(thumbnailName);
 		String formatName = fileName.substring(fileName.lastIndexOf(".") + 1);
 		// 썸네일 생성
@@ -116,9 +119,9 @@ public class UploadFileUtils {
 	}
 
 	// 아이콘 생성
-	private static String makeIcon(String uploadPath, String path, String fileName) throws Exception {
+	private static String makeIcon(String uploadPath, String fileName) throws Exception {
 		// 아이콘의 이름
-		String iconName = uploadPath + path + File.separator + fileName;
+		String iconName = uploadPath  + File.separator + fileName;
 		// 아이콘 이름을 리턴
 		// File.separatorChar : 디렉토리 구분자
 		// 윈도우 \ , 유닉스(리눅스) /
