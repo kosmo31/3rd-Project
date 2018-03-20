@@ -63,7 +63,10 @@ insert into op_board (
 					and title like CONCAT(CONCAT('%', #{keyword,jdbcType=VARCHAR}), '%')
 				</if>
 				<if test="searchType == 'c'.toString()">
-					and contents like CONCAT(CONCAT('%', #{keyword,jdbcType=VARCHAR}), '%')
+					 and contents like CONCAT(CONCAT('%', #{keyword,jdbcType=VARCHAR}), '%')
+					
+				<!-- and long_search(#{keyword,jdbcType=VARCHAR}) > 0 -->
+					
 				</if>
 				<if test="searchType == 'i'.toString()">
 					and user_id like CONCAT(CONCAT('%', #{keyword,jdbcType=VARCHAR}), '%')
@@ -71,6 +74,8 @@ insert into op_board (
 				<if test="searchType == 'tc'.toString()">
 					and ( title like CONCAT(CONCAT('%', #{keyword,jdbcType=VARCHAR}), '%') OR contents like
 					CONCAT(CONCAT('%', #{keyword,jdbcType=VARCHAR}), '%'))
+					
+					<!-- and ( (title like CONCAT(CONCAT('%', #{keyword,jdbcType=VARCHAR}), '%')) OR (long_search(#{keyword,jdbcType=VARCHAR}) > 0)) -->
 				</if>
 			</otherwise>
 		</choose>
@@ -422,6 +427,12 @@ SERVICE_SCORE,LAST_UPDATE  FROM op_board where board_srl > 0
 		select * from op_board where board_srl=#{board_srl}
 		
 	</select>
+	
+	<!-- 전체 카테고리 수 -->
+	<select id="getTotalCategoryCount" resultType="Integer">
+		SELECT count(DISTINCT category_srl) FROM subcategory;
+	</select>
+	
 	
 
 </mapper>

@@ -56,7 +56,7 @@
 					//inHTML += "<h6 class=\"category label label-primary text-danger\">" + hotEngineerBoardList.category_srl +"-"+ hotEngineerBoardList.subcategory_srl + "</h6>";
 					inHTML += getLabelName(hotEngineerBoardList.category_srl, hotEngineerBoardList.subcategory_srl);
 					inHTML += "<h4 class=\"card-title\">";
-					inHTML += "<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\">" + hotEngineerBoardList.title + "</a>";
+					inHTML += "<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\">" + getTitleSubString(hotEngineerBoardList.title,32) + "</a>";
 					inHTML += "</h4>";
 					inHTML += "<p class=\"card-description text-left\">";
 
@@ -125,7 +125,11 @@
 					inHTML += "<div class=\"col-md-4\">";
 					inHTML += "<div class=\"card card-blog\">";
 					inHTML += "<div class=\"card-image\">";
-					inHTML += "<a href=\"#pablo\"> <img class=\"img img-raised\" src=\""+serviceMainImgPath+hotEngineerBoardList.main_image+"\">";
+					if (hotEngineerBoardList.main_image == null) {
+						inHTML += "<a href=\"#pablo\"> <img style=\"height:270px;\" class=\"img img-raised\" src=\"${pageContext.request.contextPath}/resources/images/op_main_img.png\">";
+					} else {
+						inHTML += "<a href=\"#pablo\"> <img style=\"height:270px;\" class=\"img img-raised\" src=\""+serviceMainImgPath+hotEngineerBoardList.main_image+"\">";
+					}
 					inHTML += "</a>";
 					inHTML += "<div class=\"colored-shadow\" style=\"background-image: url('" + serviceMainImgPath + hotEngineerBoardList.board_srl + "/images/" + hotEngineerBoardList.main_image + "'); opacity: 1;\"></div>";
 					inHTML += "<div class=\"ripple-container\"></div>";
@@ -135,7 +139,7 @@
 					//inHTML += "<h6 class=\"category label label-primary text-danger\">" + hotEngineerBoardList.category_srl +"-"+ hotEngineerBoardList.subcategory_srl + "</h6>";
 					inHTML += getLabelName(hotEngineerBoardList.category_srl, hotEngineerBoardList.subcategory_srl);
 					inHTML += "<h4 class=\"card-title\">";
-					inHTML += "<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\">" + hotEngineerBoardList.title + "</a>";
+					inHTML += "<a href=\"./board/service/"+hotEngineerBoardList.board_srl+"\">" + getTitleSubString(hotEngineerBoardList.title,32) + "</a>";
 					inHTML += "</h4>";
 					inHTML += "<p class=\"card-description text-left\">";
 
@@ -174,6 +178,15 @@
 
 	});
 
+	function getTitleSubString(input,len){
+		if(input.length >= len){
+		    return input.substr(0,len)+"...";
+		}
+		else{
+			return input;
+		}
+	}
+	
 	function getLabelName(category_srl, subcategory_srl) {
 
 		var url = "${pageContext.request.contextPath}/board/json/subcategory_list.json";
